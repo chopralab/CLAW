@@ -200,7 +200,7 @@ for ij in lst:
         # Subtract all value columns (except 'type') by the 'SolventBlank1' column
 
         # Subtract all value columns (except 'type') by the 'SolventBlank1' column
-        df.iloc[:, 1:-1] = df.iloc[:, 1:-1].subtract(df['SolventBlank1'], axis=0)
+        df.iloc[:, 0:-1] = df.iloc[:, 0:-1].subtract(df['SolventBlank1'], axis=0)
         # Make all negative numbers 0
         df[df < 0] = 0
 
