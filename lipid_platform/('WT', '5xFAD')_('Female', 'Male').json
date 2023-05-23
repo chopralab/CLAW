@@ -1,0 +1,14 @@
+{
+  "Genotype": [
+    "WT",
+    "5xFAD"
+  ],
+  "Sex": [
+    "Female",
+    "Male"
+  ],
+  "Brain Region": [
+    "hippocampus",
+    "cortex"
+  ]
+}
