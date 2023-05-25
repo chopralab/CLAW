@@ -28,24 +28,35 @@ import time
 #Option to remove STDs from database##Not finished need option to use another database with no qualitative ACs
 
 
-def read_mrm_list(filename,remove_std = True):
-    mrm_list_new = pd.read_excel(filename, sheet_name=None)
-    mrm_list_new = pd.concat(mrm_list_new, ignore_index=True)
-    mrm_list_offical = mrm_list_new[['Compound Name', 'Parent Ion', 'Product Ion', 'Class']]
-    # Add underscore to middle of columns names
-    mrm_list_offical.columns = mrm_list_offical.columns.str.replace(' ', '_')
-    # Round Parent Ion and Product Ion to 1 decimal place
-    mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)
-    mrm_list_offical['Product_Ion'] = np.round(mrm_list_offical['Product_Ion'],1)
-    # Create transition column by combining Parent Ion and Product Ion with arrow between numbers
-    mrm_list_offical['Transition'] = mrm_list_offical['Parent_Ion'].astype(str) + ' -> ' + mrm_list_offical['Product_Ion'].astype(str)
-    # Change column compound name to lipid
-    mrm_list_offical = mrm_list_offical.rename(columns={'Compound_Name': 'Lipid'})
-    # Make a column called Class match lipid column to lipid types
-    if remove_std == True:
-        lipid_class = mrm_list_offical['Class'].unique()
-        lipid_class_to_keep = ['PS','PG','CE','PC', 'DAG', 'PE', 'TAG', 'FA', 'Cer', 'CAR', 'PI','SM']
-        mrm_list_offical = mrm_list_offical[mrm_list_offical['Class'].isin(lipid_class_to_keep)]
+def read_mrm_list(filename,remove_std = True,custom_data=False):
+    if custom_data==False:
+        mrm_list_new = pd.read_excel(filename, sheet_name=None)
+        mrm_list_new = pd.concat(mrm_list_new, ignore_index=True)
+        mrm_list_offical = mrm_list_new[['Compound Name', 'Parent Ion', 'Product Ion', 'Class']]
+        # Add underscore to middle of columns names
+        mrm_list_offical.columns = mrm_list_offical.columns.str.replace(' ', '_')
+        # Round Parent Ion and Product Ion to 1 decimal place
+        mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)
+        mrm_list_offical['Product_Ion'] = np.round(mrm_list_offical['Product_Ion'],1)
+        # Create transition column by combining Parent Ion and Product Ion with arrow between numbers
+        mrm_list_offical['Transition'] = mrm_list_offical['Parent_Ion'].astype(str) + ' -> ' + mrm_list_offical['Product_Ion'].astype(str)
+        # Change column compound name to lipid
+        mrm_list_offical = mrm_list_offical.rename(columns={'Compound_Name': 'Lipid'})
+        # Make a column called Class match lipid column to lipid types
+        
+        if remove_std == True:
+            lipid_class = mrm_list_offical['Class'].unique()
+            lipid_class_to_keep = ['PS','PG','CE','PC', 'DAG', 'PE', 'TAG', 'FA', 'Cer', 'CAR', 'PI','SM']
+            mrm_list_offical = mrm_list_offical[mrm_list_offical['Class'].isin(lipid_class_to_keep)]
+
+    else:
+        mrm_list_offical = pd.read_csv('lipid_database/Lipids_database_old.csv')
+
+        # Round Parent Ion and Product Ion to 1 decimal place
+        mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)
+        mrm_list_offical['Product_Ion'] = np.round(mrm_list_offical['Product_Ion'],1)
+        # Create transition column by combining Parent Ion and Product Ion with arrow between numbers
+        mrm_list_offical['Transition'] = mrm_list_offical['Parent_Ion'].astype(str) + ' -> ' + mrm_list_offical['Product_Ion'].astype(str)
     return mrm_list_offical
 
 
@@ -933,9 +944,9 @@ def add_subclass_and_length(merged_df):
 
     return merged_df
 
-def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_df, blank_name,file_name_to_save,tolerance,remove_std = True,
+def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_df, blank_name,file_name_to_save,tolerance, custom_data=False,remove_std = True,
                save_data=False):
-    mrm_database = read_mrm_list(data_base_name_location,remove_std=remove_std)
+    mrm_database = read_mrm_list(data_base_name_location,remove_std=remove_std,custom_data=custom_data)
     df = mzml_parser(mzml_folder)
     df_matched = match_lipids_parser(mrm_database,df, tolerance=tolerance)
     df_matched = add_labels(labels_df,df_matched)
