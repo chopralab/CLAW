@@ -29,7 +29,7 @@ library(writexl)
 
 getwd()
 
-setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Brain_5xFAD/5_09_23/")
+setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Burda_Lab/")
 
 
 
@@ -172,6 +172,7 @@ for (jj in file_list){
     geom_density_ridges2(alpha = 0.5, size = .5) + 
     geom_vline(xintercept = 0, linetype = "dashed") +
     theme_classic() +
+    ggtitle(title_for_plot)+
     xlab("Fold change, lipids all") +
     ylab("") +#xlim(-2, 4)+
     scale_alpha(guide = 'none') +
@@ -180,38 +181,39 @@ for (jj in file_list){
     scale_y_discrete(limits = rev) #+
   ggsave(paste("plots/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
   
-  xx %>%
-    
-    filter(FDR < 0.10) %>% #filter by sig
-    ggplot(aes(x=logFC, y = type, fill = type)) +
-    geom_density_ridges2(alpha = 0.5, size = .5) + 
-    geom_vline(xintercept = 0, linetype = "dashed") +
-    theme_classic() +
-    xlab("Fold change, lipids FDR<0.10") +
-    ylab("") +#xlim(-2, 4)+
-    scale_alpha(guide = 'none') +
-    
-    scale_fill_discrete(name = "Lipid class", guide = 'none') +
-    scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
-    scale_y_discrete(limits = rev) #+
-  # facet_wrap(~comparison_LFC)
+  # xx %>%
+  #   
+  #   filter(FDR < 0.10) %>% #filter by sig
+  #   ggplot(aes(x=logFC, y = type, fill = type)) +
+  #   geom_density_ridges2(alpha = 0.5, size = .5) + 
+  #   geom_vline(xintercept = 0, linetype = "dashed") +
+  #   theme_classic() +
+  #   ggtitle(title_for_plot)+
+  #   xlab("Fold change, lipids FDR<0.10") +
+  #   ylab("") +#xlim(-2, 4)+
+  #   scale_alpha(guide = 'none') +
+  #   
+  #   scale_fill_discrete(name = "Lipid class", guide = 'none') +
+  #   scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
+  #   scale_y_discrete(limits = rev) #+
+  # # facet_wrap(~comparison_LFC)
+  # 
+  # ggsave(paste("plots/Ridge_Plot_Filtered_FDR_",title_for_plot,".pdf",sep=''))
   
-  ggsave(paste("plots/Ridge_Plot_Filtered_FDR_",title_for_plot,".pdf",sep=''))
-  
-  make_volcano_plot <- function(df, title) {
-    df %>%
-      mutate(sig = factor(FDR < 0.10)) %>%
-      ggplot(aes(logFC, -log10(FDR), color = sig)) +
-      geom_point() +
-      scale_color_manual(values = c("none" = "black", "TRUE" = "red")) +
-      guides(color = F) +
-      ggtitle(title)
-  }
-  
-  cl_e1_tbl %>% make_volcano_plot(paste("Volcano_Plot_",title_for_plot,sep=''))
-  ggsave(paste("plots/Volcano_Plot_",title_for_plot,".png",sep=''))
-  
-  
+  # make_volcano_plot <- function(df, title) {
+  #   df %>%
+  #     mutate(sig = factor(FDR < 0.10)) %>%
+  #     ggplot(aes(logFC, -log10(FDR), color = sig)) +
+  #     geom_point() +
+  #     scale_color_manual(values = c("none" = "black", "TRUE" = "red")) +
+  #     guides(color = F) +
+  #     ggtitle(title)
+  # }
+  # 
+  # cl_e1_tbl %>% make_volcano_plot(paste("Volcano_Plot_",title_for_plot,sep=''))
+  # ggsave(paste("plots/Volcano_Plot_",title_for_plot,".png",sep=''))
+  # 
+  # 
   
   
   write_summary_and_results <- function(tbl, df, name) {
@@ -238,16 +240,16 @@ for (jj in file_list){
   cl_e1_tbl
   # source("ggbiplot.R")
   
-  
-  get_DE_lipids <- function(counts, design_mat, gr, contrasts, p.value = 0.05) {
-    dls <-
-      counts %>%
-      perform_analysis_raw(design_mat, gr) %>%
-      calculate_significance(contrasts) %>%
-      decideTestsDGE(p.value = p.value)
-    
-    rownames(dls)[dls %>% as.logical()]
-  }
+  # 
+  # get_DE_lipids <- function(counts, design_mat, gr, contrasts, p.value = 0.05) {
+  #   dls <-
+  #     counts %>%
+  #     perform_analysis_raw(design_mat, gr) %>%
+  #     calculate_significance(contrasts) %>%
+  #     decideTestsDGE(p.value = p.value)
+  #   
+  #   rownames(dls)[dls %>% as.logical()]
+  # }
   # # 
   # make_pca_plot <- function(tp, design_mat, gr, contrasts,
   #                           title = "PCA plot",
@@ -321,100 +323,98 @@ for (jj in file_list){
   # gr_expr
   # design_expr
   
-  
-  
-  # Assuming you have a dataframe called cells_lipid_expr and two vectors called group1 and group2 with the column names
-  library(factoextra)
-  # Combine group1 and group2 into a single vector
-  # Combine group1 and group2 into a single vector
-  filtered_xx <- xx %>%
-    filter(FDR < 0.1)
-  
-  
-  
-  
-  all_groups <- select(excel_file, -c(blank_name,lipid,type))
-  all_groups <- names(all_groups)
-  # Combine group1 and group2 into a single vector
-  # all_groups <- c(group1, group2)
-  
-  # Extract only the columns that belong to group1 and group2 from the dataframe
-  cells_lipid_expr_subset <- filtered_xx[, all_groups]
-  
-  # Transpose the data frame
-  cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
-  
-  # Perform PCA on the transposed dataframe
-  pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
-  
-  # Create a dataframe for the groups and their corresponding titles
-  group_data <- data.frame(
-    sample = all_groups,
-    group = c(rep(Title1, length1), rep(Title2,length2))
-  )
-  
-  # Calculate the PCA scores
-  pca_scores <- as.data.frame(pca_result$x[, 1:2])
-  
-  # Create a new data frame with the PCA scores, sample names, and group information
-  plot_data <- data.frame(
-    PC1 = pca_scores$PC1,
-    PC2 = pca_scores$PC2,
-    sample = rownames(pca_scores),
-    group = group_data$group
-  )
-  
-  # Create the PCA plot using ggplot2
-  pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
-    geom_point(size = 3) +
-    geom_text_repel(size = 3) +
-    theme_minimal() +
-    labs(color = "Groups") +
-    ggtitle(title_for_plot) +
-    xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
-    ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
-  
-  # Print the PCA plot
-  print(pca_plot)
-  
-  ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
-  
-  
-  make_heatmap <- function(tp, design_mat, gr, contrasts, title, file) {
-    
-    DElist <-
-      tp %>%
-      get_DE_lipids(design_mat, gr, contrasts)
-    
-    if(length(DElist) == 0) {
-      cat("No significant lipids for ", title)
-      return()
-    }
-    
-    if(length(DElist) == 1) {
-      cat("Single significant lipids for ", title, " is ", DElist[1])
-      return()
-    }
-    
-    Blank <- log2(tp[[blank_name]])
-    
-    tp %>%
-      mutate(lipid = make.unique(lipid)) %>%
-      filter(lipid %in% DElist) %>%
-      select( -type) %>%
-      mutate_if(is.numeric, log2) %>%
-      mutate_if(is.numeric, list(~ . - Blank)) %>%
-      select(- blank_name) %>% 
-      column_to_rownames("lipid") %>%
-      as.matrix() %>%
-      pheatmap::pheatmap(main = title,cluster_cols = none,
-                         cluster_rows = none, filename = file,
-                         cellheight = 10)
-  }
-  
-  cells_lipid_expr %>%
-    make_heatmap(design_expr, gr_expr, contrasts_expr, title_for_plot, 
-                 file = paste("plots/Heatmap_",title_for_plot,".svg",sep=''))
+  # 
+  # 
+  # # Assuming you have a dataframe called cells_lipid_expr and two vectors called group1 and group2 with the column names
+  # library(factoextra)
+  # # Combine group1 and group2 into a single vector
+  # filtered_xx <- xx %>%
+  #   filter(FDR < 0.1)
+  # 
+  # 
+  # 
+  # 
+  # all_groups <- select(excel_file, -c(blank_name,lipid,type))
+  # all_groups <- names(all_groups)
+  # 
+  # 
+  # # Extract only the columns that belong to group1 and group2 from the dataframe
+  # cells_lipid_expr_subset <- filtered_xx[, all_groups]
+  # 
+  # # Transpose the data frame
+  # cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
+  # 
+  # # Perform PCA on the transposed dataframe
+  # pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
+  # 
+  # # Create a dataframe for the groups and their corresponding titles
+  # group_data <- data.frame(
+  #   sample = all_groups,
+  #   group = c(rep(Title1, length1), rep(Title2,length2))
+  # )
+  # 
+  # # Calculate the PCA scores
+  # pca_scores <- as.data.frame(pca_result$x[, 1:2])
+  # 
+  # # Create a new data frame with the PCA scores, sample names, and group information
+  # plot_data <- data.frame(
+  #   PC1 = pca_scores$PC1,
+  #   PC2 = pca_scores$PC2,
+  #   sample = rownames(pca_scores),
+  #   group = group_data$group
+  # )
+  # 
+  # # Create the PCA plot using ggplot2
+  # pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
+  #   geom_point(size = 3) +
+  #   geom_text_repel(size = 3) +
+  #   theme_minimal() +
+  #   labs(color = "Groups") +
+  #   ggtitle(title_for_plot) +
+  #   xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
+  #   ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
+  # 
+  # # Print the PCA plot
+  # print(pca_plot)
+  # 
+  # ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
+  # 
+  # 
+  # make_heatmap <- function(tp, design_mat, gr, contrasts, title, file) {
+  #   
+  #   DElist <-
+  #     tp %>%
+  #     get_DE_lipids(design_mat, gr, contrasts)
+  #   
+  #   if(length(DElist) == 0) {
+  #     cat("No significant lipids for ", title)
+  #     return()
+  #   }
+  #   
+  #   if(length(DElist) == 1) {
+  #     cat("Single significant lipids for ", title, " is ", DElist[1])
+  #     return()
+  #   }
+  #   
+  #   Blank <- log2(tp[[blank_name]])
+  #   
+  #   tp %>%
+  #     mutate(lipid = make.unique(lipid)) %>%
+  #     filter(lipid %in% DElist) %>%
+  #     select( -type) %>%
+  #     mutate_if(is.numeric, log2) %>%
+  #     mutate_if(is.numeric, list(~ . - Blank)) %>%
+  #     select(- blank_name) %>% 
+  #     column_to_rownames("lipid") %>%
+  #     as.matrix() %>%
+  #     pheatmap::pheatmap(main = title,cluster_cols = none,
+  #                        cluster_rows = none, filename = file,
+  #                        cellheight = 10)
+  # }
+  # 
+  # cells_lipid_expr %>%
+  #   make_heatmap(design_expr, gr_expr, contrasts_expr, title_for_plot, 
+  #                file = paste("plots/Heatmap_",title_for_plot,".svg",sep=''))
 }
 
 

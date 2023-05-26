@@ -193,6 +193,7 @@ def add_labels(labels_df,matched_df):
 
     matched_df['method_type'] = matched_df['Sample_ID'].apply(lambda x: x.split('_')[0])
 
+    
     return matched_df
     
 # def subtract_blank(labels_df,matched_df,remove_list,blank_name):
@@ -951,7 +952,8 @@ def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_d
     df_matched = match_lipids_parser(mrm_database,df, tolerance=tolerance)
     df_matched = add_labels(labels_df,df_matched)
     df_matched = subtract_blank(labels_df,df_matched,blank_name)
-    df_matched = add_subclass_and_length(df_matched)
+    if custom_data ==False:
+        df_matched = add_subclass_and_length(df_matched)
     if save_data == True:
         
         save_dataframe(df_matched, folder_name_to_save, file_name_to_save)

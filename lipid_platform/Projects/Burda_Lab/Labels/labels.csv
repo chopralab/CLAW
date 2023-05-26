@@ -1,0 +1,35 @@
+﻿Sample Name,Position,nickname,Sex,Genotype,time point
+AK0161,Test,H_KO_1,M,cKO,healthy
+AK0170,Test,H_KO_2,F,cKO,healthy
+AK0139,Test,H_KO_3,M,cKO,healthy
+AK0200,Test,H_KO_5,F,cKO,healthy
+AK0202,Test,H_KO_6,F,cKO,healthy
+AK0204,Test,H_KO_7,M,cKO,healthy
+AK0174,Test,H_WT_1,M,WT,healthy
+AK0145,Test,H_WT_2,F,WT,healthy
+AK0175,Test,H_WT_3,M,WT,healthy
+AK0164,Test,H_WT_4,F,WT,healthy
+AK0141,Test,H_WT_6,F,WT,healthy
+AK0135,Test,I_KO_1,M,cKO,28d ISCI
+AK0140,Test,I_KO_2,M,cKO,28d ISCI
+AK0169,Test,I_KO_3,M,cKO,28d ISCI
+AK0142,Test,I_KO_4,F,cKO,28d ISCI
+AK0157,Test,I_KO_5,F,cKO,28d ISCI
+AK0155,Test,I_WT_1,M,WT,28d ISCI
+AK0147,Test,I_WT_2,F,WT,28d ISCI
+AK0154,Test,I_WT_3,M,WT,28d ISCI
+AK0144,Test,I_WT_4,F,WT,28d ISCI
+AK0168,Test,I_WT_5,M,WT,28d ISCI
+AK0166,Test,I_WT_6,F,WT,28d ISCI
+Blank-1x,Blank-1x,Blank-1x,Blank-1x,Blank-1x,Blank-1x
+Blank-2x,Blank-2x,Blank-2x,Blank-2x,Blank-2x,Blank-2x
+Blank-3x,Blank-3x,Blank-3x,Blank-3x,Blank-3x,Blank-3x
+Blank-4x,Blank-4x,Blank-4x,Blank-4x,Blank-4x,Blank-4x
+Blank-5x,Blank-5x,Blank-5x,Blank-5x,Blank-5x,Blank-5x
+Blank-10x,Blank-10x,Blank-10x,Blank-10x,Blank-10x,Blank-10x
+Blank1-1x,Blank1-1x,Blank1-1x,Blank1-1x,Blank1-1x,Blank1-1x
+Blank1-2x,Blank1-2x,Blank1-2x,Blank1-2x,Blank1-2x,Blank1-2x
+Blank1-3x,Blank1-3x,Blank1-3x,Blank1-3x,Blank1-3x,Blank1-3x
+Blank1-4x,Blank1-4x,Blank1-4x,Blank1-4x,Blank1-4x,Blank1-4x
+Blank1-5x,Blank1-5x,Blank1-5x,Blank1-5x,Blank1-5x,Blank1-5x
+Blank1-10x,Blank1-10x,Blank1-10x,Blank1-10x,Blank1-10x,Blank1-10x

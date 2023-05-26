@@ -1,0 +1,18 @@
+type,Down,Up
+AC,0,11
+CE,0,2
+CE | CE,0,0
+CER,3,18
+FFA,8,13
+PC,4,67
+PE,6,9
+PE | PE,0,0
+PG,2,20
+PG | PG,1,2
+PG | PG | PG,0,0
+PI,15,3
+PI | PI,4,0
+PS,1,14
+PS | PS,0,2
+SM,0,16
+TAG,137,10
