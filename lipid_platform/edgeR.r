@@ -29,7 +29,7 @@ library(writexl)
 
 getwd()
 
-setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Burda_Lab/")
+setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/BRAIN_LIVER_LD/")
 
 
 

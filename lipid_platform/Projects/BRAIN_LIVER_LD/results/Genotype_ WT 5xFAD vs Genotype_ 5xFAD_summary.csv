@@ -1,0 +1,14 @@
+type,Down,Up
+CAR,0,0
+CE,0,0
+Cer,0,0
+DAG,2,3
+FA,0,6
+PC,0,8
+PE,5,2
+PG,0,1
+PI,0,1
+PS,0,0
+SM,0,0
+TAG,2,20
+TAG | DAG,0,1
