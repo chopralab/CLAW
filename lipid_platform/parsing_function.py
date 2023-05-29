@@ -951,6 +951,7 @@ def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_d
     df = mzml_parser(mzml_folder)
     df_matched = match_lipids_parser(mrm_database,df, tolerance=tolerance)
     df_matched = add_labels(labels_df,df_matched)
+    
     df_matched = subtract_blank(labels_df,df_matched,blank_name)
     if custom_data ==False:
         df_matched = add_subclass_and_length(df_matched)
@@ -981,7 +982,7 @@ def json_to_string(json_dict):
 
 
 
-def prep_edge_R(merged_df,json_list_pairs,Pre_edge_r_path,blank_name,labels_list):
+def prep_edge_R(merged_df,json_list_pairs,Pre_edge_r_path,blank_name,labels_list,extra_name):
     for i in range(len(json_list_pairs)):
         json1 = json_list_pairs[i][0]
         json2 = json_list_pairs[i][1]
@@ -1023,6 +1024,7 @@ def prep_edge_R(merged_df,json_list_pairs,Pre_edge_r_path,blank_name,labels_list
 
         title = title1 +" vs "+title2
         title = title.replace(" | ","__")
+        title = title + extra_name
         length1 = num_value_columns_df1
         length2 = num_value_columns_df2
 
