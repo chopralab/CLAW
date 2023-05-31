@@ -29,7 +29,7 @@ library(writexl)
 
 getwd()
 
-setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/BRAIN_LIVER_LD/")
+setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Brain_5xFAD/5_09_23_part2/")
 
 
 

@@ -65,12 +65,12 @@ def json_to_string(json_dict):
     return ' | '.join(result)
 
 
-def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_list,blank_name,show_percentages=False):
+def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_list,blank_name,extra_name,show_percentages=False):
 
     ##Maybe filter?
     for i in range(len(json_list_singles)):
-        plot_title = 'Sum of Intensity by Class for' + json_to_string(json_list_singles[i])
-        save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__")
+        plot_title = 'Sum of Intensity by Class for' + json_to_string(json_list_singles[i])+ extra_name
+        save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__")+ extra_name
         filtered_df = filter_dataframe(merged_df,json_list_singles[i])
         filtered_df = filtered_df[filtered_df["Sample Name"] != blank_name]
 
@@ -104,11 +104,11 @@ def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_li
 
 
 
-def average_pie_chart_no_repeats(merged_df,save_path,json_list_singles,labels_list,blank_name,show_percentages=False):
+def average_pie_chart_no_repeats(merged_df,save_path,json_list_singles,labels_list,blank_name,extra_name,show_percentages=False):
 
     for i in range(len(json_list_singles)):
-        plot_title = 'Mean of Intensity by Class for' + json_to_string(json_list_singles[i])
-        save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__")
+        plot_title = 'Mean of Intensity by Class for' + json_to_string(json_list_singles[i])+ extra_name
+        save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__") + extra_name
         filtered_df = filter_dataframe(merged_df,json_list_singles[i])
         filtered_df = filtered_df[filtered_df["Sample Name"] != blank_name]
 
@@ -141,7 +141,7 @@ def average_pie_chart_no_repeats(merged_df,save_path,json_list_singles,labels_li
     return
 
 
-def make_bar_plot_comparisons(merged_df, save_path, json_list_pairs,labels_list,blank_name):
+def make_bar_plot_comparisons(merged_df, save_path, json_list_pairs,labels_list,blank_name, extra_name):
 
 #     merged_df = merged_df[merged_df["Name"] != blank_name]
 
@@ -154,8 +154,8 @@ def make_bar_plot_comparisons(merged_df, save_path, json_list_pairs,labels_list,
         json2 = json_list_pairs[i][1]
         custom_name1 = json_to_string(json1)
         custom_name2 = json_to_string(json2)
-        plot_tile = custom_name1+ " vs "+custom_name2
-        save_name  = save_path+plot_tile.replace(" | ","__")
+        plot_tile = custom_name1+ " vs "+custom_name2+ extra_name
+        save_name  = save_path+plot_tile.replace(" | ","__")+ extra_name
 
 #         merged_df = merged_df[merged_df["Name"] != blank_name]
 
