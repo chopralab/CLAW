@@ -1,2 +1,9 @@
+.gitignore
+
 lipid_platform/old/*
 lipid_platform/.ipynb_checkpoints/*
+
+*.pyc
+*.html
+*.svg
+*/.ipynb_checkpoints/*
