@@ -69,7 +69,7 @@ def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_li
 
     ##Maybe filter?
     for i in range(len(json_list_singles)):
-        plot_title = 'Sum of Intensity by Class for' + json_to_string(json_list_singles[i])+ extra_name
+        plot_title = 'Sum of Intensity by Class for ' + json_to_string(json_list_singles[i])+ extra_name
         save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__")+ extra_name
         filtered_df = filter_dataframe(merged_df,json_list_singles[i])
         filtered_df = filtered_df[filtered_df["Sample Name"] != blank_name]
@@ -100,7 +100,7 @@ def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_li
         pio.write_html(fig1,  save_name + "Sum Pie.html")
 
         # Save the plot as plot.png
-        pio.write_image(fig1, save_name + "Sum Pie.svg")
+        pio.write_image(fig1, save_name + "Sum Pie.png")
     return
 
 
@@ -108,7 +108,7 @@ def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_li
 def average_pie_chart_no_repeats(merged_df,save_path,json_list_singles,labels_list,blank_name,extra_name,show_percentages=False):
 
     for i in range(len(json_list_singles)):
-        plot_title = 'Mean of Intensity by Class for' + json_to_string(json_list_singles[i])+ extra_name
+        plot_title = 'Mean of Intensity by Class for ' + json_to_string(json_list_singles[i])
         save_name = save_path+json_to_string(json_list_singles[i]).replace(" | ","__") + extra_name
         filtered_df = filter_dataframe(merged_df,json_list_singles[i])
         filtered_df = filtered_df[filtered_df["Sample Name"] != blank_name]
@@ -139,7 +139,7 @@ def average_pie_chart_no_repeats(merged_df,save_path,json_list_singles,labels_li
         pio.write_html(fig1,  save_name + "Average Pie.html")
 
         # Save the plot as plot.png
-        pio.write_image(fig1, save_name + "Average Pie .svg")
+        pio.write_image(fig1, save_name + "Average Pie .png")
     return
 
 
@@ -213,7 +213,7 @@ def make_bar_plot_comparisons(merged_df, save_path, json_list_pairs,labels_list,
 
         fig = go.Figure(data=[trace1, trace2], layout=layout)
 
-        pio.write_image(fig, save_name + "bar.svg")
+        pio.write_image(fig, save_name + "bar.png")
         pio.write_html(fig, save_name + "bar.html")
     return
 
@@ -1213,10 +1213,10 @@ def prep_edge_R(merged_df,json_list_pairs,Pre_edge_r_path,blank_name,labels_list
         filtered_blank = filter_dataframe(merged_df,json_blank)
 
 
-
-        # filtered_df1 = filtered_df1.groupby(labels_list)['Intensity'].mean().reset_index()
-        # filtered_df2 = filtered_df2.groupby(labels_list)['Intensity'].mean().reset_index()
-        # filtered_blank = filtered_blank.groupby(labels_list)['Intensity'].mean().reset_index()
+###I should remove this
+        filtered_df1 = filtered_df1.groupby(labels_list)['Intensity'].mean().reset_index()
+        filtered_df2 = filtered_df2.groupby(labels_list)['Intensity'].mean().reset_index()
+        filtered_blank = filtered_blank.groupby(labels_list)['Intensity'].mean().reset_index()
 
 
 

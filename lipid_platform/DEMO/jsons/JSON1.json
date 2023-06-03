@@ -1,13 +1,8 @@
 {
   "Cage": [],
-  "Dilution Factor": [],
-  "Sex2": [],
   "Sex": [],
   "Genotype": [
     "5xFAD"
   ],
-  "Brain Region": [
-    "hippocampus",
-    "cortex "
-  ]
+  "Brain Region": []
 }
