@@ -1,8 +1,8 @@
 {
   "Cage": [],
-  "Sex": [],
-  "Genotype": [
-    "5xFAD"
+  "Sex": [
+    "Male"
   ],
+  "Genotype": [],
   "Brain Region": []
 }
