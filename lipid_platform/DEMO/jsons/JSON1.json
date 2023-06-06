@@ -3,6 +3,8 @@
   "Sex": [
     "Male"
   ],
-  "Genotype": [],
+  "Genotype": [
+    "5xFAD"
+  ],
   "Brain Region": []
 }
