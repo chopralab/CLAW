@@ -61,7 +61,7 @@ def json_to_string(json_dict):
     result = []
     for key, values in json_dict.items():
         values_str = ' '.join(values)
-        result.append(f"{key}: {values_str}")
+        result.append(f"{key}_ {values_str}")
     return ' | '.join(result)
 
 
