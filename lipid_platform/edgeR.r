@@ -29,7 +29,14 @@ library(ggridges)
 
 getwd()
 
-setwd("/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Brain_5xFAD/5_09_23_part2/")
+# read the variable from the text file
+cwd <- readLines("Variable_Storage/varname1.txt")[1]
+cwd
+setwd(cwd)
+
+
+
+# setwd(cwd)
 
 
 
