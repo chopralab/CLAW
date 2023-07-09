@@ -1,1 +1,1 @@
-/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/Brain_5xFAD/5_09_23_part2/
+/home/cbeveri/lipid_parser2/Lipidomics/lipid_platform/Projects/LIVER_LD_5XFAD/
