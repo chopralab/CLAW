@@ -77,10 +77,10 @@ def make_pie_chart_no_replicates(merged_df,save_path,json_list_singles,labels_li
         groupby_columns = labels_list
 
         # Aggregate functions to apply
-        aggregations = {
-            'Intensity': 'mean',
-            'Blank Subtraction': 'mean'
-        }
+        # aggregations = {
+        #     'Intensity': 'mean',
+        #     'Blank Subtraction': 'mean'
+        # }
 
         # Group the DataFrame and apply the aggregation functions
 
@@ -163,10 +163,10 @@ def make_bar_plot_comparisons(merged_df, save_path, json_list_pairs,labels_list,
 
         groupby_columns = labels_list
 
-        aggregations = {
-            'Intensity': 'mean',
-            'Blank Subtraction': 'mean'
-        }
+        # aggregations = {
+        #     'Intensity': 'mean',
+        #     'Blank Subtraction': 'mean'
+        # }
         merged_df1 = merged_df[merged_df["Sample Name"] != blank_name]
         # merged_df1 = merged_df1.groupby(groupby_columns).agg(aggregations).reset_index()
 
@@ -440,6 +440,7 @@ def subtract_blank(labels_df,matched_df,blank_name):
         numbers = np.array((temp_df["Intensity"] ))
         numbers1 = np.array((blank_intensities_df['Blank_Intensity'] ))
 #         print(len(temp_df),"TEMP")
+        print(set(temp_df['Sample Name']))
         numbers2 = numbers - numbers1
         numbers2[numbers2<0] = 0
         # Merge the blank intensities DataFrame with the temporary DataFrame

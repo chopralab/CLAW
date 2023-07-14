@@ -1,8 +1,10 @@
 {
   "Cage": [],
-  "Sex": [],
+  "Sex": [
+    "Male"
+  ],
   "Genotype": [
-    "5xFAD"
+    "WT"
   ],
   "Brain Region": [
     "cortex"
