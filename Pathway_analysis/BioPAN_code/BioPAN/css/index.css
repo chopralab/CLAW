@@ -1,0 +1,490 @@
+/* First line boxes */
+#box{
+    color: #337ab7;;
+    overflow: auto;
+    padding-top:0.7%; 
+    padding-bottom: 0.7%;
+}
+#leftbox{ 
+    float:left;  
+    padding-left:1%;
+    width:auto;
+} 
+#middlebox{ 
+    float:center;  
+    width: auto;
+    font-size:24px;
+    text-align:center;
+}
+
+
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: white;
+    float: left;
+    border: 1px solid black;
+    outline: none;
+    cursor: pointer;
+    padding: 4px 16px 4px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+}
+
+.tabdetail{
+    display: none;
+    margin:  0;
+    padding: 0;
+    border-top: none;
+}
+.material-icons {
+    color: #4682b4;
+    font-size: 18px !important;
+    display: inline-flex;
+    vertical-align: middle;
+    cursor: default;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+td.module {
+    padding: 3px 10px 5px 2px;
+    vertical-align: top;
+}
+td.description {
+    padding: 3px 15px 5px 5px;
+}
+td.default {
+    padding: 3px 0px 5px 0px;
+    text-align: center;
+}
+
+.main {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 20em;
+    bottom: 0;
+    z-index: 1;
+}
+
+.tools {
+    box-sizing: border-box;
+    padding: 0.25em 0.5em;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20em;
+    background: #fff;
+    border-left: 1px solid #ddd;
+    z-index: 1;
+    overflow: auto;
+}
+
+.footer-link {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0.25em 0.5em;
+    z-index: 2;
+}
+
+.action-icon {
+    cursor: pointer;
+}
+
+h1 {
+    margin: 0 0.125em;
+    position: absolute;
+    pointer-events: none;
+    color: #bbb;
+}
+
+* + h2 {
+    margin-top: 0.5em;
+}
+#exTab2 h3 {
+    color : white;
+    background-color: #428bca;
+    padding : 5px 15px;
+}
+#cy {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0px;
+   left: 0px;
+         
+}
+
+caption {
+    padding: 10px;
+    margin: 0 auto;
+    caption-side: top;
+    text-align: center;
+    display: table-caption;
+    font-size: 20px;
+}
+.table-head {
+    font-weight: 800;
+    font-size: 16px !important;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    min-width: 600px;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 7px 15px;
+}
+
+th {
+    background-color: rgb(235, 235, 235);
+    text-align: center;
+    font-size: 16px;
+}
+
+td {
+    text-align: center;
+    font-weight: normal;
+    font-size: 15px;
+}
+/* tr:nth-child(even) {background-color: #f2f2f2;}*/
+
+/* Panels styling */
+.tabcontent{
+    background-color: rgb(52,78,134) !important;
+    padding:5px;
+    color:black;
+}
+
+.tabdetail{
+    background-color: rgb(52,78,134) !important;
+    padding:5px;
+    color:black;
+}
+.active, .tab .tablinks:hover {
+    color:#31708f !important;
+    background-color: #D9EDF7 !important;
+}
+.active, .tab .tabresults:hover {
+    color:#31708f !important;
+    background-color: #D9EDF7 !important;
+}
+
+.tab{
+    background-color: rgb(52,78,134) !important;
+    border: medium none;
+    border-radius: 0;
+    color:black;
+}
+.panel-title {
+    font-weight: 600;
+    color:aliceblue;
+}
+.panel-body{
+    background-color:#fcfbfc;
+    line-height: 35px;
+}
+.panel-group .panel + .panel {
+    margin-top: 20px;
+}
+.panel .panel-success .rounded {
+    border-radius: 10px;
+}
+
+
+/* Splitter layout */
+html,
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+}
+
+   
+/* layout button styling */
+.layout-panel{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.layout-button{
+    float: left;
+    background-color: #58c3e5;
+    border: none;
+    outline: none;
+    border-radius: 16px;
+    color: white;
+    margin: 0 10px 0 0;
+    padding: 0;
+    border: 0;
+    -webkit-box-shadow: 3px 3px 5px 0 rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 3px 3px 5px 0 rgba(50, 50, 50, 0.75);
+    box-shadow: 3px 3px 5px 0 rgba(50, 50, 50, 0.75);
+}
+
+.layout-panel button:hover{
+    color:#31708f !important;
+    background-image:none;
+    background-color:#D9EDF7;
+}
+
+/* export layout panel */
+.export-main-panel{
+    max-width: 500px;
+    max-height: 500px;
+    width: 100%;
+    padding: 2px 0 0 2px;
+}
+
+.export-main-title-panel{
+    float: left;
+    padding: 2px 0 2px 0;
+    width: 100%;
+}
+
+.modal-header{
+    color:#d9edf7!important;
+    background-color: rgb(52,78,134);/*#1e94d0;*/
+    padding: 2px 0 2px 0;
+}
+
+.export-title-panel{
+    float: left;
+    color: white;
+    font-weight: bolder;
+    font-size: large;
+    cursor: default;
+}
+
+.modal-title{
+    float: left;
+    min-width: 370px;
+    color: white;
+    font-weight: bolder;
+    font-size: large;
+    cursor: default;
+}
+
+.export-close-button{
+    float: right;
+    background-color: #58c3e5;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    color: white;
+    margin: 0 0 10px 0;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.export-close-button:hover{
+    background-image:none !important;;
+    background-color:#1e94d0 !important;;
+}
+
+.export-option-button-main-panel{
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.export-option-button-panel{
+    float: left;
+    width: 15%;
+    min-width: 68px;
+}
+
+.export-diagram-button{
+    color: white;
+    border-radius: 10px 0 0 10px;
+    background: none #58c3e5;
+    font-size: small;
+    padding: 3px !important;
+    outline: none;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+.export-content-panel{
+    float: left;
+    width: 82%;
+    min-width: 150px;
+    min-height: 380px;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 0 10px 10px 10px;
+}
+
+.epxort-right-content{
+    max-width: 450px;
+    max-height: 500px;
+    width: 100%;
+    height: 100%;
+    padding: 0 2px 0 2px;
+}
+
+.export-diagram-content{
+    background-color: white;
+    text-align: center;
+    border-radius: 5px;
+    min-height: 300px;
+    line-height: 300px;
+}
+
+.export-img-diagram{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 300px;
+    vertical-align: middle;
+}
+
+.export-diagram-footer-panel{
+    margin-top: 2px;
+    display: block;
+    width: 600px;
+    max-height: 200px;
+}
+
+.export-diagram-file-button{
+    height: 40px;
+    width: 40px;
+    margin: 10px 11px 0 0;
+    background-color: #58c3e5;
+    text-decoration: none;
+    color: white;
+    padding: 4px;
+    display: inline-block;
+    line-height: 1em;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    direction: rtl;
+}
+
+.export-popup-content{
+    border: 3px solid #C3D9FF;
+    padding: 3px;
+    background: white;
+}
+
+.export-popup-panel{
+    left: 663px;
+    top: 148px;
+    visibility: visible;
+    position: absolute;
+    overflow: visible;
+    clip: rect(auto, auto, auto, auto);
+    border: 3px solid gray !important;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    background-color: #1e94d0;
+}
+.modal-dialog{
+    visibility: visible;
+    overflow: visible;
+}
+.export-img-button{
+    float: left;
+    height: 24px;
+    width: auto;
+    margin-left: 3px;
+    margin-right: 8px;
+    margin-top: 1px;
+}
+
+
+.save-reaction-title-panel{
+    float: center;
+    color: white;
+    font-weight: bolder;
+    font-size: large;
+    cursor: default;
+}
+
+.graph-loading{
+    position: fixed;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    transform: -webkit-translate(-50%, -50%);
+    transform: -moz-translate(-50%, -50%);
+    transform: -ms-translate(-50%, -50%);
+    color:#1e94d0;
+ 
+}
+
+/* popper window gor graph event */
+.popper-div { /* just an example */
+    border: 1px solid red;
+    background: #fff;
+    z-index: 9999;
+    padding: 0.25em;
+    pointer-events: none;
+    display:inline-block;
+    position: absolute;
+}
+/* makes sticky faster; disable if you want animated tippies */
+
+.tippy-popper {
+    transition: none !important;
+}
+
+/* Change size of hover node text */
+.tippy-tooltip{
+    font-size:1.1rem;
+}
+
+/* Change panel-heading */
+.panel-heading{
+    font-size:15px;
+}
+
+.modal-title{
+    width: -webkit-fill-available;
+}
+
+.close{
+    margin-right: 4px;
+}
+

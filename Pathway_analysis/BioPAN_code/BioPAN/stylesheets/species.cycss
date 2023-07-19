@@ -1,0 +1,50 @@
+node {
+  label: data(label);
+  font-size: 25px;
+  width: 45px;
+  height: 45px;
+  color: black;
+  shape: data(shape);
+  background-fit: contain;
+  background-clip: none;
+  background-color: white;
+  border-width: 5px;
+  border-color: black;
+  text-margin-y: -4px;
+  text-background-color: white;
+  text-background-opacity: 0.5;
+}
+
+edge {
+  curve-style: bezier;
+  font-size: 25px;
+  font-weight: bold;
+  width: 4px;
+  target-arrow-color: black;
+  target-arrow-shape: triangle;
+  control-point-step-size: 140px;
+  line-color: data(color);
+  label: data(weight);
+  text-background-color: white;
+  text-background-opacity: 0.7;
+}
+
+node.hightlight{
+  width: 45px;
+  height: 45px;
+}
+
+node.semitransp {
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+}
+
+edge.hightlight{
+  mid-target-arrow-color: #FFF;
+  width: 6px;
+}
+
+edge.semitransp {
+  opacity: 0.2;
+}
