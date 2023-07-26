@@ -1,36 +1,35 @@
-
-library(plyr)
 library(ggridges)
 library(tidyverse)
 library(readxl)
 library(edgeR)
-library(tidyverse)
-
 
 library(ggsignif)
 library(stringr)
-library(reshape2)
+
 library(gtools)
-library(tidyr)
+
 library(ggbeeswarm) #https://github.com/eclarke/ggbeeswarm
 library(ggrepel)
 library(scales)
-
-library(ggplot2)
-#library(ggExtra) #https://cran.r-project.org/web/packages/ggExtra/vignettes/ggExtra.html
-
 library(cowplot)
-library(ggridges)
 
-# library(limma)
+#library(ggExtra) #https://cran.r-project.org/web/packages/ggExtra/vignettes/ggExtra.html
+#library(limma)
+
+# library(reshape2)
+# library(tidyr)
+# library(ggplot2)
+# library(plyr)
 # library(writexl)
 
-
-
 getwd()
+list.files()
+
+setwd("github/lipids/Lipidomics/lipid_platform")
+
 
 # read the variable from the text file
-cwd <- readLines("Variable_Storage/varname1.txt")[1]
+cwd <- readLines("Variable_Storage/varname3.txt")[1]
 cwd
 setwd(cwd)
 
@@ -159,6 +158,7 @@ for (jj in file_list){
   # cl_e1_tbl
   
   xx <- merge(cells_lipid_expr,cl_e1_tbl)
+
   names(cl_e1_tbl)
   names(xx)
   cl_e1_tbl
@@ -168,8 +168,8 @@ for (jj in file_list){
   lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG",'DAG','TAG | DAG','DAG | CE','TAG | DAG | CE')
   lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a",'#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3')
   
-  
-  
+
+
   # Create a named vector to map lipid classes to their colors
   lipid_class_colors <- setNames(lipid_colors, lipid_classes)
   
@@ -186,7 +186,7 @@ for (jj in file_list){
     # scale_fill_discrete(name = "Lipid class", guide = 'none') +
     scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
     scale_y_discrete(limits = rev) #+
-  ggsave(paste("plots/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
+  ggsave(paste("plots/test3/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
   
   # xx %>%
   #   
