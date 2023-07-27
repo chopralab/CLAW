@@ -1,428 +1,342 @@
+# Loading required libraries for data analysis and visualization
+#library(writexl)
+library(ggfortify)
+library(plyr)
 library(ggridges)
 library(tidyverse)
 library(readxl)
+library(limma)
 library(edgeR)
-
 library(ggsignif)
 library(stringr)
-
 library(gtools)
-
-library(ggbeeswarm) #https://github.com/eclarke/ggbeeswarm
+library(ggbeeswarm)
 library(ggrepel)
 library(scales)
 library(cowplot)
+library(ggExtra) #https://cran.r-project.org/web/packages/ggExtra/vignettes/ggExtra.html
 
-#library(ggExtra) #https://cran.r-project.org/web/packages/ggExtra/vignettes/ggExtra.html
-#library(limma)
+library(reshape2)
+library(tidyr)
+library(ggplot2)
+library(pheatmap)
+library(readr)
+library(dplyr)
+library(ggplot2movies) 
 
-# library(reshape2)
-# library(tidyr)
-# library(ggplot2)
-# library(plyr)
-# library(writexl)
 
-getwd()
+# Getting the current working directory
+current_working_dir <- getwd()
+current_working_dir
+
+CLAW_working_dir <- readLines("CLAW_config.txt")[1]
+setwd(CLAW_working_dir)
+CLAW_working_dir
+
+# Reading the first line from the text file "varname3.txt" located inside the "Variable_Storage" folder
+project_working_dir <- readLines("project_path/brain_5xFAD_old.txt")[1]
+setwd(project_working_dir)
+project_working_dir
 list.files()
 
-setwd("github/lipids/Lipidomics/lipid_platform")
+# Listing all files in the "Pre_EdgeR" directory
+files_in_pre_edgeR <- list.files(path="Pre_EdgeR")
+
+# Looping through each file in the "Pre_EdgeR" directory
+for (current_file in files_in_pre_edgeR){
+
+  # Reading the CSV file and storing it in a variable
+  lipid_data_file <- read_csv(paste0("Pre_EdgeR/",current_file))
+
+  # Creating a directory named "plots" if it doesn't exist
+  dir.create("plots", showWarnings = FALSE)
+
+  # Formatting the title for the plot by replacing ":" with "_"
+  plot_title <- gsub(":", "_",lipid_data_file$Title[1])
+
+  # Formatting other titles and lengths
+  title_for_plot <- gsub(":", "_",lipid_data_file$Title[1])
+  title1 <- gsub(":", "_",lipid_data_file$Title1[1])
+  title2 <- gsub(":", "_",lipid_data_file$Title2[1])
+  blank_name <- lipid_data_file$Blank_name[1]
+  length1 <- lipid_data_file$length1[1]
+  length2 <- lipid_data_file$length2[1]
+
+  # Removing unnecessary columns from the data file
+  lipid_data_file <- select(lipid_data_file, -c("Title1", "Title2", "Title", "length1", "length2","Blank_name"))
+  lipid_data_file <- dplyr::rename(lipid_data_file, type = Class)
 
 
-# read the variable from the text file
-cwd <- readLines("Variable_Storage/varname3.txt")[1]
-cwd
-setwd(cwd)
-
-
-
-# setwd(cwd)
-
-
-
-
-file_list = list.files(path="Pre_EdgeR", pattern=NULL, all.files=FALSE,
-                       full.names=FALSE)
-
-jj <-file_list[1]
-file_list[2]
-for (jj in file_list){
-  excel_file <- read_csv(paste0("Pre_EdgeR/",jj,sep=""))
-  dir.create("plots", F)
-  title_for_plot <- gsub(":", "_",excel_file$Title[1])
-  Title1 <- gsub(":", "_",excel_file$Title1[1])
-  Title2 <- gsub(":", "_",excel_file$Title2[1])
-  
-  blank_name <- excel_file$Blank_name[1]
-  length1 <- excel_file$length1[1]
-  length2 <- excel_file$length2[1]
-  
-  
-  excel_file <- select(excel_file, -c(Title1, Title2, Title, length1, length2,Blank_name))
-  
-  ##Change Class to Type and change Lipid to lipid
-  excel_file <- excel_file %>%
-    rename(lipid = `Lipid`) %>%
-    rename(type= `Class`)
-  
+  # Checking if length1 or length2 is equal to 1, if yes then skip the current iteration
   if (length1 == 1 | length2 == 1) {
     next
   }
-  
-  
-  
-  gr1 = c(rep("GR1",length1))
-  gr2 = c(rep("GR2",length2))
-  
-  
-  groups_PCA = c((rep(Title1,length1)),(rep(Title2,length2)))
-  
-  groups_PCA
-  
-  
-  
-  
-  blank_name
-  
-  
-  
-  
-  
-  cells_lipid_expr <- excel_file
-  
-  #EdgeR groups
-  gr_expr = c(gr1,gr2,
-              blank_name) %>%
-    factor(levels = c(blank_name, "GR1", "GR2"))
-  design_expr = model.matrix(~gr_expr)
-  
-  contrasts_expr = makeContrasts(
-    H = gr_exprGR1 - gr_exprGR2,
-    levels = design_expr
+
+  # Creating two character vectors of lengths 'length1' and 'length2' containing "GR1" and "GR2" respectively
+  group1 <- c(rep("GR1",length1))
+  group2 <- c(rep("GR2",length2))
+
+  # Combining the two character vectors to create a single vector for PCA groups
+  PCA_groups <- c((rep(title1,length1)),(rep(title2,length2)))
+
+  # Storing the lipid expression data
+  lipid_expression_data <- lipid_data_file
+  lipid_expression_data <- dplyr::rename(lipid_expression_data, lipid = Lipid)
+
+}
+
+# Create factor levels for edgeR analysis
+experiment_groups <- c(group1, group2, blank_name) %>%
+  factor(levels = c(blank_name, "GR1", "GR2"))
+
+# Create a design matrix for the model using experiment groups
+design_matrix <- model.matrix(~experiment_groups)
+
+# Define contrasts for comparison in the edgeR analysis
+contrast_matrix <- makeContrasts(
+  group_difference = experiment_groupsGR1 - experiment_groupsGR2,
+  levels = design_matrix
+)
+
+# Function to perform initial edgeR analysis 
+perform_edgeR_analysis <- function(counts, design_matrix, experiment_groups) {
+  # Preprocess counts data
+  edgeR_data <- DGEList(
+    counts = counts %>%
+      na.omit %>%
+      mutate(lipid = make.unique(lipid)) %>%
+      select(-type) %>%
+      column_to_rownames("lipid"),
+    group = experiment_groups
   )
-  
-  
-  
-  ###Functions to do edgeR analysis
-  
-  perform_analysis_raw <- function(counts, design_mat, gr) {
-    
-    data.edgeR <- DGEList(counts = counts %>%
-                            na.omit %>%
-                            mutate(lipid = make.unique(lipid)) %>%
-                            select( -type) %>%
-                            # select(-Transition) %>%
-                            column_to_rownames("lipid"),
-                          group = gr
-    )
-    
-    data.edgeR <- calcNormFactors(data.edgeR, method="TMM")
-    data.edgeR <- estimateCommonDisp(data.edgeR, design=design_mat)
-    data.edgeR
-  }
-  
-  calculate_significance <- function(dge, contrast) {
-    dge %>%
-      glmFit() %>%
-      glmLRT(contrast = contrast)
-  }
-  
-  experiment_helper <- function(df) {
-    df %>%
-      perform_analysis_raw(design_expr, gr_expr) %>%
-      calculate_significance(contrasts_expr) %>%
-      topTags(1500000) %>%
-      as.data.frame() %>%
-      rownames_to_column("lipid") %>%
-      as_tibble()
-    
-  }
-  
-  cl_e1_tbl <-
-    cells_lipid_expr %>%
-    experiment_helper
-  cl_e1_tbl
-  
-  names(cells_lipid_expr)
-  
-  # cells_lipid_expr<-cells_lipid_expr %>%
-  #   mutate(type = ifelse((type == "PCandSM" & grepl('PC', lipid)), "PC", 
-  #                        ifelse((type == "PCandSM" & grepl('SM', lipid)), "SM", 
-  #                               ifelse(type=="PCandSM", "SM", paste0(type)))))
-  # 
-  # cells_lipid_expr <- cells_lipid_expr %>%
-  #   mutate(type = ifelse(type %in% c("TAG1", "TAG2"), "TAG", type))
-  # 
-  # cl_e1_tbl <-
-  #   cells_lipid_expr %>%
-  #   experiment_helper
-  # cl_e1_tbl
-  
-  xx <- merge(cells_lipid_expr,cl_e1_tbl)
 
-  names(cl_e1_tbl)
-  names(xx)
-  cl_e1_tbl
-  # lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG")
-  # lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a")
-  # 
-  lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG",'DAG','TAG | DAG','DAG | CE','TAG | DAG | CE')
-  lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a",'#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3')
+  # Normalize factors and estimate common dispersion
+  edgeR_data <- calcNormFactors(edgeR_data, method="TMM")
+  edgeR_data <- estimateCommonDisp(edgeR_data, design=design_matrix)
   
+  edgeR_data
+}
 
+# Function to fit generalized linear model and compute likelihood ratio tests
+calculate_significance <- function(edgeR_data, contrast_matrix) {
+  edgeR_data %>%
+    glmFit() %>%
+    glmLRT(contrast = contrast_matrix)
+}
 
-  # Create a named vector to map lipid classes to their colors
-  lipid_class_colors <- setNames(lipid_colors, lipid_classes)
+# Function to streamline edgeR analysis
+edgeR_pipeline <- function(df) {
+  df %>%
+    perform_edgeR_analysis(design_matrix, experiment_groups) %>%
+    calculate_significance(contrast_matrix) %>%
+    topTags(1500000) %>%
+    as.data.frame() %>%
+    rownames_to_column("lipid") %>%
+    as_tibble()
+}
+
+# Perform the edgeR analysis and store the results
+edgeR_results <- lipid_expression_data %>% edgeR_pipeline
+edgeR_results
+
+# Display the names of the columns in the lipid expression data
+names(lipid_expression_data)
+
+merged_results <- merge(lipid_expression_data, edgeR_results)
+
+# Define lipid classes and their corresponding colors for visualization
+lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG",'DAG','TAG | DAG','DAG | CE','TAG | DAG | CE')
+lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a",'#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3')
+
+# Create a named vector to map lipid classes to their colors
+lipid_class_colors <- setNames(lipid_colors, lipid_classes)
+
+# Assuming 'files_in_pre_edgeR' is your list of csv files
+for (current_file in files_in_pre_edgeR) {
   
-  xx %>%
-    
+  # Load and preprocess the data file
+  lipid_data_file <- read_csv(paste0("Pre_EdgeR/", current_file))
+  
+  # Generate a title for the plot
+  title_for_plot <- gsub(":", "_", lipid_data_file$Title[1])  # Or some other appropriate line
+
+####
+# RIDGE PLOT
+####
+if (!dir.exists("plots/ridge_plot")) {
+  dir.create("plots/ridge_plot", recursive = TRUE, showWarnings = FALSE)
+}
+  # Create the plot
+  ridge_plot <- merged_results %>%
     ggplot(aes(x=logFC, y = type, fill = type)) +
-    geom_density_ridges2(alpha = 0.5, size = .5) + 
-    geom_vline(xintercept = 0, linetype = "dashed") +
-    theme_classic() +
-    ggtitle(title_for_plot)+
-    xlab("Fold change, lipids all") +
-    ylab("") +#xlim(-2, 4)+
-    scale_alpha(guide = 'none') +
-    # scale_fill_discrete(name = "Lipid class", guide = 'none') +
-    scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
-    scale_y_discrete(limits = rev) #+
-  ggsave(paste("plots/test3/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
+    geom_density_ridges2(alpha = 0.5, size = .5) +  # Create ridges
+    geom_vline(xintercept = 0, linetype = "dashed") +  # Add vertical line at x=0
+    theme_classic() +  # Use classic theme
+    ggtitle(title_for_plot) +  # Add title
+    xlab("Fold change, lipids all") +  # Label x-axis
+    ylab("") +  # Remove y-axis label
+    scale_alpha(guide = 'none') +  # Remove alpha legend
+    scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +  # Fill colors according to lipid classes
+    scale_y_discrete(limits = rev)  # Reverse y-axis limits
+
+  # Save the plot to a pdf file
+  ggsave(paste("plots/ridge_plot/Ridge_Plot_All_Lipids_", title_for_plot, ".pdf", sep=''), plot = ridge_plot)
+}
+
+####
+# PCA PLOT
+####
+
+# Select only numeric columns for PCA
+numeric_data <- lipid_data_file[sapply(lipid_data_file, is.numeric)]
+
+# Get the standard deviation of each column
+column_sd <- apply(numeric_data, 2, sd)
+
+# Identify columns where SD is not 0
+variable_columns <- column_sd != 0
+# Subset data to keep only variable columns
+numeric_data <- numeric_data[, variable_columns]
+
+# Use prcomp for PCA
+pca_result <- prcomp(numeric_data, scale. = TRUE)
+
+# Use autoplot to automatically generate a ggplot2 plot
+pca_plot <- autoplot(pca_result, 
+                         data = lipid_data_file, 
+                         #colour = 'type',  # change 'type' to your group column name
+                         #aes(color = type)
+                         label = TRUE, 
+                         label.size = 3, 
+                         #size = 'type',  # change 'type' to a column name to size points by
+                         ellipse = TRUE, 
+                         ellipse.type = 't',
+                         alpha = 0.6)
+
+# print the plot
+print(pca_plot)
+#####
+
+# Create the "plots/pca" directory if it doesn't exist
+dir.create("plots/pca", showWarnings = FALSE)
+
+# Loop through each file in the "Pre_EdgeR" directory
+for (current_file in files_in_pre_edgeR) {
   
-  # xx %>%
-  #   
-  #   filter(FDR < 0.10) %>% #filter by sig
-  #   ggplot(aes(x=logFC, y = type, fill = type)) +
-  #   geom_density_ridges2(alpha = 0.5, size = .5) + 
-  #   geom_vline(xintercept = 0, linetype = "dashed") +
-  #   theme_classic() +
-  #   ggtitle(title_for_plot)+
-  #   xlab("Fold change, lipids FDR<0.10") +
-  #   ylab("") +#xlim(-2, 4)+
-  #   scale_alpha(guide = 'none') +
-  #   
-  #   scale_fill_discrete(name = "Lipid class", guide = 'none') +
-  #   scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
-  #   scale_y_discrete(limits = rev) #+
-  # # facet_wrap(~comparison_LFC)
-  # 
-  # ggsave(paste("plots/Ridge_Plot_Filtered_FDR_",title_for_plot,".pdf",sep=''))
+  # Load and preprocess the data file
+  lipid_data_file <- read_csv(paste0("Pre_EdgeR/", current_file))
   
-  # make_volcano_plot <- function(df, title) {
-  #   df %>%
-  #     mutate(sig = factor(FDR < 0.10)) %>%
-  #     ggplot(aes(logFC, -log10(FDR), color = sig)) +
-  #     geom_point() +
-  #     scale_color_manual(values = c("none" = "black", "TRUE" = "red")) +
-  #     guides(color = F) +
-  #     ggtitle(title)
-  # }
-  # 
-  # cl_e1_tbl %>% make_volcano_plot(paste("Volcano_Plot_",title_for_plot,sep=''))
-  # ggsave(paste("plots/Volcano_Plot_",title_for_plot,".png",sep=''))
-  # 
-  # 
+  # [Perform necessary preprocessing steps on 'lipid_data_file']
+
+  # Select only numeric columns for PCA
+  numeric_data <- lipid_data_file[sapply(lipid_data_file, is.numeric)]
+
+  # Get the standard deviation of each column
+  column_sd <- apply(numeric_data, 2, sd)
+
+  # Identify columns where SD is not 0
+  variable_columns <- column_sd != 0
+  # Subset data to keep only variable columns
+  numeric_data <- numeric_data[, variable_columns]
+
+  # Use prcomp for PCA
+  pca_result <- prcomp(numeric_data, scale. = TRUE)
+
+  # Generate a title for the plot
+  title_for_plot <- gsub(":", "_", lipid_data_file$Title[1])  # Or some other appropriate line
+
+  # Use autoplot to automatically generate a ggplot2 plot
+  pca_plot <- autoplot(pca_result, 
+                       data = lipid_data_file, 
+                       #colour = 'type',  # change 'type' to your group column name
+                       label = TRUE, 
+                       label.size = 3, 
+                       #size = 'type',  # change 'type' to a column name to size points by
+                       ellipse = TRUE, 
+                       ellipse.type = 't',
+                       alpha = 0.6)
+
+  # Generate the file path for saving the PCA plot
+  file_path <- paste("plots/pca/PCA_Plot_", title_for_plot, ".pdf", sep = '')
   
+  # Print the file path for debugging
+  print(paste("Saving plot to:", file_path))
   
-  write_summary_and_results <- function(tbl, df, name) {
+  # Save the PCA plot to a PDF file
+  ggsave(filename = file_path, plot = pca_plot)
+}
+
+####
+# HEATMAP Plot
+####
+
+# Create the "plots/heatmap" directory if it doesn't exist
+dir.create("plots/heatmap", showWarnings = FALSE)
+# Loop through each file in the "Pre_EdgeR" directory
+for (current_file in files_in_pre_edgeR) {
+  
+  # Load and preprocess the data file
+  lipid_data_file <- read_csv(paste0("Pre_EdgeR/", current_file))
+  
+  # [Perform necessary preprocessing steps on 'lipid_data_file']
+
+  # Compute the correlation matrix
+  cor_matrix <- cor(numeric_data)
+
+  # Create a heatmap of the correlation matrix
+  heatmap_plot <- pheatmap(cor_matrix)
+
+  # Generate a title for the plot
+  title_for_plot <- gsub(":", "_", lipid_data_file$Title[1])  # Or some other appropriate line
+
+  # Create a folder named "plots/heatmap" if it doesn't exist
+  dir.create("plots/heatmap", showWarnings = FALSE)
+
+  # Save the heatmap plot to a PDF file in the "plots/heatmap" folder
+  pdf(file = paste("plots/heatmap/Heatmap_", title_for_plot, ".pdf", sep = ''))
+  print(heatmap_plot)  # Plot the heatmap to the PDF file
+  dev.off()  # Close the current graphics device
+}
+
+
+####
+# Summary and Full Results
+####
+
+  # Define a function that generates summary and full result files
+write_summary_and_results <- function(edgeR_table, lipid_data, experiment_name) {
     
-    tbl %>%
-      # merge(df2) %>%
-      merge(df) %>%
+    # Merge edgeR results with the original lipid data, sort by FDR
+    edgeR_table %>%
+      merge(lipid_data) %>%
       as_tibble() %>%
       arrange(FDR) -> results
     
-    write_csv(results, paste0("results/", name, "_full.csv"))
+    # Write the full results to a CSV file in the 'results' directory
+    write_csv(results, paste0("results/", experiment_name, "_full.csv"))
     
+    # Summarise the number of up- and down-regulated lipids per type
     results %>%
       group_by(type) %>%
       summarise(Down = sum(logFC < 0 & FDR < 0.1),
                 Up = sum(logFC > 0 & FDR < 0.1)) %>%
-      write_csv(paste0("results/", name, "_summary.csv"))
-  }
-  
-  dir.create("results", F)
-  
-  cl_e1_tbl %>% write_summary_and_results(cells_lipid_expr, title_for_plot)
-  
-  cl_e1_tbl
-  # source("ggbiplot.R")
-  
-  # 
-  # get_DE_lipids <- function(counts, design_mat, gr, contrasts, p.value = 0.05) {
-  #   dls <-
-  #     counts %>%
-  #     perform_analysis_raw(design_mat, gr) %>%
-  #     calculate_significance(contrasts) %>%
-  #     decideTestsDGE(p.value = p.value)
-  #   
-  #   rownames(dls)[dls %>% as.logical()]
-  # }
-  # # 
-  # make_pca_plot <- function(tp, design_mat, gr, contrasts,
-  #                           title = "PCA plot",
-  #                           ellipse = T, var.axes = F,
-  #                           labels = T) {
-  # 
-  #   print(labels)
-  #   print(labels)
-  #   tp_edger <-
-  #     tp %>%
-  #     get_DE_lipids(design_mat, gr, contrasts)
-  # 
-  #   if(length(tp_edger) == 0) {
-  #     cat("No significant lipids for ", title)
-  #     return()
-  #   }
-  # 
-  #   if(length(tp_edger) == 1) {
-  #     cat("Single significant lipids for ", title, " is ", tp_edger[1])
-  #     return()
-  #   }
-  # 
-  #   tp %>%
-  #     na.omit %>%
-  #     mutate(lipid = make.unique(lipid)) %>%
-  #     filter(lipid %in% tp_edger) %>%
-  #     select(-Transition, -type, -blank_name) %>%
-  #     column_to_rownames("lipid") %>%
-  #     as.matrix() %>%
-  #     t %>%
-  #     prcomp(center = T, scale = T) ->
-  #     prcomp_data
-  # 
-  #   groups = NULL
-  # 
-  #   tp %>%
-  #     select(-Transition, -type, -blank_name, -lipid) %>%
-  #     colnames() ->
-  #     labels.tmp
-  # 
-  #   # groups = substr(labels.tmp, 1, 4)
-  #   groups =groups_PCA
-  #   # labels = groups_PCA
-  #   print(groups)
-  #   # print(substr(labels.tmp, 1, 5))
-  #   if (!is.null(labels)) {
-  #     labels = labels.tmp
-  #   }
-  # 
-  #   prcomp_data %>%
-  #     ggbiplot(ellipse = ellipse,
-  #              labels = labels,
-  #              groups = groups,
-  #              var.axes = var.axes
-  #     ) +
-  #     ggtitle(title) +
-  #     cowplot::theme_cowplot()
-  # }
-  
-  
-  # source("ggbiplot.R")
-  
-  
-  cells_lipid_expr
-  
-  # cells_lipid_expr %>%
-  #   make_pca_plot(design_expr, gr_expr, contrasts_expr, paste("PCA_Plot_",title_for_plot,sep=''))
-  # ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
-  
-  # contrasts_expr
-  # gr_expr
-  # design_expr
-  
-  # 
-  # 
-  # # Assuming you have a dataframe called cells_lipid_expr and two vectors called group1 and group2 with the column names
-  # library(factoextra)
-  # # Combine group1 and group2 into a single vector
-  # filtered_xx <- xx %>%
-  #   filter(FDR < 0.1)
-  # 
-  # 
-  # 
-  # 
-  # all_groups <- select(excel_file, -c(blank_name,lipid,type))
-  # all_groups <- names(all_groups)
-  # 
-  # 
-  # # Extract only the columns that belong to group1 and group2 from the dataframe
-  # cells_lipid_expr_subset <- filtered_xx[, all_groups]
-  # 
-  # # Transpose the data frame
-  # cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
-  # 
-  # # Perform PCA on the transposed dataframe
-  # pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
-  # 
-  # # Create a dataframe for the groups and their corresponding titles
-  # group_data <- data.frame(
-  #   sample = all_groups,
-  #   group = c(rep(Title1, length1), rep(Title2,length2))
-  # )
-  # 
-  # # Calculate the PCA scores
-  # pca_scores <- as.data.frame(pca_result$x[, 1:2])
-  # 
-  # # Create a new data frame with the PCA scores, sample names, and group information
-  # plot_data <- data.frame(
-  #   PC1 = pca_scores$PC1,
-  #   PC2 = pca_scores$PC2,
-  #   sample = rownames(pca_scores),
-  #   group = group_data$group
-  # )
-  # 
-  # # Create the PCA plot using ggplot2
-  # pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
-  #   geom_point(size = 3) +
-  #   geom_text_repel(size = 3) +
-  #   theme_minimal() +
-  #   labs(color = "Groups") +
-  #   ggtitle(title_for_plot) +
-  #   xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
-  #   ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
-  # 
-  # # Print the PCA plot
-  # print(pca_plot)
-  # 
-  # ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
-  # 
-  # 
-  # make_heatmap <- function(tp, design_mat, gr, contrasts, title, file) {
-  #   
-  #   DElist <-
-  #     tp %>%
-  #     get_DE_lipids(design_mat, gr, contrasts)
-  #   
-  #   if(length(DElist) == 0) {
-  #     cat("No significant lipids for ", title)
-  #     return()
-  #   }
-  #   
-  #   if(length(DElist) == 1) {
-  #     cat("Single significant lipids for ", title, " is ", DElist[1])
-  #     return()
-  #   }
-  #   
-  #   Blank <- log2(tp[[blank_name]])
-  #   
-  #   tp %>%
-  #     mutate(lipid = make.unique(lipid)) %>%
-  #     filter(lipid %in% DElist) %>%
-  #     select( -type) %>%
-  #     mutate_if(is.numeric, log2) %>%
-  #     mutate_if(is.numeric, list(~ . - Blank)) %>%
-  #     select(- blank_name) %>% 
-  #     column_to_rownames("lipid") %>%
-  #     as.matrix() %>%
-  #     pheatmap::pheatmap(main = title,cluster_cols = none,
-  #                        cluster_rows = none, filename = file,
-  #                        cellheight = 10)
-  # }
-  # 
-  # cells_lipid_expr %>%
-  #   make_heatmap(design_expr, gr_expr, contrasts_expr, title_for_plot, 
-  #                file = paste("plots/Heatmap_",title_for_plot,".svg",sep=''))
+      
+    # Write the summary results to a CSV file in the 'results' directory
+      write_csv(paste0("results/", experiment_name, "_summary.csv"))
 }
+
+# Create 'results' directory if it doesn't exist
+dir.create("results", showWarnings = FALSE)
+
+# Apply the function to the edgeR results
+edgeR_results %>% write_summary_and_results(lipid_expression_data, title_for_plot)
+
+# The tables can be printed for verification purposes
+edgeR_results
+
+
+
+lipid_expression_data
 
 
 
