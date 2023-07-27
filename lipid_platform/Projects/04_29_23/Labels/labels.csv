@@ -1,0 +1,48 @@
+﻿Sample Name,Cage,Position,Dilution Factor,Sex2,Sex,Genotype,Brain Region
+Blank_Blank_Blank_Blank_Blank,Blank,p1-a1,Blank,Blank,Blank,Blank,Blank
+IPA_clean_clean_clean_clean,IPA,p1-a2,clean,clean,clean,clean,clean
+DOD94_F3_Female_WT_hippocampus,DOD94,p1-a3,2x,F3,Female,WT,hippocampus
+DOD94_F3_Female_WT_cortex ,DOD94,p1-a4,2x,F3,Female,WT,cortex 
+DOD94_F3_Female_WT_cerebellum,DOD94,p1-a5,2x,F3,Female,WT,cerebellum
+DOD94_F3_Female_WT_diencephalon,DOD94,p1-a6,2x,F3,Female,WT,diencephalon
+DOD93_F4_Female_5xFAD_hippocampus,DOD93,p1-a7,2x,F4,Female,5xFAD,hippocampus
+DOD93_F4_Female_5xFAD_cortex ,DOD93,p1-a8,2x,F4,Female,5xFAD,cortex 
+DOD93_F4_Female_5xFAD_cerebellum,DOD93,p1-b1,2x,F4,Female,5xFAD,cerebellum
+DOD93_F4_Female_5xFAD_diencephalon,DOD93,p1-b2,2x,F4,Female,5xFAD,diencephalon
+DOD94_F4_Female_5xFAD_hippocampus,DOD94,p1-b3,2x,F4,Female,5xFAD,hippocampus
+DOD94_F4_Female_5xFAD_cortex ,DOD94,p1-b4,2x,F4,Female,5xFAD,cortex 
+DOD94_F4_Female_5xFAD_cerebellum,DOD94,p1-b5,2x,F4,Female,5xFAD,cerebellum
+DOD94_F4_Female_5xFAD_diencephalon,DOD94,p1-b6,2x,F4,Female,5xFAD,diencephalon
+FAD185_M4_Male_WT_hippocampus,FAD185,p1-b7,2x,M4,Male,WT,hippocampus
+FAD185_M4_Male_WT_cortex ,FAD185,p1-b8,2x,M4,Male,WT,cortex 
+FAD185_M4_Male_WT_cerebellum,FAD185,p1-c1,2x,M4,Male,WT,cerebellum
+FAD185_M4_Male_WT_diencephalon,FAD185,p1-c2,2x,M4,Male,WT,diencephalon
+FAD184_F3_Female_WT_hippocampus,FAD184,p1-c3,2x,F3,Female,WT,hippocampus
+FAD184_F3_Female_WT_cortex ,FAD184,p1-c4,2x,F3,Female,WT,cortex 
+FAD184_F3_Female_WT_cerebellum,FAD184,p1-c5,2x,F3,Female,WT,cerebellum
+FAD184_F3_Female_WT_diencephalon,FAD184,p1-c6,2x,F3,Female,WT,diencephalon
+FAD184_F4_Female_WT_hippocampus,FAD184,p1-c7,2x,F4,Female,WT,hippocampus
+FAD184_F4_Female_WT_cortex ,FAD184,p1-c8,2x,F4,Female,WT,cortex 
+FAD184_F4_Female_WT_cerebellum,FAD184,p1-d1,2x,F4,Female,WT,cerebellum
+FAD184_F4_Female_WT_diencephalon,FAD184,p1-d2,2x,F4,Female,WT,diencephalon
+FAD189_M3_Male_WT_hippocampus,FAD189,p1-d3,2x,M3,Male,WT,hippocampus
+FAD189_M3_Male_WT_cortex ,FAD189,p1-d4,2x,M3,Male,WT,cortex 
+FAD189_M3_Male_WT_cerebellum,FAD189,p1-d5,2x,M3,Male,WT,cerebellum
+FAD189_M3_Male_WT_diencephalon,FAD189,p1-d6,2x,M3,Male,WT,diencephalon
+FAD189_M2_Male_5xFAD_hippocampus,FAD189,p1-d7,2x,M2,Male,5xFAD,hippocampus
+FAD189_M2_Male_5xFAD_cortex ,FAD189,p1-d8,2x,M2,Male,5xFAD,cortex 
+FAD189_M2_Male_5xFAD_cerebellum,FAD189,p1-e1,2x,M2,Male,5xFAD,cerebellum
+FAD189_M2_Male_5xFAD_diencephalon,FAD189,p1-e2,2x,M2,Male,5xFAD,diencephalon
+FAD189_M1_Male_5xFAD_hippocampus,FAD189,p1-e3,2x,M1,Male,5xFAD,hippocampus
+FAD189_M1_Male_5xFAD_cortex ,FAD189,p1-e4,2x,M1,Male,5xFAD,cortex 
+FAD189_M1_Male_5xFAD_cerebellum,FAD189,p1-e5,2x,M1,Male,5xFAD,cerebellum
+FAD189_M1_Male_5xFAD_diencephalon,FAD189,p1-e6,2x,M1,Male,5xFAD,diencephalon
+FAD185_M3_Male_5xFAD_hippocampus,FAD185,p1-e7,2x,M3,Male,5xFAD,hippocampus
+FAD185_M3_Male_5xFAD_cortex ,FAD185,p1-e8,2x,M3,Male,5xFAD,cortex 
+FAD185_M3_Male_5xFAD_cerebellum,FAD185,p1-f1,2x,M3,Male,5xFAD,cerebellum
+FAD185_M3_Male_5xFAD_diencephalon,FAD185,p1-f2,2x,M3,Male,5xFAD,diencephalon
+FAD185_M1_Male_5xFAD_hippocampus,FAD185,p1-f3,2x,M1,Male,5xFAD,hippocampus
+FAD185_M1_Male_5xFAD_cortex ,FAD185,p1-f4,2x,M1,Male,5xFAD,cortex 
+FAD185_M1_Male_5xFAD_cerebellum,FAD185,p1-f5,2x,M1,Male,5xFAD,cerebellum
+FAD185_M1_Male_5xFAD_diencephalon,FAD185,p1-f6,2x,M1,Male,5xFAD,diencephalon
+SPLASH_splash_splash_splash_splash,SPLASH,p1-f7,splash,splash,splash,splash,splash

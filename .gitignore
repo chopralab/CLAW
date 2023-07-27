@@ -1,2 +1,2 @@
-lipid_platform/old/*
 lipid_platform/.ipynb_checkpoints/*
+lipid_platform/__pycache__/*
