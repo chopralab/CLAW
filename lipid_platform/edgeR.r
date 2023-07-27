@@ -57,6 +57,8 @@ for (jj in file_list){
   length1 <- excel_file$length1[1]
   length2 <- excel_file$length2[1]
   
+ 
+  
   
   excel_file <- select(excel_file, -c(Title1, Title2, Title, length1, length2,Blank_name))
   
@@ -89,6 +91,12 @@ for (jj in file_list){
   
   
   cells_lipid_expr <- excel_file
+  
+  # Create a dataframe with Length1 and Length2 columns
+  df2_other <- data.frame(Length1 = rep(length1, dim(cells_lipid_expr)[1]), 
+                          Length2 = rep(length2, dim(cells_lipid_expr)[1]),
+                          Title_1 = rep(Title1, dim(cells_lipid_expr)[1]),
+                          Title_2 = rep(Title2, dim(cells_lipid_expr)[1]))
   
   #EdgeR groups
   gr_expr = c(gr1,gr2,
@@ -223,8 +231,8 @@ for (jj in file_list){
   # 
   
   
-  write_summary_and_results <- function(tbl, df, name) {
-    
+  write_summary_and_results <- function(tbl, df,df2, name) {
+    df<-cbind(df2, df)
     tbl %>%
       # merge(df2) %>%
       merge(df) %>%
@@ -242,7 +250,8 @@ for (jj in file_list){
   
   dir.create("results", F)
   
-  cl_e1_tbl %>% write_summary_and_results(cells_lipid_expr, title_for_plot)
+  cl_e1_tbl %>% write_summary_and_results(cells_lipid_expr,df2_other, title_for_plot)
+  
   
   cl_e1_tbl
   # source("ggbiplot.R")

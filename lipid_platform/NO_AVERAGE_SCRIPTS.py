@@ -449,14 +449,18 @@ def subtract_blank(labels_df,matched_df,blank_name):
         merged_df = merged_df.append(temp_df)
 
 
-
+    # try:
     merged_df['Class'] = merged_df['Class'].replace({'TAG | TAG': 'TAG', 'FA | FA': 'FA'})
-
     return merged_df
+
+    # except:
+    #     return merged_df
 def add_subclass_and_length(merged_df):
     merged_df = merged_df.reset_index(drop=True)
+    # try:
     merged_df.loc[merged_df['Class'] != 'Cer', 'Lipid'] = merged_df.loc[merged_df['Class'] != 'Cer', 'Lipid'].str.replace(',', '|')
-
+    # except:
+    #     pass
 
 
 
@@ -1169,10 +1173,22 @@ def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_d
                save_data=False):
     mrm_database = read_mrm_list(data_base_name_location,remove_std=remove_std,custom_data=custom_data)
     df = mzml_parser(mzml_folder)
+    print((df))
+
+    print(list(df))
     df_matched = match_lipids_parser(mrm_database,df, tolerance=tolerance)
+    print(list(df_matched))
+
     df_matched = add_labels(labels_df,df_matched)
+    print((df_matched))
+
+    print(list(df_matched),"Labels")
     
     df_matched = subtract_blank(labels_df,df_matched,blank_name)
+    print((df_matched))
+
+    print(list(df_matched),"Blank Subtraction")
+
     if custom_data ==False:
         df_matched = add_subclass_and_length(df_matched)
     if save_data == True:
