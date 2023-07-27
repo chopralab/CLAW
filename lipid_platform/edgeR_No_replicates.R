@@ -25,7 +25,7 @@ library(cowplot)
 library(ggridges)
 
 # read the variable from the text file
-cwd <- readLines("Variable_Storage/varname1.txt")[1]
+cwd <- readLines("Variable_Storage/folder_path.txt")[1]
 cwd
 setwd(cwd)
 
