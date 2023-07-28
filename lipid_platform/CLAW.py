@@ -18,61 +18,33 @@ import ipywidgets as widgets
 import warnings
 import time
 import shutil
+import os
 
 
-def pre_parsing_setup():
-    # Defaults
-    data_base_name_location = 'Databases/lipid_database/Lipid_Database.xlsx'
-    Project = './Projects/'
-    Project_Name = 'test_py'
-    Project_Folder_data = Project + Project_Name + '/o3on/'
-    Project_results = Project + Project_Name + '/results/'
-    file_name_to_save = 'test_py'
-    tolerance = 0.3
-    remove_std = True
-    save_data = True
-    
-    # Ask if user wants to use all default settings
-    use_defaults = input("Use default settings? (y/n): ").strip().lower()
+def pre_parsing_setup(data_base_name_location, Project, Project_Name, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std, save_data):
+    """
+    A function to setup and check for the necessary project directories. 
+    It also prints and returns the received configurations. 
 
-    # If not using defaults, ask for custom input for each variable
-    if use_defaults != 'y':
-        custom_db = input(f"Use default database location '{data_base_name_location}'? (y/n): ").strip().lower()
-        if custom_db == 'n':
-            data_base_name_location = input("Enter custom database location: ").strip()
+    :param data_base_name_location: The path of the database name location.
+    :param Project: The project path.
+    :param Project_Name: The name of the project.
+    :param Project_Folder_data: The project data folder path.
+    :param Project_results: The path where project results are stored.
+    :param file_name_to_save: The name of the file where data is to be saved.
+    :param tolerance: The accepted tolerance level.
+    :param remove_std: A boolean indicating whether or not to remove standard deviations.
+    :param save_data: A boolean indicating whether or not to save the data.
 
-        custom_project = input(f"Use default project '{Project}'? (y/n): ").strip().lower()
-        if custom_project == 'n':
-            Project = input("Enter custom project: ").strip()
+    :return: The given configurations as a dictionary.
+    """
 
-        custom_project_name = input(f"Use default project name '{Project_Name}'? (y/n): ").strip().lower()
-        if custom_project_name == 'n':
-            Project_Name = input("Enter custom project name: ").strip()
+    # Check and create folders if they do not exist
+    os.makedirs(os.path.dirname(data_base_name_location), exist_ok=True)
+    os.makedirs(Project, exist_ok=True)
+    os.makedirs(Project_Folder_data, exist_ok=True)
+    os.makedirs(Project_results, exist_ok=True)
 
-        Project_Folder_data = Project + Project_Name + '/mzml/o3on/'
-        Project_results = Project + Project_Name + '/results/'
-
-        custom_folder_save = input(f"Use default project results '{Project_results}'? (y/n): ").strip().lower()
-        if custom_folder_save == 'n':
-            Project_results = input("Enter custom folder name for project results: ").strip()
-
-        custom_file_save = input(f"Use default file name to save results '{file_name_to_save}'? (y/n): ").strip().lower()
-        if custom_file_save == 'n':
-            file_name_to_save = input("Enter custom file name to save results: ").strip()
-
-        custom_tolerance = input(f"Use default tolerance '{tolerance}'? (y/n): ").strip().lower()
-        if custom_tolerance == 'n':
-            tolerance = float(input("Enter custom tolerance: ").strip())
-
-        custom_remove_std = input(f"Use default remove_std setting '{remove_std}'? (y/n): ").strip().lower()
-        if custom_remove_std == 'n':
-            remove_std = input("Enter custom remove_std (True/False): ").strip().lower() == 'true'
-
-        custom_save_data = input(f"Use default save_data setting '{save_data}'? (y/n): ").strip().lower()
-        if custom_save_data == 'n':
-            save_data = input("Enter custom save_data (True/False): ").strip().lower() == 'true'
-
-    # Return all configurations as a dictionary
     # Return all configurations as a dictionary
     configs = {
         "data_base_name_location": data_base_name_location,
@@ -87,46 +59,76 @@ def pre_parsing_setup():
     }
     for key, value in configs.items():
         print(f"{key}: {value}")
-    return data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance
-
-###All functions
+    return data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std, save_data
 
 
 def read_mrm_list(filename,remove_std = True):
+    """
+    A function that reads a Multi Reaction Monitoring (MRM) list from an Excel file, formats the data, 
+    and filters out certain lipid classes if required.
+
+    :param filename: The path of the Excel file containing the MRM list.
+    :param remove_std: A boolean indicating whether or not to filter out certain lipid classes. Defaults to True.
+
+    :return: The formatted and filtered MRM list as a pandas DataFrame.
+    """
+    
     mrm_list_new = pd.read_excel(filename, sheet_name=None)
     mrm_list_new = pd.concat(mrm_list_new, ignore_index=True)
     mrm_list_offical = mrm_list_new[['Compound Name', 'Parent Ion', 'Product Ion', 'Class']]
+    
     # Add underscore to middle of columns names
     mrm_list_offical.columns = mrm_list_offical.columns.str.replace(' ', '_')
+    
     # Round Parent Ion and Product Ion to 1 decimal place
     mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)
     mrm_list_offical['Product_Ion'] = np.round(mrm_list_offical['Product_Ion'],1)
+    
     # Create transition column by combining Parent Ion and Product Ion with arrow between numbers
     mrm_list_offical['Transition'] = mrm_list_offical['Parent_Ion'].astype(str) + ' -> ' + mrm_list_offical['Product_Ion'].astype(str)
+    
     # Change column compound name to lipid
     mrm_list_offical = mrm_list_offical.rename(columns={'Compound_Name': 'Lipid'})
-    # Make a column called Class match lipid column to lipid types
+    
+    # Filter the DataFrame based on lipid class, if required
     if remove_std == True:
-        lipid_class = mrm_list_offical['Class'].unique()
         lipid_class_to_keep = ['PS','PG','CE','PC', 'DAG', 'PE', 'TAG', 'FA', 'Cer', 'CAR', 'PI','SM']
         mrm_list_offical = mrm_list_offical[mrm_list_offical['Class'].isin(lipid_class_to_keep)]
+    
     return mrm_list_offical
 
 
-# Function to create an ion dictionary from an MRM database DataFrame
+from collections import defaultdict
+import os
+import numpy as np
+import pandas as pd
+import pymzml
+
+
 def create_ion_dict(mrm_database):
+    """
+    Creates a dictionary of ions from an MRM database DataFrame.
+    
+    :param mrm_database: DataFrame containing MRM database information.
+    
+    :return: A dictionary with ion pairs as keys, and a list of tuples containing corresponding lipid and class as values.
+    """
     ion_dict = defaultdict(list)
-    # Iterate through the rows of the MRM database DataFrame
     for index, row in mrm_database.iterrows():
-        # Add a tuple with Lipid and Class to the ion dictionary using Parent_Ion and Product_Ion as the key
         ion_dict[(row['Parent_Ion'], row['Product_Ion'])].append((row['Lipid'], row['Class']))
     return ion_dict
 
-### New way to parse OzESI data
+
 OzESI_time_df = pd.DataFrame(columns=['Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class', 'Sample_ID', 'Retention_Time', 'OzESI_Intensity'])
 
-
 def mzml_parser(file_name):
+    """
+    Parses mzML files to extract and store necessary information into a DataFrame.
+    
+    :param file_name: The path of the mzML file.
+    
+    :return: Two pandas DataFrames - 'df' containing aggregated ion intensity data, and 'OzESI_time_df' containing time-resolved ion intensity data.
+    """
     global OzESI_time_df  # Declare OzESI_time_df as a global variable
     
     rows = []
@@ -183,45 +185,72 @@ def mzml_parser(file_name):
     return df, OzESI_time_df
 
 
-# Function to check if the absolute difference between two values is within a given tolerance
 def within_tolerance(a, b, tolerance=0.3):
+    """
+    Checks if the absolute difference between two values is within a given tolerance.
+    
+    :param a: First value to compare.
+    :param b: Second value to compare.
+    :param tolerance: The acceptable difference between the two values. Defaults to 0.3.
+    
+    :return: Boolean indicating whether the difference is within the given tolerance.
+    """
     return abs(a - b) <= tolerance
 
-# Function to match the ions in a DataFrame row with the ions in an ion dictionary
+
 def match_ions(row, ion_dict, tolerance=0.3):
+    """
+    Matches the ions in a DataFrame row with the ions in an ion dictionary.
+    
+    :param row: A DataFrame row containing 'Parent_Ion' and 'Product_Ion' columns.
+    :param ion_dict: A dictionary of ion pairs and their corresponding lipid and class information.
+    :param tolerance: The acceptable difference between ion values to be considered a match. Defaults to 0.3.
+    
+    :return: The original row updated with matched lipid and class information if matches were found.
+    """
     ions = (row['Parent_Ion'], row['Product_Ion'])
     matched_lipids = []
     matched_classes = []
 
-    # Iterate through the ion dictionary
     for key, value in ion_dict.items():
-        # Check if both the Parent_Ion and Product_Ion values are within the specified tolerance
         if within_tolerance(ions[0], key[0], tolerance) and within_tolerance(ions[1], key[1], tolerance):
-            # If within tolerance, extend the matched_lipids and matched_classes lists with the corresponding values
             matched_lipids.extend([match[0] for match in value])
             matched_classes.extend([match[1] for match in value])
 
-    # If any matches were found, update the Lipid and Class columns in the row
     if matched_lipids and matched_classes:
         row['Lipid'] = ' | '.join(matched_lipids)
         row['Class'] = ' | '.join(matched_classes)
 
     return row
 
-####Combined functions for Matching
 
-def match_lipids_parser(mrm_database,df, tolerance=0.3):
-    ion_dict = create_ion_dict(mrm_database)
-    # Assuming you have the df DataFrame to apply the match_ions function
-    df_matched = df.apply(lambda row: match_ions(row, ion_dict=ion_dict, tolerance=tolerance), axis=1)
-
-
-    # df_matched = df_matched.dropna()
+def match_lipids_parser(mrm_database, df, tolerance=0.3):
+    """
+    Performs lipid matching by creating an ion dictionary from the MRM database and applying the match_ions function to each row of a DataFrame.
     
+    :param mrm_database: DataFrame containing MRM database information.
+    :param df: DataFrame containing ion information to be matched.
+    :param tolerance: The acceptable difference between ion values to be considered a match. Defaults to 0.3.
+    
+    :return: DataFrame with matched lipid and class information if matches were found.
+    """
+    ion_dict = create_ion_dict(mrm_database)
+    df_matched = df.apply(lambda row: match_ions(row, ion_dict=ion_dict, tolerance=tolerance), axis=1)
     return df_matched
 
 
+
 def save_dataframe(df, Project_results, file_name_to_save, max_attempts=5):
+    """
+    Saves a given DataFrame to a CSV file within a specified directory.
+    
+    :param df: DataFrame to be saved.
+    :param Project_results: The project directory to save results in.
+    :param file_name_to_save: The desired filename for the saved DataFrame.
+    :param max_attempts: The maximum number of attempts to save the DataFrame. Defaults to 5.
+    
+    :return: None
+    """
     folder_path = f'data_results/data/data_matching/{Project_results}'
     os.makedirs(folder_path, exist_ok=True)
 
@@ -236,34 +265,30 @@ def save_dataframe(df, Project_results, file_name_to_save, max_attempts=5):
         return None
 
 
-
-# def full_parse(data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std=True, save_data=False):
-#     mrm_database = read_mrm_list(data_base_name_location, remove_std=remove_std)
-#     df = mzml_parser(Project_Folder_data)
-#     df_matched = match_lipids_parser(mrm_database, df, tolerance=tolerance)
-    
-#     if save_data:
-#         save_dataframe(df_matched, Project_results, file_name_to_save)
-
-#     return df_matched
-
-
 def full_parse(data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std=True, save_data=False):
+    """
+    Performs the complete parsing and data matching process for given inputs.
+    
+    :param data_base_name_location: Location of the MRM database file to be read.
+    :param Project_Folder_data: The project folder containing data to be parsed.
+    :param Project_results: The project directory to save results in.
+    :param file_name_to_save: The desired filename for the saved DataFrame.
+    :param tolerance: The acceptable difference between ion values to be considered a match.
+    :param remove_std: A flag to indicate whether standard lipid classes should be removed. Defaults to True.
+    :param save_data: A flag to indicate whether the matched data should be saved. Defaults to False.
+    
+    :return: Tuple containing matched DataFrame and OzESI DataFrame.
+    """
     mrm_database = read_mrm_list(data_base_name_location, remove_std=remove_std)
     
-    # Capture both dataframes returned by mzml_parser
     df, OzESI_time_df = mzml_parser(Project_Folder_data)
     
-    # Use the df dataframe in match_lipids_parser
     df_matched = match_lipids_parser(mrm_database, df, tolerance=tolerance)
     
     if save_data:
         save_dataframe(df_matched, Project_results, file_name_to_save)
 
-    # If you need to use OzESI_time_df elsewhere in this function, you can do so here
-
     return df_matched, OzESI_time_df
-
 
 
 
@@ -278,7 +303,7 @@ def filter_rt(df):
         pd.DataFrame: Filtered and aggregated DataFrame.
     """
     # Filter based on retention time
-    filtered_df = df[(df['Retention_Time'] > 10.0) & (df['Retention_Time'] < 16.0)].copy()
+    filtered_df = df[(df['Retention_Time'] > 10.0) & (df['Retention_Time'] < 20.0)].copy()
 
     # Round the values
     filtered_df['Retention_Time'] = filtered_df['Retention_Time'].round(2)
@@ -334,78 +359,80 @@ def DB_Position_df(df_matched_2, OzESI_list=[7,9,12]):
     return df_matched_2
 
 
-def within_tolerance(a, b, tolerance=0.3):
-    return abs(a - b) <= tolerance
-columns = [
-    'Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class',
-    'Sample_ID', 'Retention_Time', 'Intensity_OzESI', 'Mean_Retention_Time',
-    'Mean_Intensity_OzESI', 'n-7', 'n-9', 'n-12', 'Labels'
-]
-df_OzESI_n = pd.DataFrame(columns=columns)
+###delete this?
+# columns = [
+#     'Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class',
+#     'Sample_ID', 'Retention_Time', 'Intensity_OzESI', 'Mean_Retention_Time',
+#     'Mean_Intensity_OzESI', 'n-7', 'n-9', 'n-12', 'db_pos'
+# ]
+# df_OzESI_n = pd.DataFrame(columns=columns)
 
-#Function to add lipid name
+
 def add_lipid_info(df_matched_2, OzESI_list, tolerance=0.3):
-    df_test = df_matched_2.copy()
-    df_test_2 = df_matched_2.copy()
-    global df_OzESI_n
-    
+    """
+    Adds lipid information to the data frame based on matched ions within a certain tolerance.
+
+    :param df_matched_2: DataFrame containing matched lipids and ion data.
+    :param OzESI_list: List of integer values representing the positions in the OzESI list to be checked.
+    :param tolerance: The acceptable difference between ion values to be considered a match.
+
+    :return: Updated DataFrame with added lipid information.
+    """
+    df_test = df_matched_2.copy()  # create a copy of the input DataFrame to avoid modifying the original data
+    df_test_2 = df_matched_2.copy()  # additional copy for final output
+
+    # Iterate over the provided OzESI_list and convert respective column values to float
     for i in OzESI_list:
         df_test['n-' + str(i)] = df_test['n-' + str(i)].astype(float)
-    
+
+    # Iterate over the rows of the DataFrame
     for i in range(len(df_test)):
+        # If the 'Lipid' column value is NaN for the current row
         if pd.isna(df_test.loc[i, 'Lipid']):
             parent_ion = df_test.loc[i, 'Parent_Ion']
-            
+
+            # Iterate over the rows again to find a match
             for j in range(len(df_test)):
                 row_data = df_test.loc[j].copy()
-                if within_tolerance(parent_ion, row_data['n-7'], tolerance) and isinstance(row_data['Lipid'], str):
-                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
-                    df_test.loc[i, 'Labels'] = 'n-7' + row_data['Labels']
-                    
-                    # Append to df_test_2
-                    appended_row = df_test.loc[i].copy()
-                    appended_row['Labels'] = 'n-7' + row_data['Labels']
-                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
-                    
-                elif within_tolerance(parent_ion, row_data['n-9'], tolerance) and isinstance(row_data['Lipid'], str):
-                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
-                    df_test.loc[i, 'Labels'] = 'n-9' + row_data['Labels']
-                    
-                    # Append to df_test_2
-                    appended_row = df_test.loc[i].copy()
-                    appended_row['Labels'] = 'n-9' + row_data['Labels']
-                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
-                    
-                elif within_tolerance(parent_ion, row_data['n-12'], tolerance) and isinstance(row_data['Lipid'], str):
-                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
-                    df_test.loc[i, 'Labels'] = 'n-12' + row_data['Labels']
-                    
-                    # Append to df_test_2
-                    appended_row = df_test.loc[i].copy()
-                    appended_row['Labels'] = 'n-12' + row_data['Labels']
-                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
-    
+                
+                # If the parent ion is within tolerance and the Lipid column is a string
+                for n in [7, 9, 12]:
+                    if within_tolerance(parent_ion, row_data[f'n-{n}'], tolerance) and isinstance(row_data['Lipid'], str):
+                        df_test.loc[i, 'Lipid'] = row_data['Lipid']
+                        df_test.loc[i, 'db_pos'] = f'n-{n}' + row_data['db_pos']
+
+                        # Append to df_test_2
+                        appended_row = df_test.loc[i].copy()
+                        appended_row['db_pos'] = f'n-{n}' + row_data['db_pos']
+                        df_test_2 = df_test_2.append(appended_row, ignore_index=True)
+
+    # Drop rows in df_test_2 where 'Lipid' column value is NaN
     df_test_2.dropna(subset=['Lipid'], inplace=True)
+
     return df_test_2
 
 
-
-
 def calculate_intensity_ratio(df):
+    """
+    Calculates the intensity ratio for each lipid in the DataFrame, based on their 'OzESI_Intensity'.
+
+    :param df: DataFrame containing lipid information and intensity values.
+    :return: Updated DataFrame with added 'Ratios' column.
+    """
     # Create a new column for ratios
     df['Ratios'] = pd.Series(dtype='float64')
 
     # Iterate through each row in the DataFrame
     for index, row in df.iterrows():
         lipid = row['Lipid']
-        label = row['Labels']
+        label = row['db_pos']
         intensity = row['OzESI_Intensity']
         sample_id = row['Sample_ID']
 
         # Check if the label is n-9
         if label == 'n-9':
-            # Find the corresponding row with n-7 label and same lipid name
-            n7_row = df[(df['Lipid'] == lipid) & (df['Labels'] == 'n-7')& (df['Sample_ID'] == sample_id)]
+            # Find the corresponding row with n-7 label and same lipid name and Sample_ID
+            n7_row = df[(df['Lipid'] == lipid) & (df['db_pos'] == 'n-7')& (df['Sample_ID'] == sample_id)]
 
             # If a matching row is found, calculate the intensity ratio
             if not n7_row.empty:
@@ -417,20 +444,33 @@ def calculate_intensity_ratio(df):
 
     return df
 
-#filtering df_matched for name but not removing the n-7 ratios
+
 def sort_by_second_tg(lipid):
+    """
+    Helper function that sorts lipid names by second triglyceride, if present.
+
+    :param lipid: string of lipid names.
+    :return: Second triglyceride if present, else returns original lipid.
+    """
     tgs = lipid.split(',')
     if len(tgs) > 1:
         return tgs[1]
     else:
         return lipid
 
+
 def filter_highest_ratios(df):
+    """
+    Filters the DataFrame to keep only rows with the highest ratio value for each unique Sample_ID and lipid.
+
+    :param df: DataFrame containing lipid information and intensity ratios.
+    :return: Filtered DataFrame.
+    """
     # Sort the DataFrame by ratios in descending order
     df_sorted = df.sort_values(by='Ratios', ascending=False)
 
     # Drop duplicates keeping the first occurrence (highest ratio)
-    df_filtered = df_sorted.drop_duplicates(subset=['Sample_ID', 'Lipid','Labels'], keep='first')
+    df_filtered = df_sorted.drop_duplicates(subset=['Sample_ID', 'Lipid','db_pos'], keep='first')
     df_filtered = df_filtered.sort_values(by=['Sample_ID', 'Lipid'], ascending=[True, True])
 
     return df_filtered
