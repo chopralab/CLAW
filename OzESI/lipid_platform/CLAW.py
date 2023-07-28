@@ -237,18 +237,200 @@ def save_dataframe(df, Project_results, file_name_to_save, max_attempts=5):
 
 
 
+# def full_parse(data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std=True, save_data=False):
+#     mrm_database = read_mrm_list(data_base_name_location, remove_std=remove_std)
+#     df = mzml_parser(Project_Folder_data)
+#     df_matched = match_lipids_parser(mrm_database, df, tolerance=tolerance)
+    
+#     if save_data:
+#         save_dataframe(df_matched, Project_results, file_name_to_save)
+
+#     return df_matched
+
+
 def full_parse(data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std=True, save_data=False):
     mrm_database = read_mrm_list(data_base_name_location, remove_std=remove_std)
-    df = mzml_parser(Project_Folder_data)
+    
+    # Capture both dataframes returned by mzml_parser
+    df, OzESI_time_df = mzml_parser(Project_Folder_data)
+    
+    # Use the df dataframe in match_lipids_parser
     df_matched = match_lipids_parser(mrm_database, df, tolerance=tolerance)
     
     if save_data:
         save_dataframe(df_matched, Project_results, file_name_to_save)
 
-    return df_matched
+    # If you need to use OzESI_time_df elsewhere in this function, you can do so here
+
+    return df_matched, OzESI_time_df
 
 
 
 
+def filter_rt(df):
+    """
+    Filters the DataFrame based on retention times and aggregates by max intensity for unique 'Sample_ID' and 'Transition' combinations.
+    
+    Parameters:
+        df (pd.DataFrame): Input DataFrame with columns 'Retention_Time' and 'OzESI_Intensity'.
+        
+    Returns:
+        pd.DataFrame: Filtered and aggregated DataFrame.
+    """
+    # Filter based on retention time
+    filtered_df = df[(df['Retention_Time'] > 10.0) & (df['Retention_Time'] < 16.0)].copy()
+
+    # Round the values
+    filtered_df['Retention_Time'] = filtered_df['Retention_Time'].round(2)
+    filtered_df['OzESI_Intensity'] = filtered_df['OzESI_Intensity'].round(0)
+
+    # Aggregate by max intensity for unique combinations of 'Sample_ID' and 'Transition'
+    filtered_df = filtered_df.groupby(['Sample_ID', 'Transition']).apply(
+        lambda x: x.loc[x['OzESI_Intensity'].idxmax()]).reset_index(drop=True)
+
+    return filtered_df
+
+def concat_dataframes(df_matched, filtered_df):
+    """
+    Concatenates two DataFrames along the columns.
+    
+    Parameters:
+        df_matched (pd.DataFrame): First DataFrame.
+        filtered_df (pd.DataFrame): Second DataFrame, only the 'Retention_Time' and 'OzESI_Intensity' columns will be used.
+        
+    Returns:
+        pd.DataFrame: Concatenated DataFrame.
+    """
+    return pd.concat([df_matched, filtered_df[['Retention_Time', 'OzESI_Intensity']]], axis=1)
+
+def DB_Position_df(df_matched_2, OzESI_list=[7,9,12]):
+    """
+    Creates a new DataFrame to store the DB_Position and Aldehyde_Ion values,
+    and calculate n-i values for the given OzESI_list.
+    
+    Parameters:
+        df_matched_2 (pd.DataFrame): Input DataFrame.
+        OzESI_list (list): List of OzESI positions.
+        
+    Returns:
+        pd.DataFrame: Modified DataFrame with new calculated columns.
+    """
+    # Create a new DataFrame to store the DB_Position and Aldehyde_Ion values
+    df_DB_position = pd.DataFrame(columns=['DB_Position','Aldehyde_Ion'])
+
+    # Loop over the range of DB_Position values and calculate the corresponding Aldehyde_Ion values
+    for i in range(3, 21):
+        df_DB_position.loc[i, 'DB_Position'] = i
+        df_DB_position.loc[i, 'Aldehyde_Ion'] = 26 + (14 * (i-3))
+
+    # Loop through OzESI_list
+    for i in OzESI_list:
+        # Retrieve the Aldehyde_Ion value for the current DB_Position
+        aldehyde_ion = df_DB_position.loc[df_DB_position["DB_Position"] == i, "Aldehyde_Ion"].values[0]
+
+        # Calculate n-i values
+        df_matched_2["n-{}".format(i)] = df_matched_2["Parent_Ion"] - aldehyde_ion
+
+    return df_matched_2
 
 
+def within_tolerance(a, b, tolerance=0.3):
+    return abs(a - b) <= tolerance
+columns = [
+    'Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class',
+    'Sample_ID', 'Retention_Time', 'Intensity_OzESI', 'Mean_Retention_Time',
+    'Mean_Intensity_OzESI', 'n-7', 'n-9', 'n-12', 'Labels'
+]
+df_OzESI_n = pd.DataFrame(columns=columns)
+
+#Function to add lipid name
+def add_lipid_info(df_matched_2, OzESI_list, tolerance=0.3):
+    df_test = df_matched_2.copy()
+    df_test_2 = df_matched_2.copy()
+    global df_OzESI_n
+    
+    for i in OzESI_list:
+        df_test['n-' + str(i)] = df_test['n-' + str(i)].astype(float)
+    
+    for i in range(len(df_test)):
+        if pd.isna(df_test.loc[i, 'Lipid']):
+            parent_ion = df_test.loc[i, 'Parent_Ion']
+            
+            for j in range(len(df_test)):
+                row_data = df_test.loc[j].copy()
+                if within_tolerance(parent_ion, row_data['n-7'], tolerance) and isinstance(row_data['Lipid'], str):
+                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
+                    df_test.loc[i, 'Labels'] = 'n-7' + row_data['Labels']
+                    
+                    # Append to df_test_2
+                    appended_row = df_test.loc[i].copy()
+                    appended_row['Labels'] = 'n-7' + row_data['Labels']
+                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
+                    
+                elif within_tolerance(parent_ion, row_data['n-9'], tolerance) and isinstance(row_data['Lipid'], str):
+                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
+                    df_test.loc[i, 'Labels'] = 'n-9' + row_data['Labels']
+                    
+                    # Append to df_test_2
+                    appended_row = df_test.loc[i].copy()
+                    appended_row['Labels'] = 'n-9' + row_data['Labels']
+                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
+                    
+                elif within_tolerance(parent_ion, row_data['n-12'], tolerance) and isinstance(row_data['Lipid'], str):
+                    df_test.loc[i, 'Lipid'] = row_data['Lipid']
+                    df_test.loc[i, 'Labels'] = 'n-12' + row_data['Labels']
+                    
+                    # Append to df_test_2
+                    appended_row = df_test.loc[i].copy()
+                    appended_row['Labels'] = 'n-12' + row_data['Labels']
+                    df_test_2 = df_test_2.append(appended_row, ignore_index=True)
+    
+    df_test_2.dropna(subset=['Lipid'], inplace=True)
+    return df_test_2
+
+
+
+
+def calculate_intensity_ratio(df):
+    # Create a new column for ratios
+    df['Ratios'] = pd.Series(dtype='float64')
+
+    # Iterate through each row in the DataFrame
+    for index, row in df.iterrows():
+        lipid = row['Lipid']
+        label = row['Labels']
+        intensity = row['OzESI_Intensity']
+        sample_id = row['Sample_ID']
+
+        # Check if the label is n-9
+        if label == 'n-9':
+            # Find the corresponding row with n-7 label and same lipid name
+            n7_row = df[(df['Lipid'] == lipid) & (df['Labels'] == 'n-7')& (df['Sample_ID'] == sample_id)]
+
+            # If a matching row is found, calculate the intensity ratio
+            if not n7_row.empty:
+                n7_intensity = n7_row['OzESI_Intensity'].values[0]
+                ratio = intensity / n7_intensity
+
+                # Assign the ratio to the 'Ratios' column
+                df.at[index, 'Ratios'] = ratio
+
+    return df
+
+#filtering df_matched for name but not removing the n-7 ratios
+def sort_by_second_tg(lipid):
+    tgs = lipid.split(',')
+    if len(tgs) > 1:
+        return tgs[1]
+    else:
+        return lipid
+
+def filter_highest_ratios(df):
+    # Sort the DataFrame by ratios in descending order
+    df_sorted = df.sort_values(by='Ratios', ascending=False)
+
+    # Drop duplicates keeping the first occurrence (highest ratio)
+    df_filtered = df_sorted.drop_duplicates(subset=['Sample_ID', 'Lipid','Labels'], keep='first')
+    df_filtered = df_filtered.sort_values(by=['Sample_ID', 'Lipid'], ascending=[True, True])
+
+    return df_filtered
