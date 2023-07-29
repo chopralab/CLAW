@@ -13,7 +13,7 @@ To get started with CLAW, follow these steps:
 
 2. **Project Folder**: Organize your lipidomics project by creating a project folder. This directory will serve as the central location for all project-related files, including raw data, processed results, plots, and other data files.
 
-3. **Workflow**: Utilize the main components of CLAW, such as the Python notebook `Lipid_MRM_parser_v2.ipynb` and the R script `main_code.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
+3. **Workflow**: Utilize the main components of CLAW, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
 
 ## Folder Structure
 
@@ -42,7 +42,7 @@ This repository contains R and Python code for analyzing and visualizing lipid d
 
 ## Python Code (Lipid_MRM_parser_v2.ipynb)
 
-The `Lipid_MRM_parser_v2.ipynb` Jupyter Notebook presents a Python-based pipeline for processing and analyzing lipid data. The notebook imports various libraries for data processing and visualization. The key steps in the notebook are as follows:
+The `Lipid_MRM_parser.ipynb` Jupyter Notebook presents a Python-based pipeline for processing and analyzing lipid data. The notebook imports various libraries for data processing and visualization. The key steps in the notebook are as follows:
 
 1. Loading and filtering data: The code imports data from a lipid database and mzML files, and then filters and organizes the data for further analysis.
 
@@ -54,7 +54,7 @@ The `Lipid_MRM_parser_v2.ipynb` Jupyter Notebook presents a Python-based pipelin
 
 ## R Code (main_code.R)
 
-The `main_code.R` file contains R scripts for lipid data analysis and visualization. The code is organized into the following sections:
+The `edgeR.R` file contains R scripts for lipid data analysis and visualization. The code is organized into the following sections:
 
 1. Libraries and Initial Setup: The code loads required R libraries and sets up the working directory.
 
