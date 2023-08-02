@@ -1,3 +1,5 @@
+import pandas as pd
+
 def plot_ratios(df, color_mapping, output_directory):
     """
     Plots the ratios of lipids for each unique Sample_ID in the given DataFrame.
@@ -75,3 +77,29 @@ def plot_ratios(df, color_mapping, output_directory):
             index += 1
 
         fig.write_image(file_name)
+
+
+
+
+def printed_ratios(df_OzESI_ratio_sort):
+    """
+    Prints the Lipid, Sample_ID, db_pos, and Ratios for each row in the given DataFrame.
+
+    Parameters:
+        df_OzESI_ratio_sort (pd.DataFrame): DataFrame with columns 'Lipid', 'Sample_ID', 'db_pos', and 'Ratios'.
+
+    Returns:
+        None
+    """
+    # Iterate through each row in the DataFrame
+    for index, row in df_OzESI_ratio_sort.iterrows():
+        # Extract Lipid, Sample_ID, Labels and Ratios from the row
+        lipid = row['Lipid']
+        sample_id = row['Sample_ID']
+        db_pos = row['db_pos']
+        ratios = row['Ratios']
+
+        # Check if ratios is not NaN
+        if not pd.isna(ratios):
+            # Print out the values
+            print(f'Lipid: {lipid}, Sample_ID: {sample_id}, db_pos: {db_pos}, Ratios: {ratios}')

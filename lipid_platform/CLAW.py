@@ -18,7 +18,17 @@ import ipywidgets as widgets
 import warnings
 import time
 import shutil
-import os
+
+
+
+
+def create_dataframes():
+    time_and_intensity_df = pd.DataFrame(columns=['Time', 'Intensity'])
+    master_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Sample_ID'])
+    OzESI_time_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
+    
+    return time_and_intensity_df, master_df, OzESI_time_df
+
 
 
 def pre_parsing_setup(data_base_name_location, Project, Project_Name, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std, save_data):
@@ -97,14 +107,6 @@ def read_mrm_list(filename,remove_std = True):
     
     return mrm_list_offical
 
-
-from collections import defaultdict
-import os
-import numpy as np
-import pandas as pd
-import pymzml
-
-
 def create_ion_dict(mrm_database):
     """
     Creates a dictionary of ions from an MRM database DataFrame.
@@ -119,70 +121,93 @@ def create_ion_dict(mrm_database):
     return ion_dict
 
 
-OzESI_time_df = pd.DataFrame(columns=['Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class', 'Sample_ID', 'Retention_Time', 'OzESI_Intensity'])
 
-def mzml_parser(file_name):
-    """
-    Parses mzML files to extract and store necessary information into a DataFrame.
-    
-    :param file_name: The path of the mzML file.
-    
-    :return: Two pandas DataFrames - 'df' containing aggregated ion intensity data, and 'OzESI_time_df' containing time-resolved ion intensity data.
-    """
-    global OzESI_time_df  # Declare OzESI_time_df as a global variable
+# Declare the DataFrame globally if it's used across multiple functions
+time_and_intensity_df = pd.DataFrame(columns=['Time', 'Intensity'])
+master_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Sample_ID'])
+OzESI_time_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
+
+def mzml_parser(file_path, plot_chromatogram=False):
+    global master_df
+    global OzESI_time_df
+    global time_and_intensity_df
     
     rows = []
     ozesi_rows = []
     
-    data_folder = os.listdir(file_name)
+    run = pymzml.run.Reader(file_path, skip_chromatogram=False)
+    q1_mz = 0
+    q3_mz = 0
+
+    for spectrum in run:
+        for element in spectrum.ID.split(' '):
+            if 'Q1' in element:
+                q1 = element.split('=')
+                q1_mz = np.round(float(q1[1]), 1)
+
+            if 'Q3' in element:
+                q3 = element.split('=')
+                q3_mz = np.round(float(q3[1]), 1)
+
+                ##############
+                # Plotting chromatogram if the condition is met and plot_chromatogram is True
+                if plot_chromatogram and within_tolerance(q1_mz, 876.6) and within_tolerance(q3_mz, 577.6):
+                    times, intensities = zip(*spectrum.peaks())
+                    plt.plot(times, intensities)
+                    plt.xlabel('Time')
+                    plt.ylabel('Intensity')
+                    plt.title('Chromatogram for 876.6 -> 577.6')
+                    plt.show()
+                ###########
+
+                intensity_store = np.array([intensity for _, intensity in spectrum.peaks()])
+                intensity_sum = np.sum(intensity_store)
+                
+                transition = f"{q1_mz} -> {q3_mz}"
+                sample_id = os.path.basename(file_path)[:-5]
+                
+                rows.append({
+                    'Parent_Ion': q1_mz,
+                    'Product_Ion': q3_mz,
+                    'Intensity': intensity_sum,
+                    'Transition': transition,
+                    'Sample_ID': sample_id
+                })
+                
+                for time, intensity in spectrum.peaks():
+                    ozesi_rows.append({
+                        'Parent_Ion': q1_mz,
+                        'Product_Ion': q3_mz,
+                        'Retention_Time': time,
+                        'OzESI_Intensity': intensity,
+                        'Sample_ID': sample_id,
+                        'Transition': transition
+                    })
+                           
+    df = pd.DataFrame(rows)
+    # OzESI_time_df = pd.DataFrame(ozesi_rows)
+    # Append the new rows to the existing global OzESI_time_df
+    OzESI_time_df = OzESI_time_df.append(pd.DataFrame(ozesi_rows), ignore_index=True)
+    master_df = master_df.append(df, ignore_index=True)
+    print(f'Finished parsing mzML file: {file_path}\n')
+
+
+def mzml_parser_batch(folder_name, plot_chromatogram=False):
+    global master_df
+    global time_and_intensity_df
+    
+    data_folder = os.listdir(folder_name)
     data_folder.sort()
-    path_to_mzml_files = file_name
 
     for file in data_folder:
         if file.endswith('.mzML'):
-            run = pymzml.run.Reader(path_to_mzml_files + file, skip_chromatogram=False)
-            q1_mz = 0
-            q3_mz = 0
+            file_path = os.path.join(folder_name, file)
+            mzml_parser(file_path, plot_chromatogram=plot_chromatogram)  # Pass the flag here
+    
+    print('Finished parsing all mzML files\n')
 
-            for spectrum in run:
-                for element in spectrum.ID.split(' '):
-                    
-                    if 'Q1' in element:
-                        q1 = element.split('=')
-                        q1_mz = np.round(float(q1[1]), 1)
-                    
-                    if 'Q3' in element:
-                        q3 = element.split('=')
-                        q3_mz = np.round(float(q3[1]), 1)
-                        
-                        intensity_store = np.array([intensity for _, intensity in spectrum.peaks()])
-                        intensity_sum = np.sum(intensity_store)
-                        
-                        transition = f"{q1_mz} -> {q3_mz}"
-                        sample_id = file[:-5]
-                        
-                        rows.append({
-                            'Parent_Ion': q1_mz,
-                            'Product_Ion': q3_mz,
-                            'Intensity': intensity_sum,
-                            'Transition': transition,
-                            'Sample_ID': sample_id
-                        })
-                        
-                        for time, intensity in spectrum.peaks():
-                            ozesi_rows.append({
-                                'Parent_Ion': q1_mz,
-                                'Product_Ion': q3_mz,
-                                'Retention_Time': time,
-                                'OzESI_Intensity': intensity,
-                                'Sample_ID': sample_id,
-                                'Transition': transition
-                            })
 
-    df = pd.DataFrame(rows)
-    OzESI_time_df = pd.DataFrame(ozesi_rows)
-    print('Finished parsing mzML files\n')
-    return df, OzESI_time_df
+
 
 
 def within_tolerance(a, b, tolerance=0.3):
@@ -265,30 +290,47 @@ def save_dataframe(df, Project_results, file_name_to_save, max_attempts=5):
         return None
 
 
-def full_parse(data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std=True, save_data=False):
+
+def full_parse(data_base_name_location, 
+               Project_Folder_data, 
+               Project_results, 
+               file_name_to_save, 
+               tolerance, 
+               remove_std=True, 
+               save_data=False, 
+               batch_processing=True,
+               plot_chromatogram=False):
     """
     Performs the complete parsing and data matching process for given inputs.
     
     :param data_base_name_location: Location of the MRM database file to be read.
-    :param Project_Folder_data: The project folder containing data to be parsed.
+    :param Project_Folder_data: The project folder containing data to be parsed (folder path or single file path).
     :param Project_results: The project directory to save results in.
     :param file_name_to_save: The desired filename for the saved DataFrame.
     :param tolerance: The acceptable difference between ion values to be considered a match.
     :param remove_std: A flag to indicate whether standard lipid classes should be removed. Defaults to True.
     :param save_data: A flag to indicate whether the matched data should be saved. Defaults to False.
+    :param batch_processing: A flag to indicate whether to process a batch of files (directory) or a single file. Defaults to True.
     
     :return: Tuple containing matched DataFrame and OzESI DataFrame.
     """
+    global master_df
     mrm_database = read_mrm_list(data_base_name_location, remove_std=remove_std)
     
-    df, OzESI_time_df = mzml_parser(Project_Folder_data)
+    # Batch processing
+    if batch_processing:
+        mzml_parser_batch(Project_Folder_data, plot_chromatogram=plot_chromatogram)  
+    # Single file processing
+    else:
+        mzml_parser(Project_Folder_data, plot_chromatogram=plot_chromatogram) 
     
-    df_matched = match_lipids_parser(mrm_database, df, tolerance=tolerance)
+    df_matched = match_lipids_parser(mrm_database, master_df, tolerance=tolerance)
     
     if save_data:
         save_dataframe(df_matched, Project_results, file_name_to_save)
 
     return df_matched, OzESI_time_df
+
 
 
 
@@ -357,15 +399,6 @@ def DB_Position_df(df_matched_2, OzESI_list=[7,9,12]):
         df_matched_2["n-{}".format(i)] = df_matched_2["Parent_Ion"] - aldehyde_ion
 
     return df_matched_2
-
-
-###delete this?
-# columns = [
-#     'Lipid', 'Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Class',
-#     'Sample_ID', 'Retention_Time', 'Intensity_OzESI', 'Mean_Retention_Time',
-#     'Mean_Intensity_OzESI', 'n-7', 'n-9', 'n-12', 'db_pos'
-# ]
-# df_OzESI_n = pd.DataFrame(columns=columns)
 
 
 def add_lipid_info(df_matched_2, OzESI_list, tolerance=0.3):
@@ -452,11 +485,14 @@ def sort_by_second_tg(lipid):
     :param lipid: string of lipid names.
     :return: Second triglyceride if present, else returns original lipid.
     """
+    if pd.isna(lipid):
+        return lipid
     tgs = lipid.split(',')
     if len(tgs) > 1:
         return tgs[1]
     else:
         return lipid
+
 
 
 def filter_highest_ratios(df):
@@ -474,3 +510,5 @@ def filter_highest_ratios(df):
     df_filtered = df_filtered.sort_values(by=['Sample_ID', 'Lipid'], ascending=[True, True])
 
     return df_filtered
+
+
