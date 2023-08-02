@@ -22,12 +22,21 @@ import shutil
 
 
 
-def create_dataframes():
-    time_and_intensity_df = pd.DataFrame(columns=['Time', 'Intensity'])
-    master_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Sample_ID'])
-    OzESI_time_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
+def create_analysis_dataframes():
+    """
+    Creates and returns three DataFrames for storing time-intensity data, master data, and OzESI time data.
+
+    Returns:
+        pd.DataFrame: DataFrame for storing time and intensity values.
+        pd.DataFrame: Master DataFrame for storing parent ion, product ion, intensity, transition, and sample ID.
+        pd.DataFrame: DataFrame for storing OzESI (OzID Electron Spray Ionization) data including parent ion, product ion, retention time, intensity, sample ID, and transition.
+    """
+    time_intensity_dataframe = pd.DataFrame(columns=['Time', 'Intensity'])
+    master_lipid_dataframe = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Sample_ID'])
+    OzESI_time_dataframe = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
     
-    return time_and_intensity_df, master_df, OzESI_time_df
+    return time_intensity_dataframe, master_lipid_dataframe, OzESI_time_dataframe
+
 
 
 
@@ -72,40 +81,45 @@ def pre_parsing_setup(data_base_name_location, Project, Project_Name, Project_Fo
     return data_base_name_location, Project_Folder_data, Project_results, file_name_to_save, tolerance, remove_std, save_data
 
 
-def read_mrm_list(filename,remove_std = True):
+def read_mrm_list(filename, remove_std=True, deuterated=False):
     """
-    A function that reads a Multi Reaction Monitoring (MRM) list from an Excel file, formats the data, 
-    and filters out certain lipid classes if required.
+    Reads a Multiple Reaction Monitoring (MRM) lipid database from an Excel file and processes the data.
 
-    :param filename: The path of the Excel file containing the MRM list.
-    :param remove_std: A boolean indicating whether or not to filter out certain lipid classes. Defaults to True.
+    Parameters:
+        filename (str): The path to the Excel file containing the MRM list.
+        remove_std (bool): Whether to exclude lipid classes not in a predefined list.
+        deuterated (bool): Whether to adjust ion values for deuterated lipids.
 
-    :return: The formatted and filtered MRM list as a pandas DataFrame.
+    Returns:
+        pd.DataFrame: A DataFrame containing processed MRM lipid data.
     """
+    # Concatenate all sheets from the Excel file into one DataFrame
+    raw_mrm_data = pd.read_excel(filename, sheet_name=None)
+    concatenated_mrm_data = pd.concat(raw_mrm_data, ignore_index=True)
+
+    # Extract the required columns and rename them
+    lipid_MRM_data = concatenated_mrm_data[['Compound Name', 'Parent Ion', 'Product Ion', 'Class']]
+    lipid_MRM_data.columns = lipid_MRM_data.columns.str.replace(' ', '_')
+    lipid_MRM_data['Parent_Ion'] = np.round(lipid_MRM_data['Parent_Ion'], 1)
+    lipid_MRM_data['Product_Ion'] = np.round(lipid_MRM_data['Product_Ion'], 1)
+    lipid_MRM_data['Transition'] = lipid_MRM_data['Parent_Ion'].astype(str) + ' -> ' + lipid_MRM_data['Product_Ion'].astype(str)
+    lipid_MRM_data = lipid_MRM_data.rename(columns={'Compound_Name': 'Lipid'})
+
+    # Optionally filter the data to keep only specific lipid classes
+    if remove_std:
+        lipid_classes_to_keep = ['PS', 'PG', 'CE', 'PC', 'DAG', 'PE', 'TAG', 'FA', 'Cer', 'CAR', 'PI', 'SM']
+        lipid_MRM_data = lipid_MRM_data[lipid_MRM_data['Class'].isin(lipid_classes_to_keep)]
+
+    # Optionally adjust the ion values for deuterated lipids
+    if deuterated:
+        lipid_MRM_data['Parent_Ion'] += 1
+        lipid_MRM_data['Product_Ion'] += 1
+        # Update the Transition column with the updated values
+        lipid_MRM_data['Transition'] = lipid_MRM_data['Parent_Ion'].astype(str) + ' -> ' + lipid_MRM_data['Product_Ion'].astype(str)
     
-    mrm_list_new = pd.read_excel(filename, sheet_name=None)
-    mrm_list_new = pd.concat(mrm_list_new, ignore_index=True)
-    mrm_list_offical = mrm_list_new[['Compound Name', 'Parent Ion', 'Product Ion', 'Class']]
-    
-    # Add underscore to middle of columns names
-    mrm_list_offical.columns = mrm_list_offical.columns.str.replace(' ', '_')
-    
-    # Round Parent Ion and Product Ion to 1 decimal place
-    mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)
-    mrm_list_offical['Product_Ion'] = np.round(mrm_list_offical['Product_Ion'],1)
-    
-    # Create transition column by combining Parent Ion and Product Ion with arrow between numbers
-    mrm_list_offical['Transition'] = mrm_list_offical['Parent_Ion'].astype(str) + ' -> ' + mrm_list_offical['Product_Ion'].astype(str)
-    
-    # Change column compound name to lipid
-    mrm_list_offical = mrm_list_offical.rename(columns={'Compound_Name': 'Lipid'})
-    
-    # Filter the DataFrame based on lipid class, if required
-    if remove_std == True:
-        lipid_class_to_keep = ['PS','PG','CE','PC', 'DAG', 'PE', 'TAG', 'FA', 'Cer', 'CAR', 'PI','SM']
-        mrm_list_offical = mrm_list_offical[mrm_list_offical['Class'].isin(lipid_class_to_keep)]
-    
-    return mrm_list_offical
+    return lipid_MRM_data
+
+
 
 def create_ion_dict(mrm_database):
     """
@@ -125,7 +139,7 @@ def create_ion_dict(mrm_database):
 # Declare the DataFrame globally if it's used across multiple functions
 time_and_intensity_df = pd.DataFrame(columns=['Time', 'Intensity'])
 master_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Intensity', 'Transition', 'Sample_ID'])
-OzESI_time_df = pd.DataFrame(columns=['Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
+OzESI_time_df = pd.DataFrame(columns=['Lipid','Parent_Ion', 'Product_Ion', 'Retention_Time', 'OzESI_Intensity', 'Sample_ID', 'Transition'])
 
 def mzml_parser(file_path, plot_chromatogram=False):
     global master_df
@@ -205,8 +219,6 @@ def mzml_parser_batch(folder_name, plot_chromatogram=False):
             mzml_parser(file_path, plot_chromatogram=plot_chromatogram)  # Pass the flag here
     
     print('Finished parsing all mzML files\n')
-
-
 
 
 
@@ -370,79 +382,80 @@ def concat_dataframes(df_matched, filtered_df):
     """
     return pd.concat([df_matched, filtered_df[['Retention_Time', 'OzESI_Intensity']]], axis=1)
 
-def DB_Position_df(df_matched_2, OzESI_list=[7,9,12]):
+def calculate_DB_Position(df_matched_ions, db_pos_list=[7,9,12]):
     """
     Creates a new DataFrame to store the DB_Position and Aldehyde_Ion values,
-    and calculate n-i values for the given OzESI_list.
+    and calculate n-i values for the given db_pos_list.
     
     Parameters:
-        df_matched_2 (pd.DataFrame): Input DataFrame.
-        OzESI_list (list): List of OzESI positions.
+        df_matched_ions (pd.DataFrame): Input DataFrame containing matched ions.
+        db_pos_list (list): List of OzESI positions to calculate n-i values.
         
     Returns:
-        pd.DataFrame: Modified DataFrame with new calculated columns.
+        pd.DataFrame: Modified DataFrame with new calculated columns for n-i values.
     """
-    # Create a new DataFrame to store the DB_Position and Aldehyde_Ion values
-    df_DB_position = pd.DataFrame(columns=['DB_Position','Aldehyde_Ion'])
+    # Create a DataFrame to store the DB_Position and corresponding Aldehyde_Ion values
+    df_DB_aldehyde = pd.DataFrame(columns=['DB_Position','Aldehyde_Ion'])
 
-    # Loop over the range of DB_Position values and calculate the corresponding Aldehyde_Ion values
-    for i in range(3, 21):
-        df_DB_position.loc[i, 'DB_Position'] = i
-        df_DB_position.loc[i, 'Aldehyde_Ion'] = 26 + (14 * (i-3))
+    # Loop through the range of DB_Position values to calculate the corresponding Aldehyde_Ion values
+    for position in range(3, 21):
+        df_DB_aldehyde.loc[position, 'DB_Position'] = position
+        df_DB_aldehyde.loc[position, 'Aldehyde_Ion'] = 26 + (14 * (position-3))
 
-    # Loop through OzESI_list
-    for i in OzESI_list:
-        # Retrieve the Aldehyde_Ion value for the current DB_Position
-        aldehyde_ion = df_DB_position.loc[df_DB_position["DB_Position"] == i, "Aldehyde_Ion"].values[0]
+    # Loop through the specified db_pos_list
+    for ozesi_position in db_pos_list:
+        # Retrieve the corresponding Aldehyde_Ion value for the current DB_Position
+        aldehyde_ion = df_DB_aldehyde.loc[df_DB_aldehyde["DB_Position"] == ozesi_position, "Aldehyde_Ion"].values[0]
 
-        # Calculate n-i values
-        df_matched_2["n-{}".format(i)] = df_matched_2["Parent_Ion"] - aldehyde_ion
+        # Calculate and store the n-i value for the current OzESI position
+        df_matched_ions["n-{}".format(ozesi_position)] = df_matched_ions["Parent_Ion"] - aldehyde_ion
 
-    return df_matched_2
+    return df_matched_ions
 
 
-def add_lipid_info(df_matched_2, OzESI_list, tolerance=0.3):
+
+def add_lipid_info(matched_dataframe, db_pos, tolerance=0.3):
     """
     Adds lipid information to the data frame based on matched ions within a certain tolerance.
 
-    :param df_matched_2: DataFrame containing matched lipids and ion data.
-    :param OzESI_list: List of integer values representing the positions in the OzESI list to be checked.
+    :param matched_dataframe: DataFrame containing matched lipids and ion data.
+    :param db_pos: List of integer values representing the positions in the OzESI list to be checked.
     :param tolerance: The acceptable difference between ion values to be considered a match.
 
     :return: Updated DataFrame with added lipid information.
     """
-    df_test = df_matched_2.copy()  # create a copy of the input DataFrame to avoid modifying the original data
-    df_test_2 = df_matched_2.copy()  # additional copy for final output
+    working_dataframe = matched_dataframe.copy()  # Create a copy for processing
+    final_dataframe = matched_dataframe.copy()    # Create a copy for final output
 
-    # Iterate over the provided OzESI_list and convert respective column values to float
-    for i in OzESI_list:
-        df_test['n-' + str(i)] = df_test['n-' + str(i)].astype(float)
+    # Convert respective column values to float for given db_pos
+    for position in db_pos:
+        working_dataframe['n-' + str(position)] = working_dataframe['n-' + str(position)].astype(float)
 
-    # Iterate over the rows of the DataFrame
-    for i in range(len(df_test)):
-        # If the 'Lipid' column value is NaN for the current row
-        if pd.isna(df_test.loc[i, 'Lipid']):
-            parent_ion = df_test.loc[i, 'Parent_Ion']
+    # Iterate over the rows of the DataFrame to match lipids
+    for i in range(len(working_dataframe)):
+        if pd.isna(working_dataframe.loc[i, 'Lipid']):
+            parent_ion = working_dataframe.loc[i, 'Parent_Ion']
 
-            # Iterate over the rows again to find a match
-            for j in range(len(df_test)):
-                row_data = df_test.loc[j].copy()
-                
+            # Look for matching ions within tolerance
+            for j in range(len(working_dataframe)):
+                current_row = working_dataframe.loc[j].copy()
+
                 # If the parent ion is within tolerance and the Lipid column is a string
                 for n in [7, 9, 12]:
-                    if within_tolerance(parent_ion, row_data[f'n-{n}'], tolerance) and isinstance(row_data['Lipid'], str):
-                        df_test.loc[i, 'Lipid'] = row_data['Lipid']
-                        df_test.loc[i, 'db_pos'] = f'n-{n}' + row_data['db_pos']
+                    if within_tolerance(parent_ion, current_row[f'n-{n}'], tolerance) and isinstance(current_row['Lipid'], str):
+                        working_dataframe.loc[i, 'Lipid'] = current_row['Lipid']
+                        working_dataframe.loc[i, 'db_pos'] = f'n-{n}' + current_row['db_pos']
 
-                        # Append to df_test_2
-                        appended_row = df_test.loc[i].copy()
-                        appended_row['db_pos'] = f'n-{n}' + row_data['db_pos']
-                        df_test_2 = df_test_2.append(appended_row, ignore_index=True)
+                        # Append to the final_dataframe
+                        appended_row = working_dataframe.loc[i].copy()
+                        appended_row['db_pos'] = f'n-{n}' + current_row['db_pos']
+                        final_dataframe = final_dataframe.append(appended_row, ignore_index=True)
 
-    # Drop rows in df_test_2 where 'Lipid' column value is NaN
-    df_test_2.dropna(subset=['Lipid'], inplace=True)
+    # Drop rows in the final_dataframe where 'Lipid' column value is NaN
+    final_dataframe.dropna(subset=['Lipid'], inplace=True)
 
-    return df_test_2
+    return final_dataframe
+
 
 
 def calculate_intensity_ratio(df):
@@ -450,10 +463,10 @@ def calculate_intensity_ratio(df):
     Calculates the intensity ratio for each lipid in the DataFrame, based on their 'OzESI_Intensity'.
 
     :param df: DataFrame containing lipid information and intensity values.
-    :return: Updated DataFrame with added 'Ratios' column.
+    :return: Updated DataFrame with added 'ratio' column.
     """
-    # Create a new column for ratios
-    df['Ratios'] = pd.Series(dtype='float64')
+    # Create a new column for ratio
+    df['Ratio'] = pd.Series(dtype='float64')
 
     # Iterate through each row in the DataFrame
     for index, row in df.iterrows():
@@ -472,8 +485,8 @@ def calculate_intensity_ratio(df):
                 n7_intensity = n7_row['OzESI_Intensity'].values[0]
                 ratio = intensity / n7_intensity
 
-                # Assign the ratio to the 'Ratios' column
-                df.at[index, 'Ratios'] = ratio
+                # Assign the ratio to the 'ratio' column
+                df.at[index, 'Ratio'] = ratio
 
     return df
 
@@ -495,15 +508,15 @@ def sort_by_second_tg(lipid):
 
 
 
-def filter_highest_ratios(df):
+def filter_highest_ratio(df):
     """
     Filters the DataFrame to keep only rows with the highest ratio value for each unique Sample_ID and lipid.
 
-    :param df: DataFrame containing lipid information and intensity ratios.
+    :param df: DataFrame containing lipid information and intensity ratio.
     :return: Filtered DataFrame.
     """
-    # Sort the DataFrame by ratios in descending order
-    df_sorted = df.sort_values(by='Ratios', ascending=False)
+    # Sort the DataFrame by ratio in descending order
+    df_sorted = df.sort_values(by='Ratio', ascending=False)
 
     # Drop duplicates keeping the first occurrence (highest ratio)
     df_filtered = df_sorted.drop_duplicates(subset=['Sample_ID', 'Lipid','db_pos'], keep='first')
