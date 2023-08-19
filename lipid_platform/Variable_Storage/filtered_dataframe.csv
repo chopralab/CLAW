@@ -1,32 +1,23 @@
-,Sample Name,Position,Genotype,Brain Region,Sex
-3,DOD100-M1-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
-4,DOD100-M1-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
-5,DOD100-M1-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
-6,DOD100-M1-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
-7,DOD100-M2-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-8,DOD100-M2-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
-9,DOD100-M2-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-10,DOD100-M2-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-11,DOD100-M3-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-12,DOD100-M3-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-13,DOD100-M3-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-14,DOD99-M1-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-15,DOD99-M1-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
-16,DOD99-M1-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-17,DOD99-M1-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-18,DOD99-M2-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
-19,DOD99-M2-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
-20,DOD99-M2-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
-21,DOD99-M2-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
-22,M1FAD173-5xFAD-Cortex10x_01182023,Not Needed,5xFAD,cortex,Male
-23,M1FAD173-5xFAD-Diencephalon10x_01182023,Not Needed,5xFAD,diencephalon,Male
-24,M1FAD173-5xFAD-Hippo10x_01182023,Not Needed,5xFAD,hippo,Male
-25,M2FAD173-5xFAD-Cerebellum10x_01192023,Not Needed,5xFAD,cerebellum,Male
-26,M2FAD173-5xFAD-Cortex10x_01192023,Not Needed,5xFAD,cortex,Male
-27,M2FAD173-5xFAD-Diencephalon10x_01192023,Not Needed,5xFAD,diencephalon,Male
-28,M2FAD173-5xFAD-Hippo10x_01192023,Not Needed,5xFAD,hippo,Male
-29,M5FAD173-WT-Cerebellum10x_01192023,Not Needed,WT,cerebellum,Male
-30,M5FAD173-WT-Cortex10x_01192023,Not Needed,WT,cortex,Male
-31,M5FAD173-WT-Diencephalon10x_01192023,Not Needed,WT,diencephalon,Male
-32,M5FAD173-WT-Hippo10x_01192023,Not Needed,WT,hippo,Male
-33,M1FAD173-5xFAD-Cerebellum10x_01182023,Not Needed,5xFAD,cerebellum,Male
+,Sample Name,Position,nickname,Sex,Genotype,time point
+0,AK0161,Test,H_KO_1,M,cKO,healthy
+1,AK0170,Test,H_KO_2,F,cKO,healthy
+2,AK0139,Test,H_KO_3,M,cKO,healthy
+3,AK0200,Test,H_KO_5,F,cKO,healthy
+4,AK0202,Test,H_KO_6,F,cKO,healthy
+5,AK0204,Test,H_KO_7,M,cKO,healthy
+6,AK0174,Test,H_WT_1,M,WT,healthy
+7,AK0145,Test,H_WT_2,F,WT,healthy
+8,AK0175,Test,H_WT_3,M,WT,healthy
+9,AK0164,Test,H_WT_4,F,WT,healthy
+10,AK0141,Test,H_WT_6,F,WT,healthy
+11,AK0135,Test,I_KO_1,M,cKO,28d ISCI
+12,AK0140,Test,I_KO_2,M,cKO,28d ISCI
+13,AK0169,Test,I_KO_3,M,cKO,28d ISCI
+14,AK0142,Test,I_KO_4,F,cKO,28d ISCI
+15,AK0157,Test,I_KO_5,F,cKO,28d ISCI
+16,AK0155,Test,I_WT_1,M,WT,28d ISCI
+17,AK0147,Test,I_WT_2,F,WT,28d ISCI
+18,AK0154,Test,I_WT_3,M,WT,28d ISCI
+19,AK0144,Test,I_WT_4,F,WT,28d ISCI
+20,AK0168,Test,I_WT_5,M,WT,28d ISCI
+21,AK0166,Test,I_WT_6,F,WT,28d ISCI
