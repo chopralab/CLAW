@@ -170,10 +170,10 @@ for (jj in file_list){
   names(cl_e1_tbl)
   names(xx)
   cl_e1_tbl
-  # lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG")
+  # lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TG")
   # lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a")
   # 
-  lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TAG",'DAG','TAG | DAG','DAG | CE','TAG | DAG | CE')
+  lipid_classes <- c("CAR", "CE", "Cer", "FA", "PC", "PE", "PG", "PI", "PS", "SM", "TG",'DAG','TG | DAG','DAG | CE','TAG | DAG | CE')
   lipid_colors <- c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#808080", "#cab2d6", "#6a3d9a",'#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3')
   
   
@@ -188,7 +188,7 @@ for (jj in file_list){
     geom_vline(xintercept = 0, linetype = "dashed") +
     theme_classic() +
     ggtitle(title_for_plot)+
-    xlab("Fold change, lipids all") +
+    xlab("LogFC") +
     ylab("") +#xlim(-2, 4)+
     scale_alpha(guide = 'none') +
     # scale_fill_discrete(name = "Lipid class", guide = 'none') +

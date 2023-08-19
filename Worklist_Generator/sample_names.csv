@@ -1,8 +1,9 @@
-﻿Sample Name,Position,Dilution Factor,Genotype
-IPA,P1-A1,IPA,IPA
-Blank,P1-A2,Blank,Blank
-FAD 131 M4 5xFAD LD Liver,p1-B1,100x,5xFAD
-DOD73 M2 5xFAD LD Liver,p1-B2,100x,5xFAD
-FAD 173 M1 5xFAD LD Liver,p1-B3,100x,5xFAD
-FAD 131 M1 5xFAD LD Liver,p1-B4,100x,5xFAD
-FAD 131 M2 5xFAD LD Liver,p1-B5,100x,5xFAD
+﻿Sample Name,Position,Dilution Factor,Sample Type
+IPA,p1-a1,,
+Blank,p1-a2,500X,
+Splash,p1-a3,500X,QC
+FAD131 M4 5xFAD,p1-a4,500X,Liver LD
+FAD131 M1 5xFAD,p1-a5,500X,Liver LD
+FAD131 M2 5xFAD,p1-a6,500X,Liver LD
+FAD173 M1 5xFAD,p1-a7,500X,Liver LD
+DOD131 M2 5xFAD,p1-a8,500X,Liver LD

@@ -6,7 +6,7 @@ CLAW (Comprehensive Lipidome Automation Workflow) is a powerful lipidomics workf
 
 To get started with CLAW, follow these steps:
 
-1. **Requirements**: Install the necessary Python libraries for `pymzml` by creating a virtual environment. Use the provided `pymzml.yml` file and run the following command:
+1. **Requirements**: Install the necessary Python libraries for `pymzml` by creating a virtual environment. Use the provided `pymzml.yml` file found in the requirements folder and run the following command:
     ```
     conda env create -f pymzml.yml
     ```
@@ -28,7 +28,7 @@ Project_Folder/
     ├── Results/               # Folder for storing final analysis results
     ├── pymzml.yml             # YAML file for conda environment and dependencies
     ├── Lipid_MRM_parser_v2.ipynb   # Python notebook for data parsing and analysis
-    ├── main_code.R            # R script for edgeR analysis and visualization
+    ├── edgeR.R            # R script for edgeR analysis and visualization
     ├── Figures/               # Folder for supporting figures (if any)
     ├── requirements/          # Folder containing other necessary files
     └── README.md              # Documentation and project overview
