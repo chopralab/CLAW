@@ -346,19 +346,25 @@ def full_parse(data_base_name_location,
 
 
 
-def filter_rt(df):
+def filter_rt(df, min_rt=10.0, max_rt=20.0, min_intensity=1000):
     """
     Filters the DataFrame based on retention times and aggregates by max intensity for unique 'Sample_ID' and 'Transition' combinations.
     
     Parameters:
         df (pd.DataFrame): Input DataFrame with columns 'Retention_Time' and 'OzESI_Intensity'.
+        min_rt (float, optional): Minimum retention time. Defaults to 10.0.
+        max_rt (float, optional): Maximum retention time. Defaults to 20.0.
+        min_intensity (float, optional): Minimum intensity value. Defaults to 1000.
         
     Returns:
         pd.DataFrame: Filtered and aggregated DataFrame.
     """
-    # Filter based on retention time
-    filtered_df = df[(df['Retention_Time'] > 10.0) & (df['Retention_Time'] < 20.0)].copy()
-
+    
+    # Filter based on retention time and intensity
+    filtered_df = df[(df['Retention_Time'] > min_rt) & 
+                     (df['Retention_Time'] < max_rt) & 
+                     (df['OzESI_Intensity'] > min_intensity)].copy()
+    
     # Round the values
     filtered_df['Retention_Time'] = filtered_df['Retention_Time'].round(2)
     filtered_df['OzESI_Intensity'] = filtered_df['OzESI_Intensity'].round(0)
@@ -366,8 +372,9 @@ def filter_rt(df):
     # Aggregate by max intensity for unique combinations of 'Sample_ID' and 'Transition'
     filtered_df = filtered_df.groupby(['Sample_ID', 'Transition']).apply(
         lambda x: x.loc[x['OzESI_Intensity'].idxmax()]).reset_index(drop=True)
-
+    
     return filtered_df
+
 
 def concat_dataframes(df_matched, filtered_df):
     """

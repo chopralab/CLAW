@@ -433,7 +433,8 @@ def subtract_blank(labels_df,matched_df,blank_name):
     # print(unique_names)
     ###Keep this line to drop the blank
     # unique_names = unique_names[unique_names != blank_name] ###This drops the blank
-    merged_df = pd.DataFrame()  
+    merged_df = pd.DataFrame()
+    #################################################  
     for name in unique_names:
         temp_df = matched_df[matched_df['Sample Name'] == name]
 #         print(len(temp_df),"TEMP")
@@ -447,10 +448,27 @@ def subtract_blank(labels_df,matched_df,blank_name):
         temp_df["Blank Subtraction"] = numbers2
 #         print(len(temp_df),"TEMP")
         merged_df = merged_df.append(temp_df)
+##############################################################
+    # for name in unique_names:
+    #     temp_df = matched_df[matched_df['Sample Name'] == name]
+        
+    #     # Merge on Lipid and Transition to ensure proper alignment
+    #     temp_df = temp_df.merge(blank_intensities_df, on=['Lipid', 'Transition'], how='left')
+        
+    #     # Fill NaN values in Blank_Intensity with 0 if there are any
+    #     temp_df['Blank_Intensity'] = temp_df['Blank_Intensity'].fillna(0)
+        
+    #     # Subtract Blank_Intensity from Intensity
+    #     temp_df['Blank Subtraction'] = temp_df['Intensity'] - temp_df['Blank_Intensity']
+    #     temp_df['Blank Subtraction'][temp_df['Blank Subtraction'] < 0] = 0
+
+    #     merged_df = merged_df.append(temp_df)
 
 
     # try:
     merged_df['Class'] = merged_df['Class'].replace({'TAG | TAG': 'TAG', 'FA | FA': 'FA'})
+    print('len', len(merged_df))
+    print('merged df', merged_df)
     return merged_df
 
     # except:

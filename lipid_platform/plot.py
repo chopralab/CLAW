@@ -1,7 +1,12 @@
 import pandas as pd
+import os
+import plotly.express as px
+import plotly.graph_objects as go
+
+import os
 import plotly.express as px
 
-def plot_ratio(df, color_mapping, output_directory):
+def plot_ratio(df, color_mapping, output_directory, ratio_threshold=1e-6):
     """
     Plots the ratio of lipids for each unique Sample_ID in the given DataFrame.
 
@@ -9,12 +14,11 @@ def plot_ratio(df, color_mapping, output_directory):
         df (pd.DataFrame): Input DataFrame with columns 'Sample_ID', 'Lipid', and 'ratio'.
         color_mapping (dict): Mapping of patterns to colors for the Lipid values.
         output_directory (str): Directory where to save the plot images.
+        ratio_threshold (float, optional): Threshold for ratio below which lipids will not be plotted. Defaults to 1e-6.
 
     Returns:
         None
     """
-    import plotly.express as px
-    import os
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
@@ -27,6 +31,9 @@ def plot_ratio(df, color_mapping, output_directory):
 
         # Filter the dataframe for the current Sample_ID
         df_sample = df[df['Sample_ID'] == sample_id]
+        
+        # Filter out lipids with a ratio below the threshold
+        df_sample = df_sample[df_sample['Ratio'] > ratio_threshold]
 
         # Assign colors to Lipids based on patterns
         lipid_colors = []
@@ -63,7 +70,7 @@ def plot_ratio(df, color_mapping, output_directory):
                 tickfont=dict(size=16)  # Set the font size of y-axis labels
             ),
             title=dict(
-                text=f'Sample_ID: {sample_id}',
+                text=f'{sample_id}',
                 font=dict(size=20)  # Set the title font size
             )
         )
@@ -78,6 +85,7 @@ def plot_ratio(df, color_mapping, output_directory):
             index += 1
 
         fig.write_image(file_name)
+
 
 
 
@@ -108,9 +116,7 @@ def printed_ratio(df_OzESI_ratio_sort):
 
 
 
-import os
-import pandas as pd
-import plotly.graph_objects as go
+
 
 def plot_chromatogram(file_path, plot_path, plot_name, x_range=None):
     # Read the CSV file

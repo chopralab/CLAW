@@ -1,0 +1,15 @@
+﻿Sample Name,Position,Genotype,Sex,Brain Region,Time Period
+FAD131-5xFAD-M1liver_033123,TEST,5xFAD,Male,Liver,Older Data
+FAD131-5xFAD-M2liver_033123,TEST,5xFAD,Male,Liver,Older Data
+FAD131-5xFAD-M4liver_033123,TEST,5xFAD,Male,Liver,Older Data
+FAD173-5xFAD-M1liver_033123,TEST,5xFAD,Male,Liver,Older Data
+DOD73-5xFAD-M2liver_033123,TEST,5xFAD,Male,Liver,Older Data
+equisplash_033123,TEST,equispash,equispash,TEST,Older Equisplash
+blank_033123,TEST,blank,blank,TEST,Older Blank
+Blank_500x_N1__liverLD__8_8_23,TEST,blank,blank,blank,New Blank
+DOD73m2_500x_N1__liverLD__8_8_23,TEST,5xFAD,Male,Liver,New Data
+equisplash_500x_N1__liverLD__8_8_23,TEST,equispash,equispash,equispash,New Equisplash
+FAD131m1_500x_N1__liverLD__8_8_23,TEST,5xFAD,Male,Liver,New Data
+FAD131m2_500x_N1__liverLD__8_8_23,TEST,5xFAD,Male,Liver,New Data
+FAD131m4_500x_N1__liverLD__8_8_23,TEST,5xFAD,Male,Liver,New Data
+FAD173m1_500x_N1__liverLD__8_8_23,TEST,5xFAD,Male,Liver,New Data
