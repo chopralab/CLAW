@@ -15,6 +15,31 @@ To get started with CLAW, follow these steps:
 
 3. **Workflow**: Utilize the main components of CLAW, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
 
+# CLAW - Lipid Platform
+
+This repository hosts the CLAW lipid platform which consists of various tools, scripts, and data related to lipidomics.
+
+## Folder Structure
+
+The `lipid_platform` directory contains:
+
+```
+lipid_platform/
+    ├── Figures/ # Supporting figures
+    ├── Projects/ # Associated projects and related files
+    ├── Variable_Storage/ # Storage for variables, includes edgeR and labels
+    ├── lipid_database/ # Database related to lipidomics
+    ├── tools/ # Various tools and utilities
+    ├── CLAW.py # Main Python script for the platform
+    ├── CLAW_MRM_OzESI.ipynb # Jupyter Notebook for MRM OzESI
+    ├── Lipid_MRM_parser.ipynb # Jupyter Notebook for Lipid MRM parsing
+    ├── NO_AVERAGE_SCRIPTS.py # Script related to averaging functionality
+    ├── create_directory.py # Script for directory creation
+    ├── edgeR.r # R script for edgeR analysis
+    ├── edgeR_No_replicates.R # R script for edgeR without replicates
+    ├── myjob.sh # Shell script for job handling
+    └── plot.py # Python script for plotting
+```
 ## Folder Structure
 
 The project folder should have the following structure:
@@ -26,11 +51,7 @@ Project_Folder/
     ├── Plots/                 # Folder for storing generated plots
     ├── Labels/                # Folder for sample labels and metadata
     ├── Results/               # Folder for storing final analysis results
-    ├── pymzml.yml             # YAML file for conda environment and dependencies
-    ├── Lipid_MRM_parser_v2.ipynb   # Python notebook for data parsing and analysis
-    ├── main_code.R            # R script for edgeR analysis and visualization
     ├── Figures/               # Folder for supporting figures (if any)
-    ├── requirements/          # Folder containing other necessary files
     └── README.md              # Documentation and project overview
 ```
 
@@ -40,7 +61,7 @@ Project_Folder/
 
 This repository contains R and Python code for analyzing and visualizing lipid data obtained from mass spectrometry experiments. The code is designed to process raw lipid data, perform statistical analysis using edgeR, and generate informative visualizations to gain insights into lipid expression patterns.
 
-## Python Code (Lipid_MRM_parser_v2.ipynb)
+## Python Code (Lipid_MRM_parser.ipynb)
 
 The `Lipid_MRM_parser.ipynb` Jupyter Notebook presents a Python-based pipeline for processing and analyzing lipid data. The notebook imports various libraries for data processing and visualization. The key steps in the notebook are as follows:
 
