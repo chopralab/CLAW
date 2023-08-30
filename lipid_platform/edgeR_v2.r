@@ -34,7 +34,7 @@ setwd(CLAW_working_dir)
 CLAW_working_dir
 
 # Reading the first line from the text file "varname3.txt" located inside the "Variable_Storage" folder
-project_working_dir <- readLines("project_path/brain_5xFAD_old.txt")[1]
+project_working_dir <- readLines("Variable_Storage/folder_path.txt")[1]
 setwd(project_working_dir)
 project_working_dir
 list.files()
@@ -138,6 +138,7 @@ edgeR_pipeline <- function(df) {
 # Perform the edgeR analysis and store the results
 edgeR_results <- lipid_expression_data %>% edgeR_pipeline
 edgeR_results
+write.csv(edgeR_results, "edgeR_results.csv", row.names=FALSE)
 
 # Display the names of the columns in the lipid expression data
 names(lipid_expression_data)
@@ -212,6 +213,10 @@ pca_plot <- autoplot(pca_result,
                          ellipse = TRUE, 
                          ellipse.type = 't',
                          alpha = 0.6)
+
+
+ggsave(filename = "pca_plot.png", plot = pca_plot, width = 10, height = 8, dpi = 300)
+
 
 # print the plot
 print(pca_plot)

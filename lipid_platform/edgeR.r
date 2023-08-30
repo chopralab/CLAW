@@ -194,7 +194,7 @@ for (jj in file_list){
     # scale_fill_discrete(name = "Lipid class", guide = 'none') +
     scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
     scale_y_discrete(limits = rev) #+
-  ggsave(paste("plots/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
+  ggsave(paste("plots/Ridge_Plot_All Lipids_",title_for_plot,".png",sep=''))
   
   # xx %>%
   #   
