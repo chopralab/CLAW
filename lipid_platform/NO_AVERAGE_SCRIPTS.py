@@ -269,7 +269,7 @@ def read_mrm_list(filename,remove_std = True,custom_data=False):
             mrm_list_offical = mrm_list_offical[mrm_list_offical['Class'].isin(lipid_class_to_keep)]
 
     else:
-        mrm_list_offical = pd.read_csv('lipid_database/Lipids_database_old.csv')
+        mrm_list_offical = pd.read_csv('lipid_database/Custom_MRM.csv')
 
         # Round Parent Ion and Product Ion to 1 decimal place
         mrm_list_offical['Parent_Ion'] = np.round(mrm_list_offical['Parent_Ion'],1)

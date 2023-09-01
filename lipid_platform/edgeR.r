@@ -5,8 +5,8 @@ library(tidyverse)
 library(readxl)
 library(edgeR)
 library(tidyverse)
-
-
+library(factoextra)
+library(grid)
 library(ggsignif)
 library(stringr)
 library(reshape2)
@@ -26,7 +26,8 @@ library(ggridges)
 # library(writexl)
 
 
-
+# install.packages("ggforce")
+library(ggforce)
 getwd()
 
 # read the variable from the text file
@@ -66,9 +67,18 @@ for (jj in file_list){
   excel_file <- excel_file %>%
     rename(lipid = `Lipid`) %>%
     rename(type= `Class`)
+  # library(dplyr)
+  # 
+  # excel_file <- excel_file %>%
+  #   rename(
+  #     lipid = Lipid,
+  #     type = Class
+  #   )
   
-  if (length1 == 1 | length2 == 1) {
-    next
+  if (isTRUE(!is.na(length1)) && isTRUE(!is.na(length2))) {
+    if (isTRUE(length1 == 1) || isTRUE(length2 == 1)) {
+      next
+    }
   }
   
   
@@ -195,41 +205,46 @@ for (jj in file_list){
     scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
     scale_y_discrete(limits = rev) #+
   ggsave(paste("plots/Ridge_Plot_All Lipids_",title_for_plot,".pdf",sep=''))
+
+  filtered_xxx <- xx %>%
+    filter(FDR < 0.1)
+
+  if (isTRUE(nrow(filtered_xxx) < 2)) {
+    next
+  }
+
+  xx %>%
+
+    filter(FDR < 0.10) %>% #filter by sig
+    ggplot(aes(x=logFC, y = type, fill = type)) +
+    geom_density_ridges2(alpha = 0.5, size = .5) +
+    geom_vline(xintercept = 0, linetype = "dashed") +
+    theme_classic() +
+    ggtitle(title_for_plot)+
+    xlab("Fold change, lipids FDR<0.10") +
+    ylab("") +#xlim(-2, 4)+
+    scale_alpha(guide = 'none') +
+
+    scale_fill_discrete(name = "Lipid class", guide = 'none') +
+    scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
+    scale_y_discrete(limits = rev) #+
+  # facet_wrap(~comparison_LFC)
+
+  ggsave(paste("plots/Ridge_Plot_Filtered_FDR_",title_for_plot,".pdf",sep=''))
   
-  # xx %>%
-  #   
-  #   filter(FDR < 0.10) %>% #filter by sig
-  #   ggplot(aes(x=logFC, y = type, fill = type)) +
-  #   geom_density_ridges2(alpha = 0.5, size = .5) + 
-  #   geom_vline(xintercept = 0, linetype = "dashed") +
-  #   theme_classic() +
-  #   ggtitle(title_for_plot)+
-  #   xlab("Fold change, lipids FDR<0.10") +
-  #   ylab("") +#xlim(-2, 4)+
-  #   scale_alpha(guide = 'none') +
-  #   
-  #   scale_fill_discrete(name = "Lipid class", guide = 'none') +
-  #   scale_fill_manual(values = lipid_class_colors, name = "Lipid class", guide = 'none') +
-  #   scale_y_discrete(limits = rev) #+
-  # # facet_wrap(~comparison_LFC)
-  # 
-  # ggsave(paste("plots/Ridge_Plot_Filtered_FDR_",title_for_plot,".pdf",sep=''))
-  
-  # make_volcano_plot <- function(df, title) {
-  #   df %>%
-  #     mutate(sig = factor(FDR < 0.10)) %>%
-  #     ggplot(aes(logFC, -log10(FDR), color = sig)) +
-  #     geom_point() +
-  #     scale_color_manual(values = c("none" = "black", "TRUE" = "red")) +
-  #     guides(color = F) +
-  #     ggtitle(title)
-  # }
-  # 
-  # cl_e1_tbl %>% make_volcano_plot(paste("Volcano_Plot_",title_for_plot,sep=''))
-  # ggsave(paste("plots/Volcano_Plot_",title_for_plot,".png",sep=''))
-  # 
-  # 
-  
+  make_volcano_plot <- function(df, title) {
+    df %>%
+      mutate(sig = factor(FDR < 0.10)) %>%
+      ggplot(aes(logFC, -log10(FDR), color = sig)) +
+      geom_point() +
+      scale_color_manual(values = c("none" = "black", "TRUE" = "red")) +
+      guides(color = F) +
+      ggtitle(title)
+  }
+
+  cl_e1_tbl %>% make_volcano_plot(paste("Volcano_Plot_",title_for_plot,sep=''))
+  ggsave(paste("plots/Volcano_Plot_",title_for_plot,".png",sep=''))
+
   
   write_summary_and_results <- function(tbl, df,df2, name) {
     df<-cbind(df2, df)
@@ -255,9 +270,9 @@ for (jj in file_list){
   
   cl_e1_tbl
   # source("ggbiplot.R")
-  
-  # 
-  # get_DE_lipids <- function(counts, design_mat, gr, contrasts, p.value = 0.05) {
+
+  # #
+  # get_DE_lipids <- function(counts, design_mat, gr, contrasts, p.value = 0.1) {
   #   dls <-
   #     counts %>%
   #     perform_analysis_raw(design_mat, gr) %>%
@@ -266,7 +281,7 @@ for (jj in file_list){
   #   
   #   rownames(dls)[dls %>% as.logical()]
   # }
-  # # 
+  # #
   # make_pca_plot <- function(tp, design_mat, gr, contrasts,
   #                           title = "PCA plot",
   #                           ellipse = T, var.axes = F,
@@ -324,16 +339,16 @@ for (jj in file_list){
   #     ggtitle(title) +
   #     cowplot::theme_cowplot()
   # }
-  
-  
+  # 
+  # 
   # source("ggbiplot.R")
-  
-  
-  cells_lipid_expr
-  
-  # cells_lipid_expr %>%
-  #   make_pca_plot(design_expr, gr_expr, contrasts_expr, paste("PCA_Plot_",title_for_plot,sep=''))
-  # ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
+  # 
+# 
+#   cells_lipid_expr
+# 
+#   cl_e1_tbl %>%
+#     make_pca_plot(design_expr, gr_expr, contrasts_expr, paste("PCA_Plot_",title_for_plot,sep=''))
+#   ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
   
   # contrasts_expr
   # gr_expr
@@ -342,95 +357,119 @@ for (jj in file_list){
   # 
   # 
   # # Assuming you have a dataframe called cells_lipid_expr and two vectors called group1 and group2 with the column names
-  # library(factoextra)
-  # # Combine group1 and group2 into a single vector
+
   # filtered_xx <- xx %>%
   #   filter(FDR < 0.1)
   # 
-  # 
-  # 
-  # 
-  # all_groups <- select(excel_file, -c(blank_name,lipid,type))
-  # all_groups <- names(all_groups)
-  # 
-  # 
-  # # Extract only the columns that belong to group1 and group2 from the dataframe
-  # cells_lipid_expr_subset <- filtered_xx[, all_groups]
-  # 
-  # # Transpose the data frame
-  # cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
-  # 
-  # # Perform PCA on the transposed dataframe
-  # pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
-  # 
-  # # Create a dataframe for the groups and their corresponding titles
-  # group_data <- data.frame(
-  #   sample = all_groups,
-  #   group = c(rep(Title1, length1), rep(Title2,length2))
-  # )
-  # 
-  # # Calculate the PCA scores
-  # pca_scores <- as.data.frame(pca_result$x[, 1:2])
-  # 
-  # # Create a new data frame with the PCA scores, sample names, and group information
-  # plot_data <- data.frame(
-  #   PC1 = pca_scores$PC1,
-  #   PC2 = pca_scores$PC2,
-  #   sample = rownames(pca_scores),
-  #   group = group_data$group
-  # )
-  # 
-  # # Create the PCA plot using ggplot2
-  # pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
-  #   geom_point(size = 3) +
-  #   geom_text_repel(size = 3) +
-  #   theme_minimal() +
-  #   labs(color = "Groups") +
-  #   ggtitle(title_for_plot) +
-  #   xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
-  #   ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
-  # 
-  # # Print the PCA plot
-  # print(pca_plot)
-  # 
-  # ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
-  # 
-  # 
-  # make_heatmap <- function(tp, design_mat, gr, contrasts, title, file) {
-  #   
-  #   DElist <-
-  #     tp %>%
-  #     get_DE_lipids(design_mat, gr, contrasts)
-  #   
-  #   if(length(DElist) == 0) {
-  #     cat("No significant lipids for ", title)
-  #     return()
-  #   }
-  #   
-  #   if(length(DElist) == 1) {
-  #     cat("Single significant lipids for ", title, " is ", DElist[1])
-  #     return()
-  #   }
-  #   
-  #   Blank <- log2(tp[[blank_name]])
-  #   
-  #   tp %>%
-  #     mutate(lipid = make.unique(lipid)) %>%
-  #     filter(lipid %in% DElist) %>%
-  #     select( -type) %>%
-  #     mutate_if(is.numeric, log2) %>%
-  #     mutate_if(is.numeric, list(~ . - Blank)) %>%
-  #     select(- blank_name) %>% 
-  #     column_to_rownames("lipid") %>%
-  #     as.matrix() %>%
-  #     pheatmap::pheatmap(main = title,cluster_cols = none,
-  #                        cluster_rows = none, filename = file,
-  #                        cellheight = 10)
+  # if (isTRUE(nrow(filtered_xx) < 2)) {
+  #   next
   # }
-  # 
-  # cells_lipid_expr %>%
-  #   make_heatmap(design_expr, gr_expr, contrasts_expr, title_for_plot, 
-  #                file = paste("plots/Heatmap_",title_for_plot,".svg",sep=''))
+
+# 
+#   all_groups <- select(excel_file, -c(blank_name,lipid,type))
+#   all_groups <- names(all_groups)
+# 
+# 
+#   # Extract only the columns that belong to group1 and group2 from the dataframe
+#   cells_lipid_expr_subset <- filtered_xx[, all_groups]
+# 
+#   # Transpose the data frame
+#   cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
+# 
+#   # Perform PCA on the transposed dataframe
+#   pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
+# 
+#   # Create a dataframe for the groups and their corresponding titles
+#   group_data <- data.frame(
+#     sample = all_groups,
+#     group = c(rep(Title1, length1), rep(Title2,length2))
+#   )
+# 
+#   # Calculate the PCA scores
+#   pca_scores <- as.data.frame(pca_result$x[, 1:2])
+# 
+#   # Create a new data frame with the PCA scores, sample names, and group information
+#   plot_data <- data.frame(
+#     PC1 = pca_scores$PC1,
+#     PC2 = pca_scores$PC2,
+#     sample = rownames(pca_scores),
+#     group = group_data$group
+#   )
+# 
+#   # Create the PCA plot using ggplot2
+#   pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
+#     geom_point(size = 3) +
+#     geom_text_repel(size = 3) +
+#     theme_minimal() +
+#     labs(color = "Groups") +
+#     ggtitle(title_for_plot) +
+#     xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
+#     ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
+# 
+#   # Print the PCA plot
+#   print(pca_plot)
+# 
+#   ggsave(paste("plots/PCA_",title_for_plot,".svg",sep=''))
+#   
+#   
+#   
+#   
+  # Combine group1 and group2 into a single vector
+  # Filter the data
+  filtered_xx <- xx %>%
+    filter(FDR < 0.1)
+  print(filtered_xx)
+  # Select all the groups
+  all_groups <- select(excel_file, -c(blank_name,lipid,type))
+  all_groups <- names(all_groups)
+  
+  # Extract only the columns that belong to group1 and group2 from the dataframe
+  cells_lipid_expr_subset <- filtered_xx[, all_groups]
+  
+  # Transpose the data frame
+  cells_lipid_expr_transposed <- t(cells_lipid_expr_subset)
+  
+  # Perform PCA on the transposed dataframe
+  pca_result <- prcomp(cells_lipid_expr_transposed, center = TRUE, scale = TRUE)
+  
+  # Create a dataframe for the groups and their corresponding titles
+  group_data <- data.frame(
+    sample = all_groups,
+    group = c(rep(Title1, length1), rep(Title2,length2))
+  )
+  
+  # Calculate the PCA scores
+  pca_scores <- as.data.frame(pca_result$x[, 1:2])
+  
+  # Create a new data frame with the PCA scores, sample names, and group information
+  plot_data <- data.frame(
+    PC1 = pca_scores$PC1,
+    PC2 = pca_scores$PC2,
+    sample = rownames(pca_scores),
+    group = group_data$group
+  )
+  
+  # Create the PCA plot using ggplot2
+  pca_plot <- ggplot(plot_data, aes(x = PC1, y = PC2, color = group, label = sample)) +
+    geom_point(size = 3) +
+    geom_text_repel(size = 3) +
+    stat_ellipse(aes(fill = group), level = 0.95, geom = "polygon", alpha = 0.2) +  # Use stat_ellipse here
+    theme_minimal() +
+    labs(color = "Groups") +
+    ggtitle(title_for_plot) +
+    scale_color_manual(values = c("red", "black")) + # Assuming you have two groups, adjust as necessary
+    scale_fill_manual(values = c("red", "black"))+
+    xlab(paste0("PC1: ", round(pca_result$sdev[1] * 100 / sum(pca_result$sdev), 2), "% variance")) +
+    ylab(paste0("PC2: ", round(pca_result$sdev[2] * 100 / sum(pca_result$sdev), 2), "% variance"))
+  
+  # Print the PCA plot
+  # print(pca_plot)
+  
+  # Save the plot
+  ggsave(paste("plots/PCA_",title_for_plot,"FDR_with_Eclipse.svg",sep=''))
+  
+  
+  
 }
 
 
