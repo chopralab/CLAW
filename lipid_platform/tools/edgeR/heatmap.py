@@ -119,8 +119,7 @@ for jjjj in df_big['type'].unique():
     # exit()
     ncomponets = 4
 
-    # exit()/
-    PCA_title = "PCA_"+str(ncomponets)+"_componets_DIvided_by_blank"+ij[:-4]
+
 
 
     heat_title = "heat_maps_by_class/"+ij[:-4]+name_type+".svg"
