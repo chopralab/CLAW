@@ -344,20 +344,25 @@ def full_parse(data_base_name_location,
     return df_matched, OzESI_time_df
 
 
-
-
-def filter_rt(df):
+def filter_rt(df, min_rt=10.0, max_rt=20.0, min_intensity=None):
     """
     Filters the DataFrame based on retention times and aggregates by max intensity for unique 'Sample_ID' and 'Transition' combinations.
     
     Parameters:
         df (pd.DataFrame): Input DataFrame with columns 'Retention_Time' and 'OzESI_Intensity'.
+        min_rt (float, optional): Minimum retention time for filtering. Defaults to 10.0.
+        max_rt (float, optional): Maximum retention time for filtering. Defaults to 20.0.
+        min_intensity (float, optional): Minimum intensity for filtering. If None, no filtering by intensity is done.
         
     Returns:
         pd.DataFrame: Filtered and aggregated DataFrame.
     """
     # Filter based on retention time
-    filtered_df = df[(df['Retention_Time'] > 10.0) & (df['Retention_Time'] < 20.0)].copy()
+    filtered_df = df[(df['Retention_Time'] >= min_rt) & (df['Retention_Time'] <= max_rt)].copy()
+
+    # Filter based on intensity if min_intensity is provided
+    if min_intensity is not None:
+        filtered_df = filtered_df[filtered_df['OzESI_Intensity'] >= min_intensity]
 
     # Round the values
     filtered_df['Retention_Time'] = filtered_df['Retention_Time'].round(2)
@@ -368,6 +373,7 @@ def filter_rt(df):
         lambda x: x.loc[x['OzESI_Intensity'].idxmax()]).reset_index(drop=True)
 
     return filtered_df
+
 
 def concat_dataframes(df_matched, filtered_df):
     """

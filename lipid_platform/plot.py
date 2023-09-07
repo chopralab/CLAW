@@ -1,7 +1,7 @@
 import pandas as pd
 import plotly.express as px
 
-def plot_ratio(df, color_mapping, output_directory):
+def plot_ratio(df, color_mapping, output_directory, ratio_threshold=None):
     """
     Plots the ratio of lipids for each unique Sample_ID in the given DataFrame.
 
@@ -9,6 +9,8 @@ def plot_ratio(df, color_mapping, output_directory):
         df (pd.DataFrame): Input DataFrame with columns 'Sample_ID', 'Lipid', and 'ratio'.
         color_mapping (dict): Mapping of patterns to colors for the Lipid values.
         output_directory (str): Directory where to save the plot images.
+        ratio_threshold (float, optional): Minimum ratio value for plotting. If provided, rows with a ratio 
+                                           value below this threshold will be excluded from plotting.
 
     Returns:
         None
@@ -18,6 +20,10 @@ def plot_ratio(df, color_mapping, output_directory):
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
+
+    # Apply the ratio threshold filter if provided
+    if ratio_threshold is not None:
+        df = df[df['Ratio'] >= ratio_threshold]
 
     # Get the unique Sample_IDs
     sample_ids = df['Sample_ID'].unique()
