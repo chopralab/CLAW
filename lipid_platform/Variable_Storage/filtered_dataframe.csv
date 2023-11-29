@@ -1,32 +1,108 @@
-,Sample Name,Position,Genotype,Brain Region,Sex
-3,DOD100-M1-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
-4,DOD100-M1-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
-5,DOD100-M1-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
-6,DOD100-M1-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
-7,DOD100-M2-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-8,DOD100-M2-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
-9,DOD100-M2-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-10,DOD100-M2-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-11,DOD100-M3-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-12,DOD100-M3-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-13,DOD100-M3-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-14,DOD99-M1-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
-15,DOD99-M1-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
-16,DOD99-M1-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
-17,DOD99-M1-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
-18,DOD99-M2-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
-19,DOD99-M2-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
-20,DOD99-M2-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
-21,DOD99-M2-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
-22,M1FAD173-5xFAD-Cortex10x_01182023,Not Needed,5xFAD,cortex,Male
-23,M1FAD173-5xFAD-Diencephalon10x_01182023,Not Needed,5xFAD,diencephalon,Male
-24,M1FAD173-5xFAD-Hippo10x_01182023,Not Needed,5xFAD,hippo,Male
-25,M2FAD173-5xFAD-Cerebellum10x_01192023,Not Needed,5xFAD,cerebellum,Male
-26,M2FAD173-5xFAD-Cortex10x_01192023,Not Needed,5xFAD,cortex,Male
-27,M2FAD173-5xFAD-Diencephalon10x_01192023,Not Needed,5xFAD,diencephalon,Male
-28,M2FAD173-5xFAD-Hippo10x_01192023,Not Needed,5xFAD,hippo,Male
-29,M5FAD173-WT-Cerebellum10x_01192023,Not Needed,WT,cerebellum,Male
-30,M5FAD173-WT-Cortex10x_01192023,Not Needed,WT,cortex,Male
-31,M5FAD173-WT-Diencephalon10x_01192023,Not Needed,WT,diencephalon,Male
-32,M5FAD173-WT-Hippo10x_01192023,Not Needed,WT,hippo,Male
-33,M1FAD173-5xFAD-Cerebellum10x_01182023,Not Needed,5xFAD,cerebellum,Male
+,Sample Name,Position,Time,Dose,Bacteria
+1,C-T4-8GEN-BDL-r003,na,T4,8,Bsub
+2,B-T4-0-BDL-r002,na,T4,0,Bsub
+3,Bsub-C-T6-0-r002,na,T6,0,Bsub
+4,Bsub-A-T2-0-r002,na,T2,0,Bsub
+5,A-T0-0-BDL-r002,na,T0,0,Bsub
+6,Bsub-C-T0-0-r003,na,T0,0,Bsub
+7,B-T0-0-BDL-r001,na,T0,0,Bsub
+8,Bsub-C-T2-8GEN-r002,na,T2,8,Bsub
+9,Bsub-C-T6-8GEN-r001,na,T6,8,Bsub
+10,Bsub-B-T2-0-r001,na,T2,0,Bsub
+11,Bsub-A-T2-8GEN-r001,na,T2,8,Bsub
+12,B-T4-8GEN-BDL-r002,na,T4,8,Bsub
+13,Bsub-A-T6-8GEN-r002,na,T6,8,Bsub
+14,Bsub-A-T0-0-r002,na,T0,0,Bsub
+15,C-T0-0-BDL-r003,na,T0,0,Bsub
+16,Bsub-B-T2-8GEN-r003,na,T2,8,Bsub
+17,Bsub-B-T0-0-r001,na,T0,0,Bsub
+18,Bsub-C-T2-0-r003,na,T2,0,Bsub
+19,Bsub-A-T6-0-r003,na,T6,0,Bsub
+20,B-T4-8GEN-BDL-r003,na,T4,8,Bsub
+21,Bsub-A-T6-8GEN-r003,na,T6,8,Bsub
+22,Bsub-A-T0-0-r003,na,T0,0,Bsub
+23,C-T4-0-BDL-r001,na,T4,0,Bsub
+24,Bsub-B-T6-0-r001,na,T6,0,Bsub
+25,A-T4-8GEN-BDL-r001,na,T4,8,Bsub
+26,Bsub-B-T6-8GEN-r001,na,T6,8,Bsub
+27,C-T0-0-BDL-r002,na,T0,0,Bsub
+28,Bsub-B-T2-8GEN-r002,na,T2,8,Bsub
+29,Bsub-A-T6-0-r002,na,T6,0,Bsub
+30,Bsub-C-T2-0-r002,na,T2,0,Bsub
+31,C-T4-8GEN-BDL-r002,na,T4,8,Bsub
+32,B-T4-0-BDL-r003,na,T4,0,Bsub
+33,Bsub-A-T2-0-r003,na,T2,0,Bsub
+34,Bsub-C-T6-0-r003,na,T6,0,Bsub
+35,A-T0-0-BDL-r003,na,T0,0,Bsub
+36,Bsub-C-T0-0-r002,na,T0,0,Bsub
+37,Bsub-C-T2-8GEN-r003,na,T2,8,Bsub
+38,Bsub-A-T2-8GEN-r002,na,T2,8,Bsub
+39,B-T4-8GEN-BDL-r001,na,T4,8,Bsub
+40,Bsub-A-T0-0-r001,na,T0,0,Bsub
+41,C-T4-0-BDL-r003,na,T4,0,Bsub
+42,Bsub-A-T6-8GEN-r001,na,T6,8,Bsub
+43,A-T4-8GEN-BDL-r003,na,T4,8,Bsub
+44,Bsub-B-T6-0-r003,na,T6,0,Bsub
+45,Bsub-B-T6-8GEN-r003,na,T6,8,Bsub
+46,Bsub-B-T0-0-r002,na,T0,0,Bsub
+47,A-T4-0-BDL-r002,na,T4,0,Bsub
+48,Bsub-C-T6-0-r001,na,T6,0,Bsub
+49,Bsub-A-T2-0-r001,na,T2,0,Bsub
+50,B-T4-0-BDL-r001,na,T4,0,Bsub
+51,A-T0-0-BDL-r001,na,T0,0,Bsub
+52,Bsub-C-T2-8GEN-r001,na,T2,8,Bsub
+53,B-T0-0-BDL-r002,na,T0,0,Bsub
+54,Bsub-B-T2-0-r002,na,T2,0,Bsub
+55,Bsub-C-T6-8GEN-r002,na,T6,8,Bsub
+56,C-T4-8GEN-BDL-r001,na,T4,8,Bsub
+57,A-T4-0-BDL-r003,na,T4,0,Bsub
+58,Bsub-C-T0-0-r001,na,T0,0,Bsub
+59,B-T0-0-BDL-r003,na,T0,0,Bsub
+60,Bsub-B-T2-0-r003,na,T2,0,Bsub
+61,Bsub-C-T6-8GEN-r003,na,T6,8,Bsub
+62,Bsub-A-T2-8GEN-r003,na,T2,8,Bsub
+63,C-T4-0-BDL-r002,na,T4,0,Bsub
+64,A-T4-8GEN-BDL-r002,na,T4,8,Bsub
+65,Bsub-B-T6-0-r002,na,T6,0,Bsub
+66,C-T0-0-BDL-r001,na,T0,0,Bsub
+67,Bsub-B-T6-8GEN-r002,na,T6,8,Bsub
+68,Bsub-B-T2-8GEN-r001,na,T2,8,Bsub
+69,Bsub-B-T0-0-r003,na,T0,0,Bsub
+70,Bsub-A-T6-0-r001,na,T6,0,Bsub
+71,Bsub-C-T2-0-r001,na,T2,0,Bsub
+72,Ecoli_T2_control_rep1,na,T2,0,Ecoli
+73,Ecoli_T0_rep3,na,T0,Un,Ecoli
+74,Ecoli_T2_GEN_rep3,na,T2,Un,Ecoli
+75,Ecoli_T2_GEN_rep2,na,T2,Un,Ecoli
+76,Ecoli_T0_rep2,na,T0,Un,Ecoli
+77,Ecoli_T2_control_rep2,na,T2,0,Ecoli
+78,Ecoli_T2_control_rep3,na,T2,0,Ecoli
+79,Ecoli_T0_rep1,na,T0,Un,Ecoli
+80,Ecoli_T2_GEN_rep1,na,T2,Un,Ecoli
+81,Paeru-C-T4-0-BDL-r002,na,T4,0,Paeru
+82,Paeru-C-T4-16-BDL-r003,na,T4,16,Paeru
+83,Paeru-C-T0-0-BDL-r001,na,T0,0,Paeru
+84,Paeru-A-T4-0-BDL-r003,na,T4,0,Paeru
+85,Paeru-A-T4-16-BDL-r001,na,T4,16,Paeru
+86,Paeru-B-T0-0-BDL-r003,na,T0,0,Paeru
+87,Paeru-A-T4-0-BDL-r002,na,T4,0,Paeru
+88,Paeru-B-T4-0-BDL-r001,na,T4,0,Paeru
+89,Paeru-A-T0-0-BDL-r001,na,T0,0,Paeru
+90,Paeru-B-T0-0-BDL-r002,na,T0,0,Paeru
+91,Paeru-C-T4-0-BDL-r003,na,T4,0,Paeru
+92,Paeru-C-T4-16-BDL-r002,na,T4,16,Paeru
+93,Paeru-B-T4-16-BDL-r001,na,T4,16,Paeru
+94,Paeru-B-T4-0-BDL-r003,na,T4,0,Paeru
+95,Paeru-A-T4-16-BDL-r002,na,T4,16,Paeru
+96,Paeru-A-T0-0-BDL-r003,na,T0,0,Paeru
+97,Paeru-C-T4-0-BDL-r001,na,T4,0,Paeru
+98,Paeru-C-T0-0-BDL-r002,na,T0,0,Paeru
+99,Paeru-B-T4-16-BDL-r003,na,T4,16,Paeru
+100,Paeru-C-T4-16-BDL-r001,na,T4,16,Paeru
+101,Paeru-C-T0-0-BDL-r003,na,T0,0,Paeru
+102,Paeru-B-T4-16-BDL-r002,na,T4,16,Paeru
+103,Paeru-A-T4-0-BDL-r001,na,T4,0,Paeru
+104,Paeru-B-T4-0-BDL-r002,na,T4,0,Paeru
+105,Paeru-A-T4-16-BDL-r003,na,T4,16,Paeru
+106,Paeru-A-T0-0-BDL-r002,na,T0,0,Paeru
+107,Paeru-B-T0-0-BDL-r001,na,T0,0,Paeru

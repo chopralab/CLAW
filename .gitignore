@@ -2,6 +2,8 @@
 
 lipid_platform/old/*
 lipid_platform/.ipynb_checkpoints/*
+lipid_platform/Projects/DTRA*
+lipid_platform/CLAW_MRM_OzESI_DTRA.ipynb
 
 *.pyc
 *.html
