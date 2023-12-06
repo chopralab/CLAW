@@ -447,7 +447,7 @@ def add_lipid_info(matched_dataframe, db_pos, tolerance=0.3):
                 current_row = working_dataframe.loc[j].copy()
 
                 # If the parent ion is within tolerance and the Lipid column is a string
-                for n in [7, 9, 12]:
+                for n in db_pos:
                     if within_tolerance(parent_ion, current_row[f'n-{n}'], tolerance) and isinstance(current_row['Lipid'], str):
                         working_dataframe.loc[i, 'Lipid'] = current_row['Lipid']
                         working_dataframe.loc[i, 'db_pos'] = f'n-{n}' + current_row['db_pos']

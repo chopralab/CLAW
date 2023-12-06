@@ -1,1 +1,1 @@
-/home/cbeveri/lipid_parser3/CLAW/lipid_platform/Projects/BRAIN_5XFAD_OLD_DATA_FOR_PAPER/
+/home/iyer95/CLAW/CLAW/lipid_platform/Projects/Daneman/
