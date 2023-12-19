@@ -1,8 +1,40 @@
-﻿Sample Name,Position,Dilution Factor,Genotype
-IPA,P1-A1,IPA,IPA
-Blank,P1-A2,Blank,Blank
-FAD 131 M4 5xFAD LD Liver,p1-B1,100x,5xFAD
-DOD73 M2 5xFAD LD Liver,p1-B2,100x,5xFAD
-FAD 173 M1 5xFAD LD Liver,p1-B3,100x,5xFAD
-FAD 131 M1 5xFAD LD Liver,p1-B4,100x,5xFAD
-FAD 131 M2 5xFAD LD Liver,p1-B5,100x,5xFAD
+﻿Sample Name,Position,Sample Type,Sleep Condition,Sex,Experiment
+IPA2,P1-E1,Clean,Clean,Clean,Clean
+Blank1,P1-E2,Blank1,Blank1,Blank1,Blank1
+NDF-J,P1-A1,Neuron,Deprived,Female,J
+N4F-J,P1-A2,Neuron,Going to sleep,Female,J
+N2F-J,P1-A3,Neuron,Waking up,Female,J
+NDF-L,P1-A4,Neuron,Deprived,Female,L
+N4F-L,P1-A5,Neuron,Going to sleep,Female,L
+N2F-L,P1-A6,Neuron,Waking up,Female,L
+NDF-M,P1-A7,Neuron,Deprived,Female,M
+N4F-M,P1-A8,Neuron,Going to sleep,Female,M
+N2F-M,P1-A9,Neuron,Waking up,Female,M
+NDF-N,P1-B1,Neuron,Deprived,Female,N
+N4F-N,P1-B2,Neuron,Going to sleep,Female,N
+N2F-N,P1-B3,Neuron,Waking up,Female,N
+GDF-J,P1-B4,Glia,Deprived,Female,J
+G4F-J,P1-B5,Glia,Going to sleep,Female,J
+G2F-J,P1-B6,Glia,Waking up,Female,J
+GDF-L,P1-B7,Glia,Deprived,Female,L
+G4F-L,P1-B8,Glia,Going to sleep,Female,L
+G2F-L,P1-B9,Glia,Waking up,Female,L
+GDF-M,P1-C1,Glia,Deprived,Female,M
+G4F-M,P1-C2,Glia,Going to sleep,Female,M
+G2F-M,P1-C3,Glia,Waking up,Female,M
+GDF-N,P1-C4,Glia,Deprived,Female,N
+G4F-N,P1-C5,Glia,Going to sleep,Female,N
+G2F-N,P1-C6,Glia,Waking up,Female,N
+SDF-J,P1-C7,Supernatant - 60 Brain,Deprived,Female,J
+S4F-J,P1-C8,Supernatant - 60 Brain,Going to sleep,Female,J
+S2F-J,P1-C9,Supernatant - 60 Brain,Waking up,Female,J
+SDF-L,P1-D1,Supernatant - 60 Brain,Deprived,Female,L
+S4F-L,P1-D2,Supernatant - 60 Brain,Going to sleep,Female,L
+S2F-L,P1-D3,Supernatant - 60 Brain,Waking up,Female,L
+SDF-M,P1-D4,Supernatant - 60 Brain,Deprived,Female,M
+S4F-M,P1-D5,Supernatant - 60 Brain,Going to sleep,Female,M
+S2F-M,P1-D6,Supernatant - 60 Brain,Waking up,Female,M
+SDF-N,P1-D7,Supernatant - 60 Brain,Deprived,Female,N
+S4F-N,P1-D8,Supernatant - 60 Brain,Going to sleep,Female,N
+S2F-N,P1-D9,Supernatant - 60 Brain,Waking up,Female,N
+Blank2,P1-E2,Blank1,Blank1,Blank1,Blank1

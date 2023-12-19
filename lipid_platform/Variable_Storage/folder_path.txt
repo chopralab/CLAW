@@ -1,1 +1,1 @@
-/home/cbeveri/lipid_parser3/CLAW/lipid_platform/Projects/BRAIN_5XFAD_OLD_DATA_FOR_PAPER/
+/scratch/gilbreth/cbeveri/Scholar_HOME/Scholar_HOME_1/CLAW/CLAW/lipid_platform/Projects/BRAIN_5XFAD_OLD_DATA_FOR_PAPER/
