@@ -1,1 +1,1 @@
-/home/cbeveri/lipid_parser3/CLAW/DEMO2/Projects/demo_data/
+/scratch/gilbreth/cbeveri/Scholar_HOME/Scholar_HOME_1/CLAW/CLAW/DEMO2/Projects/demo_data/
