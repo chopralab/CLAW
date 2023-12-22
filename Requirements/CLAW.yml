@@ -1,4 +1,4 @@
-name: pymzml
+name: /home/cbeveri/.conda/envs/cent7/2020.11-py38/CLAW
 channels:
   - defaults
 dependencies:
@@ -31,7 +31,6 @@ dependencies:
   - pexpect=4.8.0=pyhd3eb1b0_3
   - pickleshare=0.7.5=pyhd3eb1b0_1003
   - pip=22.2.2=py39h06a4308_0
-  - prompt-toolkit=3.0.20=pyhd3eb1b0_0
   - psutil=5.9.0=py39h5eee18b_0
   - ptyprocess=0.7.0=pyhd3eb1b0_2
   - pure_eval=0.2.2=pyhd3eb1b0_0
@@ -39,7 +38,6 @@ dependencies:
   - pyparsing=3.0.9=py39h06a4308_0
   - python=3.9.15=h7a1cb2a_2
   - python-dateutil=2.8.2=pyhd3eb1b0_0
-  - pyzmq=23.2.0=py39h6a678d5_0
   - readline=8.2=h5eee18b_0
   - setuptools=65.5.0=py39h06a4308_0
   - six=1.16.0=pyhd3eb1b0_1
@@ -47,7 +45,6 @@ dependencies:
   - stack_data=0.2.0=pyhd3eb1b0_0
   - tk=8.6.12=h1ccaba5_0
   - tornado=6.2=py39h5eee18b_0
-  - traitlets=5.1.1=pyhd3eb1b0_0
   - tzdata=2022f=h04d1e81_0
   - wcwidth=0.2.5=pyhd3eb1b0_0
   - wheel=0.37.1=pyhd3eb1b0_0
@@ -55,57 +52,122 @@ dependencies:
   - zeromq=4.3.4=h2531618_0
   - zlib=1.2.13=h5eee18b_0
   - pip:
+    - aenum==3.1.15
+    - aiohttp==3.9.1
+    - aiosignal==1.3.1
+    - alembic==1.13.0
+    - annotated-types==0.6.0
+    - anyio==3.7.1
+    - argon2-cffi==23.1.0
+    - argon2-cffi-bindings==21.2.0
+    - arrow==1.3.0
+    - async-generator==1.10
+    - async-lru==2.0.4
+    - async-timeout==4.0.3
     - attrs==22.2.0
+    - babel==2.13.1
+    - beautifulsoup4==4.12.2
     - bleach==6.0.0
     - bokeh==2.4.3
     - brain-isotopic-distribution==1.5.11
     - cachetools==5.2.0
+    - certipy==0.1.3
+    - cffi==1.16.0
     - chardet==5.1.0
     - charset-normalizer==3.1.0
     - click==8.1.3
     - cloudpickle==2.2.1
     - colorama==0.4.6
     - colorcet==3.0.1
+    - comm==0.2.0
     - contourpy==1.0.6
+    - cryptography==41.0.7
     - cycler==0.11.0
     - dask==2023.3.2
+    - dataclasses-json==0.6.3
     - datashader==0.14.4
     - datashape==0.5.2
+    - defusedxml==0.7.1
     - dill==0.3.6
     - distlib==0.3.6
+    - distro==1.8.0
+    - e2b==0.13.10
     - et-xmlfile==1.1.0
+    - exceptiongroup==1.2.0
     - fastjsonschema==2.16.2
     - filelock==3.9.0
     - fonttools==4.38.0
+    - fqdn==1.5.1
+    - frozenlist==1.4.0
     - fsspec==2023.4.0
     - greenlet==2.0.1
+    - h11==0.14.0
     - holoviews==1.15.4
+    - httpcore==1.0.2
+    - httpx==0.25.2
     - idna==3.4
     - imageio==2.27.0
     - importlib-metadata==6.3.0
+    - ipywidgets==8.1.1
+    - isoduration==20.11.0
     - jinja2==3.1.2
     - joblib==1.2.0
-    - jsonschema==4.17.3
+    - json5==0.9.14
+    - jsonpatch==1.33
+    - jsonpointer==2.4
+    - jsonrpcclient==4.0.3
+    - jsonschema==4.20.0
+    - jsonschema-specifications==2023.11.2
+    - jupyter==1.0.0
+    - jupyter-console==6.6.3
+    - jupyter-core==5.5.0
+    - jupyter-events==0.9.0
+    - jupyter-lsp==2.2.1
+    - jupyter-server==2.12.1
+    - jupyter-server-terminals==0.4.4
+    - jupyter-telemetry==0.1.0
+    - jupyterhub==4.0.2
+    - jupyterlab==4.0.9
+    - jupyterlab-pygments==0.3.0
+    - jupyterlab-server==2.25.2
+    - jupyterlab-widgets==3.0.9
     - kaleido==0.2.1
     - kiwisolver==1.4.4
+    - langchain==0.0.345
+    - langchain-core==0.0.9
+    - langsmith==0.0.69
     - lazy-loader==0.2
     - llvmlite==0.39.1
     - locket==1.0.0
     - lxml==4.9.1
+    - mako==1.3.0
     - markdown==3.4.3
     - markupsafe==2.1.2
+    - marshmallow==3.20.1
     - matplotlib==3.6.2
+    - mistune==3.0.2
     - mouseinfo==0.1.3
     - ms-deisotope==0.0.14
     - ms-peak-picker==0.1.40
+    - multidict==6.0.4
     - multipledispatch==0.6.0
+    - mypy-extensions==1.0.0
+    - nbclient==0.9.0
+    - nbconvert==7.12.0
     - nbformat==5.7.3
     - networkx==3.1
+    - notebook==7.0.6
+    - notebook-shim==0.2.3
     - numba==0.56.4
     - numpy==1.23.5
+    - oauthlib==3.2.2
+    - openai==1.3.7
     - openpyxl==3.1.0
+    - overrides==7.4.0
     - packaging==22.0
+    - pamela==1.1.0
     - pandas==1.5.2
+    - pandocfilters==1.5.0
     - panel==0.14.4
     - param==1.13.0
     - partd==1.3.0
@@ -113,47 +175,80 @@ dependencies:
     - platformdirs==2.6.2
     - plotly==4.12.0
     - pluggy==1.0.0
+    - prometheus-client==0.19.0
+    - prompt-toolkit==3.0.41
     - psims==1.2.2
     - pyautogui==0.9.53
+    - pycparser==2.21
     - pyct==0.5.0
+    - pydantic==2.5.2
+    - pydantic-core==2.14.5
     - pygetwindow==0.0.9
     - pymsgbox==1.0.9
     - pymzml==2.5.2
     - pynndescent==0.5.8
     - pynumpress==0.0.7
+    - pyopenssl==23.3.0
     - pyperclip==1.8.2
     - pyproject-api==1.4.0
     - pyrect==0.2.0
     - pyrsistent==0.19.3
     - pyscreeze==0.1.28
     - pyteomics==4.5.6
+    - python-json-logger==2.0.7
     - python3-xlib==0.15
     - pytweening==1.0.4
     - pytz==2022.6
     - pyviz-comms==2.2.1
     - pywavelets==1.4.1
     - pyyaml==6.0
+    - pyzmq==25.1.2
+    - qtconsole==5.5.1
+    - qtpy==2.4.1
+    - referencing==0.32.0
     - regex==2022.10.31
-    - requests==2.28.2
+    - requests==2.31.0
     - retrying==1.3.4
+    - rfc3339-validator==0.1.4
+    - rfc3986-validator==0.1.1
+    - rpds-py==0.13.2
+    - ruamel-yaml==0.18.5
+    - ruamel-yaml-clib==0.2.8
     - scikit-image==0.20.0
     - scikit-learn==1.2.1
     - scipy==1.9.1
     - seaborn==0.12.2
+    - send2trash==1.8.2
     - sklearn==0.0.post1
+    - sniffio==1.3.0
+    - soupsieve==2.5
     - sqlalchemy==1.4.44
+    - tenacity==8.2.3
+    - terminado==0.18.0
     - threadpoolctl==3.1.0
     - tifffile==2023.3.21
+    - tinycss2==1.2.1
     - tomli==2.0.1
     - toolz==0.12.0
     - tox==4.2.5
     - tqdm==4.65.0
+    - traitlets==5.14.0
+    - types-python-dateutil==2.8.19.14
+    - typing-extensions==4.8.0
+    - typing-inspect==0.9.0
     - umap==0.1.1
     - umap-learn==0.5.3
+    - upsetplot==0.8.0
+    - uri-template==1.3.0
     - urllib3==1.26.15
     - virtualenv==20.17.1
+    - webcolors==1.13
     - webencodings==0.5.1
+    - websocket-client==1.7.0
+    - websockets==11.0.3
+    - widgetsnbextension==4.0.9
     - xarray==2023.3.0
     - xlsxwriter==3.0.8
+    - yarl==1.9.3
     - zipp==3.15.0
-prefix: /home/sanjay/anaconda3/envs/pymzml
+prefix: /home/cbeveri/.conda/envs/cent7/2020.11-py38/CLAW
