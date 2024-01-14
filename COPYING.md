@@ -1,4 +1,4 @@
-Copyright (c) 2016-2024 Chopra Lab at Purdue University
+Copyright (c) Chopra Laboratory, 2022 - present
 
 This program is free for educational and academic use.
 
