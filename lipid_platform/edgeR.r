@@ -34,12 +34,15 @@ getwd()
 cwd <- readLines("Variable_Storage/folder_path.txt")[1]
 cwd
 setwd(cwd)
+setwd( "/scratch/gilbreth/cbeveri/Scholar_HOME/CLAW_working_directory/CLAW/lipid_platform/Projects/Daneman/")
 
-
-
+getwd()
+getwd()
+getwd()
+getwd()
 # setwd(cwd)
 
-
+print(getwd())
 
 
 file_list = list.files(path="Pre_EdgeR", pattern=NULL, all.files=FALSE,
