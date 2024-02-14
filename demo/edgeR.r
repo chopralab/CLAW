@@ -48,12 +48,12 @@ library(writexl)
 
 
 
-getwd()
+myPath <- getwd()
 
-setwd("/scratch/gilbreth/cbeveri/Scholar_HOME/lipid_parser2/Lipidomics/DEMO/demo_data/")
+newPath <- paste0(myPath, "/demo_data/")
 
-
-
+# Set the new path as your working directory
+setwd(newPath)
 
 file_list = list.files(path="Pre_EdgeR", pattern=NULL, all.files=FALSE,
                        full.names=FALSE)
