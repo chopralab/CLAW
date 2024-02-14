@@ -1,1 +1,1 @@
-/scratch/gilbreth/cbeveri/Scholar_HOME/CLAW_working_directory/CLAW/lipid_platform/Projects/Daneman/
+/scratch/gilbreth/cbeveri/CLAW/lipid_platform/Projects/BRAIN_5XFAD/

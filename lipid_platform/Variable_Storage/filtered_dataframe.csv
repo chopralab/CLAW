@@ -1,61 +1,32 @@
-,Sample Name,Position,Sample Type,Sex,more_info,Genotype
-2,C-1BrainF,P1-A3,Brain,F,C-1,C
-3,C-2BrainF,P1-A4,Brain,F,C-2,C
-4,C-3BrainF,P1-A5,Brain,F,C-3,C
-5,C-4BrainM,P1-A6,Brain,M,C-4,C
-6,C-5BrainM,P1-A7,Brain,M,C-5,C
-7,C-6BrainM,P1-A8,Brain,M,C-6,C
-8,E-1BrainF,P1-A9,Brain,F,E-1,E
-9,E-2BrainF,P1-B1,Brain,F,E-2,E
-10,E-3BrainF,P1-B2,Brain,F,E-3,E
-11,E-4BrainM,P1-B3,Brain,M,E-4,E
-12,E-5BrainM,P1-B4,Brain,M,E-5,E
-13,E-6BrainM,P1-B5,Brain,M,E-6,E
-15,C-1LiverF,P1-B7,Liver,F,C-1,C
-16,C-2LiverF,P1-B8,Liver,F,C-2,C
-17,C-3LiverF,P1-B9,Liver,F,C-3,C
-18,C-4LiverM,p1-C1,Liver,M,C-4,C
-19,C-5LiverM,p1-C2,Liver,M,C-5,C
-20,C-6LiverM,p1-C3,Liver,M,C-6,C
-21,E-1LiverF,p1-C4,Liver,F,E-1,E
-22,E-2LiverF,p1-C5,Liver,F,E-2,E
-23,E-3LiverF,p1-C6,Liver,F,E-3,E
-24,E-4LiverM,p1-C7,Liver,M,E-4,E
-25,E-5LiverM,p1-C8,Liver,M,E-5,E
-26,E-6LiverM,p1-C9,Liver,M,E-6,E
-28,C-1RetinaF,p1-d2,Retina,F,C-1,C
-29,C-2RetinaF,p1-d3,Retina,F,C-2,C
-30,C-3RetinaF,p1-d4,Retina,F,C-3,C
-31,C-4RetinaM,p1-d5,Retina,M,C-4,C
-32,C-5RetinaM,p1-d6,Retina,M,C-5,C
-33,C-6RetinaM,p1-d7,Retina,M,C-6,C
-34,E-1RetinaF,p1-d8,Retina,F,E-1,E
-35,E-2RetinaF,p1-d9,Retina,F,E-2,E
-36,E-3RetinaF,p1-e1,Retina,F,E-3,E
-37,E-4RetinaM,p1-e2,Retina,M,E-4,E
-38,E-5RetinaM,p1-e3,Retina,M,E-5,E
-39,E-6RetinaM,p1-e4,Retina,M,E-6,E
-41,C-1PlasmaF,P1-e6,Plasma,F,C-1,C
-42,C-2PlasmaF,P1-e7,Plasma,F,C-2,C
-43,C-3PlasmaF,P1-e8,Plasma,F,C-3,C
-44,C-4PlasmaM,P1-e9,Plasma,M,C-4,C
-45,C-5PlasmaM,p1-f1,Plasma,M,C-5,C
-46,C-6PlasmaM,p1-f2,Plasma,M,C-6,C
-47,E-1PlasmaF,p1-f3,Plasma,F,E-1,E
-48,E-2PlasmaF,p1-f4,Plasma,F,E-2,E
-49,E-3PlasmaF,p1-f5,Plasma,F,E-3,E
-50,E-4PlasmaM,p1-f6,Plasma,M,E-4,E
-51,E-5PlasmaM,p1-f7,Plasma,M,E-5,E
-52,E-6PlasmaM,p1-f8,Plasma,M,E-6,E
-54,C-1BMVF,p2-a1,BMV,F,C-1,C
-55,C-2BMVF,p2-a2,BMV,F,C-2,C
-56,C-3BMVF,p2-a3,BMV,F,C-3,C
-57,C-4BMVM,p2-a4,BMV,M,C-4,C
-58,C-5BMVM,p2-a5,BMV,M,C-5,C
-59,C-6BMVM,p2-a6,BMV,M,C-6,C
-60,E-1BMVF,p2-a7,BMV,F,E-1,E
-61,E-2BMVF,p2-a8,BMV,F,E-2,E
-62,E-3BMVF,p2-a9,BMV,F,E-3,E
-63,E-4BMVM,p2-b1,BMV,M,E-4,E
-64,E-5BMVM,p2-b2,BMV,M,E-5,E
-65,E-6BMVM,p2-b3,BMV,M,E-6,E
+,Sample Name,Position,Genotype,Brain Region,Sex
+3,DOD100-M1-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
+4,DOD100-M1-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
+5,DOD100-M1-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
+6,DOD100-M1-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
+7,DOD100-M2-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
+8,DOD100-M2-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
+9,DOD100-M2-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
+10,DOD100-M2-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
+11,DOD100-M3-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
+12,DOD100-M3-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
+13,DOD100-M3-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
+14,DOD99-M1-5xFAD-cerebellum10x_01202023,Not Needed,5xFAD,cerebellum,Male
+15,DOD99-M1-5xFAD-cortex10x_01202023,Not Needed,5xFAD,cortex,Male
+16,DOD99-M1-5xFAD-diencephalon10x_01202023,Not Needed,5xFAD,diencephalon,Male
+17,DOD99-M1-5xFAD-hippo10x_01202023,Not Needed,5xFAD,hippo,Male
+18,DOD99-M2-WT-cerebellum10x_01202023,Not Needed,WT,cerebellum,Male
+19,DOD99-M2-WT-cortex10x_01202023,Not Needed,WT,cortex,Male
+20,DOD99-M2-WT-diencephalon10x_01202023,Not Needed,WT,diencephalon,Male
+21,DOD99-M2-WT-hippo10x_01202023,Not Needed,WT,hippo,Male
+22,M1FAD173-5xFAD-Cortex10x_01182023,Not Needed,5xFAD,cortex,Male
+23,M1FAD173-5xFAD-Diencephalon10x_01182023,Not Needed,5xFAD,diencephalon,Male
+24,M1FAD173-5xFAD-Hippo10x_01182023,Not Needed,5xFAD,hippo,Male
+25,M2FAD173-5xFAD-Cerebellum10x_01192023,Not Needed,5xFAD,cerebellum,Male
+26,M2FAD173-5xFAD-Cortex10x_01192023,Not Needed,5xFAD,cortex,Male
+27,M2FAD173-5xFAD-Diencephalon10x_01192023,Not Needed,5xFAD,diencephalon,Male
+28,M2FAD173-5xFAD-Hippo10x_01192023,Not Needed,5xFAD,hippo,Male
+29,M5FAD173-WT-Cerebellum10x_01192023,Not Needed,WT,cerebellum,Male
+30,M5FAD173-WT-Cortex10x_01192023,Not Needed,WT,cortex,Male
+31,M5FAD173-WT-Diencephalon10x_01192023,Not Needed,WT,diencephalon,Male
+32,M5FAD173-WT-Hippo10x_01192023,Not Needed,WT,hippo,Male
+33,M1FAD173-5xFAD-Cerebellum10x_01182023,Not Needed,5xFAD,cerebellum,Male

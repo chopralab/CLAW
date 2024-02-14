@@ -449,7 +449,7 @@ def subtract_blank(labels_df,matched_df,blank_name):
 
 
 
-    merged_df['Class'] = merged_df['Class'].replace({'TAG | TAG': 'TAG', 'FA | FA': 'FA'})
+    # merged_df['Class'] = merged_df['Class'].replace({'TAG | TAG': 'TAG', 'FA | FA': 'FA'})
 
     return merged_df
 def add_subclass_and_length(merged_df):
