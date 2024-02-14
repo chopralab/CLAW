@@ -27,17 +27,20 @@ The `lipid_platform` directory contains:
 lipid_platform/
     ├── Figures/ # Supporting figures
     ├── Projects/ # Associated projects and related files
-    ├── Variable_Storage/ # Storage for variables, includes edgeR and labels
+    ├── Variable_Storage/ # Storage for variables, includes edgeR and labels  
     ├── lipid_database/ # Database related to lipidomics
     ├── tools/ # Various tools and utilities
     ├── CLAW.py # Main Python script for the platform
     ├── CLAW_MRM_OzESI.ipynb # Jupyter Notebook for MRM OzESI
-    ├── Lipid_MRM_parser.ipynb # Jupyter Notebook for Lipid MRM parsing
+    ├── CLAW_MRM_OzESI_Canola_OzOFF.ipynb # Jupyter Notebook MRM OzESI Canola OzOFF
+    ├── CLAW_MRM_OzESI_Canola_OzON.ipynb # Jupyter Notebook MRM OzESI Canola OzON 
+    ├── CLAW_MRM_OzESI_Canola_OzON_CorrectRT.ipynb # Jupyter Notebook MRM OzESI Canola OzON CorrectRT
+    ├── Lipid_MRM_parser.ipynb # Jupyter Notebook for Lipid MRM parsing  
     ├── NO_AVERAGE_SCRIPTS.py # Script related to averaging functionality
-    ├── create_directory.py # Script for directory creation
+    ├── create_directory.py # Script for directory creation  
     ├── edgeR.r # R script for edgeR analysis
     ├── edgeR_No_replicates.R # R script for edgeR without replicates
-    ├── myjob.sh # Shell script for job handling
+    ├── myjob.sh # Shell script for job handling  
     └── plot.py # Python script for plotting
 ```
 ## Folder Structure
