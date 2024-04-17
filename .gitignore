@@ -8,6 +8,14 @@ lipid_platform/Projects/Burda_lab*
 lipid_platform/Projects/BRAIN_LIVER_LD*
 lipid_platform/Projects/BRAIN_5xFAD_OLDER_DATA_FOR_PAPER*
 lipid_platform/Projects/Brain_5xFAD*
+# Ignore specific large CSV files
+lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
+lipid_platform/FF_OzOFF_full.csv
+lipid_platform/Projects/FaceFats/dfs/OzESI/FaceFatsOzdf.csv
+lipid_platform/Projects/AMP/data/AMP_OzON copy.csv
+lipid_platform/Projects/AMP/results/AMP_OzON_d7b.csv
+lipid_platform/Projects/AMP/results/GMM_results/AMP_GMM.csv
+lipid_platform/FF_OzMatched_full.csv
 ignore/
 *.pyc
 *.html
