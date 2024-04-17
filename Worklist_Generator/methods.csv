@@ -1,25 +1,2 @@
 annotation,method name
-FFA,MRM profiling_FA_05-10-2022.m
-TAG14_0,MRM profiling_TAG14_0_05-10-2022.m
-TAG16_0,MRM profiling_TAG16_0_05-10-2022.m
-TAG16_1,MRM profiling_TAG16_1_05-10-2022.m
-TAG18_0,MRM profiling_TAG18_0_05-10-2022.m
-TAG18_1,MRM profiling_TAG18_1_05-10-2022.m
-TAG18_2,MRM profiling_TAG18_2_05-10-2022.m
-TAG18_3,MRM profiling_TAG18_3_05-10-2022.m
-TAG20_4,MRM profiling_TAG20_4_05-10-2022.m
-TAG22_5,MRM profiling_TAG22_5_05-10-2022.m
-TAG22_6,MRM profiling_TAG22_6_05-10-2022.m
-PG,MRM profiling_PG_07-08-2022.m
-PCandSM,MRM profiling_LPC_PC-O_PC-P_PC_05-04-2022.m
-PE,MRM profiling_LPE_PE-O_PE-P_PE_05-17-2022.m
-PI,MRM profiling_PI_07-08-2022.m
-PS,MRM profiling_PS_07-08-2022.m
-DAG16_0,MRM profiling_DAG16_0_06-22-2022.m
-DAG16_1,MRM profiling_DAG16_1_06-22-2022.m
-DAG18_0,MRM profiling_DAG18_0_06-22-2022.m
-DAG18_1,MRM profiling_DAG18_1_06-22-2022.m
-DAG18_2,MRM profiling_DAG18_2_06-22-2022.m
-CE,MRM profiling_cholesteryl esters_07-08-2022.m
-CER,MRM profiling_Ceramides_09-13-2022.m
-AC,MRM profiling_Acylcarnitines_05-05-2022.m
+FFA,FA_AMP_MRMs_FlowInj.m

@@ -3,6 +3,11 @@
 lipid_platform/old/*
 lipid_platform/.ipynb_checkpoints/*
 lipid_platform/Projects/DTRA*
+lipid_platform/Projects/ELOVL1*
+lipid_platform/Projects/Burda_lab*
+lipid_platform/Projects/BRAIN_LIVER_LD*
+lipid_platform/Projects/BRAIN_5xFAD_OLDER_DATA_FOR_PAPER*
+lipid_platform/Projects/Brain_5xFAD*
 ignore/
 *.pyc
 *.html

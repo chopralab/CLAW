@@ -1,8 +1,33 @@
 ﻿Sample Name,Position,Dilution Factor,Genotype
-IPA,P1-A1,IPA,IPA
-Blank,P1-A2,Blank,Blank
-FAD 131 M4 5xFAD LD Liver,p1-B1,100x,5xFAD
-DOD73 M2 5xFAD LD Liver,p1-B2,100x,5xFAD
-FAD 173 M1 5xFAD LD Liver,p1-B3,100x,5xFAD
-FAD 131 M1 5xFAD LD Liver,p1-B4,100x,5xFAD
-FAD 131 M2 5xFAD LD Liver,p1-B5,100x,5xFAD
+IPA Wash,P1-A1,100x,WT
+BLANK1,P1-A2,Blank,Blank
+HepG2_WT_P4_Single cell_A7,P1-A3,100x,WT
+HepG2_WT_P4_Single cell_A8,P1-A4,100x,WT
+HepG2_WT_P4_Single cell_A11,P1-A5,100x,WT
+BLANK2,P1-A6,Blank,Blank
+HepG2_WT_P4_Single cell_A12,P1-A7,100x,WT
+HepG2_WT_P4_Single cell_B1,P1-A8,100x,WT
+HepG2_WT_P4_Single cell_B2,P1-A9,100x,WT
+HepG2_WT_P4_Single cell_B5,P1-B1,100x,WT
+BLANK3,P1-B2,Blank,Blank
+BLANK4,P1-B3,Blank,Blank
+HepG2_WT_P4_Single cell_B8,P1-B4,100x,WT
+HepG2_WT_P4_Single cell_B10,P1-B5,100x,WT
+HepG2_WT_P4_Single cell_C2,P1-B6,100x,WT
+BLANK5,P1-B7,100x,WT
+HepG2_WT_P4_Single cell_C7,P1-B8,100x,WT
+HepG2_WT_P4_Single cell_C9,P1-B9,100x,WT
+HepG2_WT_P4_Single cell_D1,P1-C1,100x,WT
+HepG2_WT_P4_Single cell_D4,P1-C2,100x,WT
+BLANK6,P1-C3,Blank,Blank
+BLANK7,P1-C4,Blank,Blank
+HepG2_WT_P4_Single cell_D5,P1-C5,100x,WT
+HepG2_WT_P4_Single cell_D9,P1-C6,100x,WT
+HepG2_WT_P4_Single cell_D10,P1-C7,100x,WT
+HepG2_WT_P4_Single cell_D12,P1-C8,100x,WT
+BLANK8,P1-C9,Blank,Blank
+BLANK9,P1-D1,Blank,Blank
+HepG2_WT_P4_Single cell_E2,P1-D2,100x,WT
+HepG2_WT_P4_Single cell_E7,P1-D3,100x,WT
+HepG2_WT_P4_Single cell_E9,P1-D4,100x,WT
+BLANK10,P1-D5,Blank,Blank
