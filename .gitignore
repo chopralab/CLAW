@@ -12,6 +12,16 @@ lipid_platform/Projects/04_29_23/*
 lipid_platform/Projects/Caitlin_paper/*
 lipid_platform/Projects/AMP/*
 
+# Ignore specific large CSV files
+lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
+lipid_platform/Projects/FaceFats/dfs/OzESI/FaceFatsOzdf.csv
+lipid_platform/Projects/AMP/data/AMP_OzON copy.csv
+lipid_platform/Projects/AMP/results/AMP_OzON_d7b.csv
+lipid_platform/Projects/AMP/results/GMM_results/AMP_GMM.csv
+lipid_platform/FF_OzMatched_full.csv
+lipid_platform/FF_OzOFF_full.csv
+
+
 # Specific large CSV files to ignore
 lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
 lipid_platform/FF_OzOFF_full.csv
