@@ -10,6 +10,7 @@ lipid_platform/Projects/Brain_5xFAD*
 lipid_platform/Projects/FaceFats/*
 lipid_platform/Projects/04_29_23/*
 lipid_platform/Projects/Caitlin_paper/*
+lipid_platform/Projects/AMP/*
 
 # Specific large CSV files to ignore
 lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
