@@ -1,7 +1,0 @@
-,Lipid,Purity,Sample_ID,db_pos,LipidParent_Ion,Product_Ion,Retention_Time,OzESI_Intensity,Transition,Cluster_Label,Group,Parent_Ion,Ratio
-1,[TG(52:4)]_FA18:1,Crude,CrudeCanola_O3on_150gN3_02082023,n-9,,573.6,14.3,1875.0,762.6 -> 573.6,0,1.0,762.6,3.05
-3,[TG(52:4)]_FA18:1,Degummed,DegummedCanola_O3on_150gN3_02082023,n-9,,573.6,14.19,1897.0,762.6 -> 573.6,0,1.0,762.6,2.96
-5,[TG(52:4)]_FA18:1,RBD,RBDCanola_O3on_150gN3_02082023,n-9,,573.6,14.35,1317.0,762.6 -> 573.6,0,1.0,762.6,2.68
-7,[TG(54:5)]_FA18:1,Crude,CrudeCanola_O3on_150gN3_02082023,n-9,,599.6,14.31,5259.0,788.6 -> 599.6,0,9.0,788.6,4.09
-9,[TG(54:5)]_FA18:1,Degummed,DegummedCanola_O3on_150gN3_02082023,n-9,,599.6,14.2,4061.0,788.6 -> 599.6,0,9.0,788.6,3.83
-11,[TG(54:5)]_FA18:1,RBD,RBDCanola_O3on_150gN3_02082023,n-9,,599.6,14.33,3415.0,788.6 -> 599.6,0,9.0,788.6,3.83
