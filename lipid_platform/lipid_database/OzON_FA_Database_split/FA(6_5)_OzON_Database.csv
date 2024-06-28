@@ -1,0 +1,6 @@
+Lipid,Chain length,DB Number,DB Location,DBs in front,FA mass,[FA+AMP]+,n-1,n-2,n-3,n-4,n-5
+FA(6:5),6,5,<BBBB>,0,106.1,273.2,,,,,
+FA(6:5),6,5,<BBBF>,1,106.1,273.2,,,,,
+FA(6:5),6,5,<BBFF>,2,106.1,273.2,,,,,
+FA(6:5),6,5,<BFFF>,3,106.1,273.2,,,,,
+FA(6:5),6,5,<FFFF>,4,106.1,273.2,,,,,
