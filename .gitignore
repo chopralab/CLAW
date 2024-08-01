@@ -16,6 +16,12 @@ lipid_platform/Projects/AMP/*.xlsx
 lipid_platform/Projects/AMP/**/*.csv
 lipid_platform/Projects/AMP/**/*.xlsx
 
+# Ignore all .parquet files
+*.parquet
+
+# Ignore all .txt files
+*.txt
+
 
 
 # Ignore specific large CSV files

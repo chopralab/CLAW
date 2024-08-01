@@ -1,0 +1,18 @@
+2024-07-31 12:45:53,607 - concatenate_parquet - INFO - Starting the concatenation process.
+2024-07-31 12:45:53,615 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_100_200.parquet
+2024-07-31 12:45:58,017 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_1100_1200.parquet
+2024-07-31 12:46:02,040 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_400_500.parquet
+2024-07-31 12:46:05,953 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_0_100.parquet
+2024-07-31 12:46:10,047 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_1300_1400.parquet
+2024-07-31 12:46:49,775 - concatenate_parquet - INFO - Saved intermediate batch 0 to ./temp/intermediate_0.parquet
+2024-07-31 12:46:51,526 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_900_1000.parquet
+2024-07-31 12:46:55,432 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_600_700.parquet
+2024-07-31 12:46:59,455 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_300_400.parquet
+2024-07-31 12:47:03,591 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_200_300.parquet
+2024-07-31 12:47:07,398 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_1200_1300.parquet
+2024-07-31 12:47:59,827 - concatenate_parquet - INFO - Saved intermediate batch 1 to ./temp/intermediate_1.parquet
+2024-07-31 12:48:01,609 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_700_800.parquet
+2024-07-31 12:48:05,792 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_500_600.parquet
+2024-07-31 12:48:10,394 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_1000_1100.parquet
+2024-07-31 12:48:14,459 - concatenate_parquet - INFO - Loading ./df_match_3_chunk_800_900.parquet
+2024-07-31 12:48:56,581 - concatenate_parquet - INFO - Saved intermediate batch 2 to ./temp/intermediate_2.parquet

@@ -9,14 +9,24 @@ import matplotlib.pyplot as plt
 
 class LipidAnalysis:
     def __init__(self, data):
+        """
+        Initialize the LipidAnalysis class.
+
+        :param data: DataFrame containing lipid analysis data.
+        """
         self.data = data
         self.height = 1000
         self.width = None
         self.rel_height = 0.5
 
-
     @staticmethod
     def extract_species_info(species):
+        """
+        Extract carbon number and double bond information from species string.
+
+        :param species: String containing species information.
+        :return: Tuple containing carbon number and double bond count.
+        """
         parts = species.split(':')
         carbon_number = float(parts[0].replace('d2-', '').replace('inf', '0')) if parts[0].isdigit() else float('inf')
         double_bond = float(parts[1]) if len(parts) > 1 and parts[1].isdigit() else float('inf')
@@ -24,6 +34,12 @@ class LipidAnalysis:
 
     @staticmethod
     def extract_lipid_info(lipid):
+        """
+        Extract carbon number and double bond information from lipid string.
+
+        :param lipid: String containing lipid information.
+        :return: Tuple containing carbon number and double bond count.
+        """
         match = re.match(r'FA\((\d+):(\d+)\)', lipid)
         if match:
             return int(match.group(1)), int(match.group(2))
@@ -31,11 +47,26 @@ class LipidAnalysis:
             return float('inf'), float('inf')  # Return a large number to push unknown formats to the end
 
     def set_parameters(self, height=1000, width=None, rel_height=0.5):
+        """
+        Set parameters for peak finding.
+
+        :param height: Minimum height of peaks.
+        :param width: Minimum width of peaks.
+        :param rel_height: Relative height for peak width calculation.
+        """
         self.height = height
         self.width = width
         self.rel_height = rel_height
 
     def find_lipid_peaks(self, output_file, user_input="OFF", max_peaks=False):
+        """
+        Find peaks in lipid data.
+
+        :param output_file: Path to save the output DataFrame.
+        :param user_input: String to determine if user input is ON or OFF.
+        :param max_peaks: Boolean to determine if maximum peaks should be calculated.
+        :return: DataFrame containing peak data.
+        """
         if user_input not in ["ON", "OFF"]:
             raise ValueError("user_input must be 'ON' or 'OFF'")
 
@@ -106,6 +137,12 @@ class LipidAnalysis:
             return peaks_df
 
     def create_max_peaks_df(self, peaks_df):
+        """
+        Create a DataFrame containing only the maximum peaks.
+
+        :param peaks_df: DataFrame containing peak data.
+        :return: DataFrame containing maximum peaks.
+        """
         sorted_df = peaks_df.sort_values(by='OzESI_Intensity', ascending=False)
         max_peaks_df = sorted_df.groupby(['group_by_lipid', 'Sample']).first().reset_index()
         max_peaks_df['species_sort'] = max_peaks_df['Species'].apply(self.extract_species_info)
@@ -118,120 +155,68 @@ class LipidAnalysis:
 
     @staticmethod
     def add_suffix_to_filename(filename, suffix):
+        """
+        Add a suffix to the filename before the file extension.
+
+        :param filename: Original filename.
+        :param suffix: Suffix to add.
+        :return: Modified filename with suffix.
+        """
         base, ext = os.path.splitext(filename)
         return f"{base}{suffix}{ext}"
-    
-
-
-    # def plot_peaks(self, peaks_df, project_results=None, file_name_to_save=None):
-    #     unique_lipids = peaks_df['Lipid'].unique()
-
-    #     for lipid in unique_lipids:
-    #         lipid_data = peaks_df[peaks_df['Lipid'] == lipid]
-    #         plt.figure(figsize=(10, 6))
-
-    #         plt.plot(lipid_data['Retention_Time'], lipid_data['OzESI_Intensity'], label='Intensity')
-    #         plt.scatter(lipid_data['Retention_Time'], lipid_data['OzESI_Intensity'], color='red')
-
-    #         for _, row in lipid_data.iterrows():
-    #             plt.annotate(f"Peak Height: {row['Peak_Height']:.2f}\nFWHM: {row['FWHM']:.2f}\nArea: {row['Peak_Area']:.2f}",
-    #                          (row['Retention_Time'], row['OzESI_Intensity']),
-    #                          textcoords="offset points",
-    #                          xytext=(0, 10),
-    #                          ha='center')
-
-    #         plt.title(f"Peaks for Lipid: {lipid}")
-    #         plt.xlabel('Retention Time')
-    #         plt.ylabel('OzESI Intensity')
-    #         plt.legend()
-    #         plt.grid(True)
-
-    #         plot_folder = f'{project_results}plots/'
-    #         os.makedirs(plot_folder, exist_ok=True)
-    #         plt.savefig(f"{plot_folder}{file_name_to_save}_{lipid}_peaks.png")
-    #         plt.close()
-
-    # def plot_data_and_peaks(self, group_type, group_value, height=1000, width=None, rel_height=0.5):
-    #     if group_type not in ['group_by_ion', 'group_by_lipid']:
-    #         raise ValueError(f"group_type must be 'group_by_ion' or 'group_by_lipid'")
-
-    #     if group_type not in self.data.columns:
-    #         raise ValueError(f"group_type '{group_type}' is not a valid column in the data")
-
-    #     group_data = self.data[self.data[group_type] == group_value]
-    #     peaks, properties = find_peaks(group_data['OzESI_Intensity'], height=height, width=width)
-    #     results_half = peak_widths(group_data['OzESI_Intensity'], peaks, rel_height=rel_height)
-
-    #     plt.figure(figsize=(10, 6))
-    #     plt.plot(group_data['Retention_Time'], group_data['OzESI_Intensity'], label='Intensity')
-    #     plt.scatter(group_data['Retention_Time'].iloc[peaks], group_data['OzESI_Intensity'].iloc[peaks], color='red')
-
-    #     for i, peak in enumerate(peaks):
-    #         left_ip = results_half[2][i]
-    #         right_ip = results_half[3][i]
-    #         left_time = group_data['Retention_Time'].iloc[int(left_ip)]
-    #         right_time = group_data['Retention_Time'].iloc[int(right_ip)]
-    #         width_in_time = right_time - left_time
-
-    #         fwhm = results_half[0][i] * (group_data['Retention_Time'].values[1] - group_data['Retention_Time'].values[0])
-
-    #         plt.annotate(
-    #             f"Peak Height: {properties['peak_heights'][i]:.2f}\nFWHM: {fwhm:.2f}\nArea: {properties['peak_heights'][i] * width_in_time:.2f}",
-    #             (group_data['Retention_Time'].iloc[peak], group_data['OzESI_Intensity'].iloc[peak]),
-    #             textcoords="offset points",
-    #             xytext=(0, 10),
-    #             ha='center'
-    #         )
-
-    #     if group_type == 'group_by_lipid':
-    #         lipid_value = group_data['Lipid'].iloc[0] if 'Lipid' in group_data.columns else 'Unknown'
-    #         plot_title = f"Lipid: {lipid_value}"
-    #     else:  # group_type == 'group_by_ion'
-    #         parent_ion_value = group_data['Parent_Ion'].iloc[0] if 'Parent_Ion' in group_data.columns else 'Unknown'
-    #         plot_title = f"Parent Ion: {parent_ion_value}"
-
-    #     plt.title(f"Peaks for {plot_title}")
-    #     plt.xlabel('Retention Time')
-    #     plt.ylabel('OzESI Intensity')
-    #     plt.legend()
-    #     plt.grid(True)
-    #     plt.show()
-
 
 def extract_n_value(lipid):
+    """
+    Extract the n-value from the lipid string.
+
+    :param lipid: String containing lipid information.
+    :return: Integer n-value extracted from the lipid string.
+    """
     match = re.search(r'n-(\d+)', lipid)
     n_value = int(match.group(1)) if match else float('inf')
     return n_value
 
 def sort_dataframe(df):
-    # Sort the DataFrame first by Species column and then by n_value column
+    """
+    Sort the DataFrame first by Species column and then by n_value column.
+
+    :param df: DataFrame to sort.
+    :return: Sorted DataFrame.
+    """
     df_sorted = df.sort_values(by=['Species', 'n_value'])
     return df_sorted
 
-
 if __name__ == "__main__":
-    start_time = time.time()  # Start timing
+    # Start timing
+    start_time = time.time()
     print("Loading Parquet file...")
     
+    # Parse command-line arguments
     input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    height = int(sys.argv[3])
-    width = int(sys.argv[4])
-    rel_height = float(sys.argv[5])
+    height = int(sys.argv[2])
+    width = int(sys.argv[3])
+    rel_height = float(sys.argv[4])
     plot_results_folder = "./results/"
 
+    # Load the input DataFrame
     df_grouped = pd.read_parquet(input_file)
     print("Parquet file loaded successfully.")
     
+    # Initialize LipidAnalysis class and set parameters
     analysis = LipidAnalysis(df_grouped)
     analysis.set_parameters(height=height, width=width, rel_height=rel_height)
     
+    # Apply peak extraction
     print("Applying extraction...")
-    peaks_df = analysis.find_lipid_peaks(output_file=output_file)
+    peaks_df = analysis.find_lipid_peaks(output_file=None)
     print("Extraction applied successfully.")
     
+    # Get the sample value from the DataFrame for naming the output file
+    sample_value = peaks_df['Sample'].iloc[0] if 'Sample' in peaks_df.columns else 'unknown_sample'
+    output_file = f"Projects/AMP/analysis/df_analysis_5_{sample_value}.parquet"
+    
+    # Save the results
     print(f"Saving the result to {output_file}...")
-    # Assuming peaks_df is already defined and populated
     peaks_df['n_value'] = peaks_df['Lipid'].apply(extract_n_value)
     peaks_df = sort_dataframe(peaks_df)
     peaks_df.to_parquet(output_file, index=False)
@@ -241,6 +226,7 @@ if __name__ == "__main__":
     # Plot the peaks
     analysis.plot_peaks(peaks_df, project_results=plot_results_folder, file_name_to_save="lipid_analysis")
 
-    end_time = time.time()  # End timing
+    # End timing
+    end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"Script execution time: {elapsed_time:.2f} seconds")

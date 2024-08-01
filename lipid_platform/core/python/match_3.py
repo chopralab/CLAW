@@ -3,11 +3,15 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import sys
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MatchLipids:
     def __init__(self, mrm_database, tolerance=0.3):
         """
-        Initialize the Match_Lipids class.
+        Initialize the MatchLipids class.
 
         :param mrm_database: DataFrame containing the MRM database with ion information.
         :param tolerance: Tolerance value for matching ion values.
@@ -36,10 +40,11 @@ class MatchLipids:
         :param df: DataFrame containing ion information to be matched.
         :return: DataFrame with matched lipid and class information if matches were found.
         """
+        logging.info("Starting lipid matching parser.")
+        
         # Round the ion values in the input DataFrame for easier comparison
         df['Parent_Ion'] = np.round(df['Parent_Ion'], 1)
         df['Product_Ion'] = np.round(df['Product_Ion'], 1)
-        # Round OzESI_Intensity
         df['OzESI_Intensity'] = np.round(df['OzESI_Intensity'], 0)
         
         matched_lipids = []  # List to store matched lipid names
@@ -64,6 +69,7 @@ class MatchLipids:
         df['Lipid'] = matched_lipids
         df['Class'] = matched_classes
         
+        logging.info("Lipid matching parser completed.")
         return df
 
     @staticmethod
@@ -83,14 +89,18 @@ class MatchLipids:
         Returns:
         pd.DataFrame: DataFrame containing the matched and filtered results.
         """
+        logging.info("Starting lipid matching process.")
+        
         # Initialize an empty DataFrame to store the master results
         OzON_results_df = pd.DataFrame()
 
         # Use isin() to filter OzON_database where Lipid matches any Species in OzOFF_database
         species_list = OzOFF_database['Species'].tolist()
         temp_OzON_database = OzON_database[OzON_database['Species'].isin(species_list)]
+        
+        logging.info("Filtered OzON database based on OzOFF species.")
 
-        # Initialize the Match_Lipids class
+        # Initialize the MatchLipids class
         matcher = MatchLipids(temp_OzON_database, tolerance=tolerance)
 
         # Select the appropriate retention time column
@@ -121,45 +131,55 @@ class MatchLipids:
 
         # Save the results to a Parquet file if an output path is provided
         if output:
-            OzON_results_df.to_parquet(output, index=False)
+            sample_value = df_sample_2['Sample'].iloc[0] if 'Sample' in df_sample_2.columns else 'unknown_sample'
+            output_file = os.path.join(output, f"df_match_3_{sample_value}.parquet")
+            OzON_results_df.to_parquet(output_file, index=False)
+            logging.info(f"Output file saved successfully to {output_file}")
 
+        logging.info("Lipid matching process completed.")
         # Return the results DataFrame
         return OzON_results_df
 
 # Example usage:
 if __name__ == "__main__":
     # Ensure the correct number of arguments are provided
-    if len(sys.argv) < 4:
-        print("Usage: python match_3.py <OzOFF_database.parquet> <OzON_database.parquet> <df_sample_2.parquet>")
+    if len(sys.argv) < 5:
+        print("Usage: python match_itfile_3.py <OzOFF_database.parquet> <OzON_database.parquet> <sample_file.parquet> <output_dir>")
         sys.exit(1)
 
     # Parse command-line arguments
     OzOFF_database_path = sys.argv[1]
     OzON_database_path = sys.argv[2]
-    df_sample_2_path = sys.argv[3]
+    sample_path = sys.argv[3]
+    output_dir = sys.argv[4]
 
     # User-defined variables
     tolerance = 0.3  # Set your tolerance value here
     retention_time_window = 0.5  # Set your retention time window here
-    matched_data = "df_match_3.parquet"  # Save MatchedData output Parquet file
     match_on_median = True  # Set to True if you want to match on Retention_Time_Median
 
     # Load the input DataFrames
+    logging.info(f"Loading OzOFF database from {OzOFF_database_path}")
     OzOFF_database = pd.read_parquet(OzOFF_database_path)
+    
+    logging.info(f"Loading OzON database from {OzON_database_path}")
     OzON_database = pd.read_parquet(OzON_database_path)
-    df_sample_2 = pd.read_parquet(df_sample_2_path)
+    
+    logging.info(f"Loading sample data from {sample_path}")
+    df_sample_2 = pd.read_parquet(sample_path)
 
     # Run the function with user-defined variables, including match_on_median
+    logging.info(f"Starting matching process for sample: {sample_path}")
     OzON_results = MatchLipids.run_match_lipids(
         OzOFF_database, 
         OzON_database, 
         df_sample_2, 
         tolerance=tolerance, 
         retention_time_window=retention_time_window, 
-        output=matched_data, 
+        output=output_dir, 
         match_on_median=match_on_median
     )
 
-    # Print results
-    print("Filtered OzON Database Matches:")
-    print(OzON_results.head())
+    # Print results for the current sample
+    logging.info(f"Filtered OzON Database Matches for {sample_path}:")
+    logging.info(OzON_results.head().to_string())

@@ -112,7 +112,7 @@ if __name__ == "__main__":
     OzESI_df = parser.get_OzESI_df()
 
     # Save the DataFrames in multiple formats and measure file sizes
-    transition_summed_sizes = parser.save_and_measure_size(transition_summed_df, "df_transition_summed")
+    transition_summed_sizes = parser.save_and_measure_size(transition_summed_df, "df_transition_summed_1")
     OzESI_sizes = parser.save_and_measure_size(OzESI_df, "df_mzml_parser_1")
 
     print("File sizes for df_transition_summed_1:")

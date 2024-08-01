@@ -1,15 +1,0 @@
--------------------------------------------------------------------------------
-There are messages associated with the following module(s):
--------------------------------------------------------------------------------
-
-anaconda/2024.02-py311:
-   The default anaconda module has changed from 2022.10-py39 to
-   2024.02-py311. You can still use the older anaconda by loading it
-   directly with "module load anaconda/2022.10-py39".
-
--------------------------------------------------------------------------------
-
-/home/iyer95/CLAW/CLAW/lipid_platform
-Processing group_by_lipid groups:   0%|          | 0/2747 [00:00<?, ?it/s]Processing group_by_lipid groups:   2%|▏         | 46/2747 [00:00<00:05, 458.28it/s]Processing group_by_lipid groups:   8%|▊         | 217/2747 [00:00<00:02, 1191.15it/s]Processing group_by_lipid groups:  12%|█▏        | 337/2747 [00:00<00:02, 853.48it/s] Processing group_by_lipid groups:  16%|█▌        | 431/2747 [00:00<00:03, 755.10it/s]Processing group_by_lipid groups:  19%|█▊        | 513/2747 [00:00<00:03, 681.06it/s]Processing group_by_lipid groups:  21%|██▏       | 585/2747 [00:00<00:03, 589.13it/s]Processing group_by_lipid groups:  24%|██▎       | 648/2747 [00:00<00:03, 591.98it/s]Processing group_by_lipid groups:  27%|██▋       | 729/2747 [00:01<00:03, 645.28it/s]Processing group_by_lipid groups:  29%|██▉       | 797/2747 [00:01<00:03, 590.64it/s]Processing group_by_lipid groups:  32%|███▏      | 885/2747 [00:01<00:02, 661.02it/s]Processing group_by_lipid groups:  36%|███▋      | 996/2747 [00:01<00:02, 776.48it/s]Processing group_by_lipid groups:  40%|███▉      | 1091/2747 [00:01<00:02, 820.82it/s]Processing group_by_lipid groups:  45%|████▍     | 1236/2747 [00:01<00:01, 997.35it/s]Processing group_by_lipid groups:  49%|████▉     | 1340/2747 [00:01<00:01, 745.99it/s]Processing group_by_lipid groups:  52%|█████▏    | 1427/2747 [00:02<00:02, 512.09it/s]Processing group_by_lipid groups:  55%|█████▌    | 1520/2747 [00:02<00:02, 586.44it/s]Processing group_by_lipid groups:  58%|█████▊    | 1596/2747 [00:02<00:02, 540.99it/s]Processing group_by_lipid groups:  65%|██████▍   | 1781/2747 [00:02<00:01, 805.36it/s]Processing group_by_lipid groups:  69%|██████▊   | 1883/2747 [00:02<00:01, 834.59it/s]Processing group_by_lipid groups:  72%|███████▏  | 1982/2747 [00:02<00:00, 816.35it/s]Processing group_by_lipid groups:  76%|███████▌  | 2075/2747 [00:02<00:00, 790.10it/s]Processing group_by_lipid groups:  79%|███████▊  | 2162/2747 [00:03<00:00, 736.89it/s]Processing group_by_lipid groups:  82%|████████▏ | 2242/2747 [00:03<00:00, 700.56it/s]Processing group_by_lipid groups:  90%|████████▉ | 2462/2747 [00:03<00:00, 1061.55it/s]Processing group_by_lipid groups:  94%|█████████▍| 2579/2747 [00:03<00:00, 635.15it/s] Processing group_by_lipid groups:  97%|█████████▋| 2671/2747 [00:03<00:00, 531.61it/s]Processing group_by_lipid groups: 100%|█████████▉| 2746/2747 [00:04<00:00, 475.71it/s]Processing group_by_lipid groups: 100%|██████████| 2747/2747 [00:04<00:00, 665.38it/s]
-/home/iyer95/CLAW/CLAW/lipid_platform
-Script execution time: 45 seconds

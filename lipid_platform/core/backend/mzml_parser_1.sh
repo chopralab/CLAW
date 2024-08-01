@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/mzml_parser_1_%j_output.txt
-#SBATCH --error=core/backend/logs/mzml_parser_1_%j_err.txt
+#SBATCH --output=core/backend/logs/mzml_parser/mzml_parser_1_%j_output.txt
+#SBATCH --error=core/backend/logs/mzml_parser/mzml_parser_1_%j_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
@@ -21,7 +21,7 @@ source activate /home/iyer95/.conda/envs/CLAW
 pwd >&2
 
 # Define the path to the mzML data
-mzml_data='Projects/AMP/mzml/AMP_ON/'
+mzml_data='Projects/AMP/mzml/test/'
 
 # Print the current working directory to the error log before running the Python script
 pwd >&2

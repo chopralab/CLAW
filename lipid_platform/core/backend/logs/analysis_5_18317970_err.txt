@@ -1,19 +1,0 @@
--------------------------------------------------------------------------------
-There are messages associated with the following module(s):
--------------------------------------------------------------------------------
-
-anaconda/2024.02-py311:
-   The default anaconda module has changed from 2022.10-py39 to
-   2024.02-py311. You can still use the older anaconda by loading it
-   directly with "module load anaconda/2022.10-py39".
-
--------------------------------------------------------------------------------
-
-/home/iyer95/CLAW/CLAW/lipid_platform
-Processing group_by_lipid groups:   0%|          | 0/2747 [00:00<?, ?it/s]Processing group_by_lipid groups:   2%|▏         | 42/2747 [00:00<00:06, 419.30it/s]Processing group_by_lipid groups:   8%|▊         | 207/2747 [00:00<00:02, 1140.11it/s]Processing group_by_lipid groups:  12%|█▏        | 321/2747 [00:00<00:02, 900.21it/s] Processing group_by_lipid groups:  15%|█▌        | 416/2747 [00:00<00:03, 773.91it/s]Processing group_by_lipid groups:  18%|█▊        | 498/2747 [00:00<00:03, 674.83it/s]Processing group_by_lipid groups:  21%|██        | 569/2747 [00:00<00:03, 581.45it/s]Processing group_by_lipid groups:  23%|██▎       | 631/2747 [00:00<00:03, 550.47it/s]Processing group_by_lipid groups:  26%|██▌       | 720/2747 [00:01<00:03, 632.87it/s]Processing group_by_lipid groups:  29%|██▊       | 788/2747 [00:01<00:03, 562.42it/s]Processing group_by_lipid groups:  32%|███▏      | 882/2747 [00:01<00:02, 651.63it/s]Processing group_by_lipid groups:  36%|███▌      | 987/2747 [00:01<00:02, 749.42it/s]Processing group_by_lipid groups:  39%|███▉      | 1082/2747 [00:01<00:02, 798.58it/s]Processing group_by_lipid groups:  44%|████▎     | 1201/2747 [00:01<00:01, 905.79it/s]Processing group_by_lipid groups:  47%|████▋     | 1299/2747 [00:01<00:01, 924.72it/s]Processing group_by_lipid groups:  51%|█████     | 1395/2747 [00:02<00:02, 571.20it/s]Processing group_by_lipid groups:  54%|█████▎    | 1471/2747 [00:02<00:02, 492.01it/s]Processing group_by_lipid groups:  57%|█████▋    | 1564/2747 [00:02<00:02, 571.42it/s]Processing group_by_lipid groups:  60%|█████▉    | 1636/2747 [00:02<00:02, 549.36it/s]Processing group_by_lipid groups:  66%|██████▌   | 1814/2747 [00:02<00:01, 810.60it/s]Processing group_by_lipid groups:  70%|██████▉   | 1912/2747 [00:02<00:01, 820.10it/s]Processing group_by_lipid groups:  73%|███████▎  | 2006/2747 [00:02<00:00, 767.68it/s]Processing group_by_lipid groups:  76%|███████▌  | 2092/2747 [00:02<00:00, 782.68it/s]Processing group_by_lipid groups:  79%|███████▉  | 2177/2747 [00:03<00:00, 689.18it/s]Processing group_by_lipid groups:  82%|████████▏ | 2252/2747 [00:03<00:00, 700.46it/s]Processing group_by_lipid groups:  90%|████████▉ | 2463/2747 [00:03<00:00, 1049.48it/s]Processing group_by_lipid groups:  94%|█████████▍| 2577/2747 [00:03<00:00, 618.45it/s] Processing group_by_lipid groups:  97%|█████████▋| 2666/2747 [00:03<00:00, 518.79it/s]Processing group_by_lipid groups: 100%|█████████▉| 2739/2747 [00:04<00:00, 459.82it/s]Processing group_by_lipid groups: 100%|██████████| 2747/2747 [00:04<00:00, 648.33it/s]
-Traceback (most recent call last):
-  File "core/python/analysis_5.py", line 242, in <module>
-    analysis.plot_peaks(peaks_df, project_results=plot_results_folder, file_name_to_save="lipid_analysis")
-AttributeError: 'LipidAnalysis' object has no attribute 'plot_peaks'
-/home/iyer95/CLAW/CLAW/lipid_platform
-Script execution time: 6 seconds
