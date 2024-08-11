@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/match_3_%A_%a_output.txt
-#SBATCH --error=core/backend/logs/match_3_%A_%a_err.txt
+#SBATCH --output=core/backend/logs/match/match_3_%A_%a_output.txt
+#SBATCH --error=core/backend/logs/match/match_3_%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-4  # Array indices for 100 jobs, with a check to only process 41 files
+#SBATCH --array=0-1  # Array indices for 100 jobs, with a check to only process 41 files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
@@ -19,10 +19,10 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Define input variables
-OzOFF_database_path="Projects/AMP/results/csv_data/OzOFF_Possible_species_test.parquet"
+OzOFF_database_path="Projects/AMP/off_possible/"
 OzON_database_path="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"
-input_dir="Projects/AMP/samples/"
-output_dir="Projects/AMP/match/"
+input_dir="Projects/AMP/samples/test/"
+output_dir="Projects/AMP/match/test/"
 
 # List all files in the input directory and get the file corresponding to the SLURM_ARRAY_TASK_ID
 files=($(ls $input_dir/*.parquet))
@@ -39,7 +39,7 @@ if [ $SLURM_ARRAY_TASK_ID -lt ${#files[@]} ]; then
     pwd >&2
 
     # Run the Python script with the input variables
-    python core/python/match_itfile_3.py "$OzOFF_database_path" "$OzON_database_path" "$sample_path" "$output_dir"
+    python core/python/match_3_test_indi.py "$OzOFF_database_path" "$OzON_database_path" "$sample_path" "$output_dir"
 
     # Print the current working directory to the error log after running the Python script
     pwd >&2

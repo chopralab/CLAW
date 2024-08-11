@@ -21,7 +21,7 @@ source activate /home/iyer95/.conda/envs/CLAW
 pwd >&2
 
 # Define the path to the mzML data
-mzml_data='Projects/AMP/mzml/test/'
+mzml_data='Projects/AMP/mzml/AMP_ON/'
 
 # Print the current working directory to the error log before running the Python script
 pwd >&2
