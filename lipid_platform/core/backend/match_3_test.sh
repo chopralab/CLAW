@@ -39,7 +39,7 @@ if [ $SLURM_ARRAY_TASK_ID -lt ${#files[@]} ]; then
     pwd >&2
 
     # Run the Python script with the input variables
-    python core/python/match_3_test_indi.py "$OzOFF_database_path" "$OzON_database_path" "$sample_path" "$output_dir"
+    python core/python/match_3_test_std.py "$OzOFF_database_path" "$OzON_database_path" "$sample_path" "$output_dir"
 
     # Print the current working directory to the error log after running the Python script
     pwd >&2
