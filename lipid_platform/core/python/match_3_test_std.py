@@ -164,7 +164,8 @@ class MatchLipids:
         files = os.listdir(OzOFF_dir)
         sample_key = sample_value
         for file in files:
-            if file.startswith('AMP_OzOFF_RT_') and sample_key in file:
+            #if file.startswith('_OzOFF_RT_') and sample_key in file:
+            if sample_key in file and file.endswith('.parquet'):
                 return os.path.join(OzOFF_dir, file)
         return None
 

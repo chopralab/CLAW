@@ -72,6 +72,8 @@ class MzMLParser:
         print(f'Finished parsing mzML file: {file_path}\n')
 
     def mzml_parser_batch(self, folder_name, plot_chromatogram=False):
+        print(f"Attempting to list files in folder: {folder_name}", flush=True)
+
         data_folder = os.listdir(folder_name)
         data_folder.sort()
 
@@ -99,11 +101,15 @@ class MzMLParser:
 
 # Example usage:
 if __name__ == "__main__":
+    print(f"Current working directory: {os.getcwd()}", flush=True)
+
     if len(sys.argv) < 2:
         print("Usage: python parse_mzml_files.py <path_to_mzml_data>")
         sys.exit(1)
 
     mzml_data = sys.argv[1]
+    print(f"mzML data folder path: {mzml_data}", flush=True)
+
 
     parser = MzMLParser()
     parser.mzml_parser_batch(mzml_data)
@@ -112,8 +118,8 @@ if __name__ == "__main__":
     OzESI_df = parser.get_OzESI_df()
 
     # Save the DataFrames in multiple formats and measure file sizes
-    transition_summed_sizes = parser.save_and_measure_size(transition_summed_df, "Projects/AMP/mzml_parsed/df_transition_summed_1_test")
-    OzESI_sizes = parser.save_and_measure_size(OzESI_df, "Projects/AMP/mzml_parsed/df_mzml_parser_1_test")
+    transition_summed_sizes = parser.save_and_measure_size(transition_summed_df, "Projects/STD/mzml_parsed/ON/sum/df_transition_summed_1_ON_test")
+    OzESI_sizes = parser.save_and_measure_size(OzESI_df, "Projects/STD/mzml_parsed/ON/df_mzml_parser_1_ON_test")
 
     print("File sizes for df_transition_summed_1:")
     for format, size in transition_summed_sizes.items():

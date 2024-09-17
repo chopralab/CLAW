@@ -19,8 +19,12 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Define input and output directories
-input_dir="Projects/AMP/match/test/"
-output_dir="Projects/AMP/group/test/"
+input_dir="Projects/STD/match/ON/"
+output_dir="Projects/STD/group/ON/"
+
+# Remove trailing slashes if they exist
+input_dir=$(echo $input_dir | sed 's:/*$::')
+output_dir=$(echo $output_dir | sed 's:/*$::')
 
 # Create the output directory if it doesn't exist
 mkdir -p $output_dir

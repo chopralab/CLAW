@@ -19,8 +19,8 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Define input and output directories
-input_dir="Projects/AMP/group/test/"
-output_dir="Projects/AMP/analysis/test/"
+input_dir="Projects/STD/group/ON/"
+output_dir="Projects/STD/analysis/ON/"
 
 # Create the output directory if it doesn't exist
 mkdir -p $output_dir

@@ -19,17 +19,15 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Define input variables
-OzOFF_database_path="Projects/AMP/off_possible/"
+OzOFF_database_path="Projects/STD/analysis/OFF/"
 OzON_database_path="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"
-input_dir="Projects/AMP/samples/test/"
-output_dir="Projects/AMP/match/test/"
+input_dir="Projects/STD/samples/ON/"
+output_dir="Projects/STD/match/ON/"
 
 # List all files in the input directory and get the file corresponding to the SLURM_ARRAY_TASK_ID
 files=($(ls $input_dir/*.parquet))
 num_files=${#files[@]}
 
-# Uncomment the next line to only run the first 5 files for testing purposes
-files=("${files[@]:0:5}")
 
 # Check if the current task ID is within the range of available files
 if [ $SLURM_ARRAY_TASK_ID -lt ${#files[@]} ]; then

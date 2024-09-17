@@ -87,7 +87,13 @@ class LipidAnalysis:
                     sampling_interval = 1  # Fallback value in case there's only one retention time
 
                 for i, peak in enumerate(peaks):
-                    metadata = group_data.iloc[peak][['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Biology', 'Genotype', 'Cage', 'Mouse', 'Lipid']]
+                    metadata_columns = ['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Lipid']
+                    
+                    # Check if the sample is FAME and adjust columns accordingly
+                    if group_data.iloc[peak]['Sample'] != 'FAME':
+                        metadata_columns += ['Biology', 'Genotype', 'Cage', 'Mouse']
+
+                    metadata = group_data.iloc[peak][metadata_columns]
                     left_ip = results_half[2][i]
                     right_ip = results_half[3][i]
                     left_time = group_data['Retention_Time'].iloc[int(left_ip)]
@@ -110,16 +116,21 @@ class LipidAnalysis:
                         'Species': metadata['Species'],
                         'Class': group_data.iloc[peak]['Class'],
                         'Possible_Lipids': group_data.iloc[peak]['Possible_Lipids'],
-                        'Biology': metadata['Biology'],
-                        'Genotype': metadata['Genotype'],
-                        'Cage': metadata['Cage'],
-                        'Mouse': metadata['Mouse'],
                         'Peak_Height': properties['peak_heights'][i],
                         'FWHM': fwhm,
                         'Peak_Width': width_in_time,
                         'Peak_Area': properties['peak_heights'][i] * width_in_time,
                         'Filter_Column': filter_col  # Track which column was used for filtering
                     })
+
+                    # Only include mouse-related data if Sample is not FAME
+                    if group_data.iloc[peak]['Sample'] != 'FAME':
+                        peak_data[-1].update({
+                            'Biology': metadata['Biology'],
+                            'Genotype': metadata['Genotype'],
+                            'Cage': metadata['Cage'],
+                            'Mouse': metadata['Mouse']
+                        })
 
         peaks_df = pd.DataFrame(peak_data)
 
@@ -135,6 +146,7 @@ class LipidAnalysis:
             return max_peaks_df
         else:
             return peaks_df
+
 
     def create_max_peaks_df(self, peaks_df):
         """
@@ -213,7 +225,7 @@ if __name__ == "__main__":
     
     # Get the sample value from the DataFrame for naming the output file
     sample_value = peaks_df['Sample'].iloc[0] if 'Sample' in peaks_df.columns else 'unknown_sample'
-    output_file = f"Projects/AMP/analysis/test/df_analysis_5_{sample_value}.parquet"
+    output_file = f"Projects/STD/analysis/ON/df_analysis_5_{sample_value}.parquet"
     
     # Save the results
     print(f"Saving the result to {output_file}...")

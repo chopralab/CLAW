@@ -37,8 +37,9 @@ class Plot:
                 plt.annotate(f"Peak Height: {row['Peak_Height']:.2f}\nFWHM: {row['FWHM']:.2f}\nArea: {row['Peak_Area']:.2f}",
                              (row['Retention_Time'], row['OzESI_Intensity']),
                              textcoords="offset points",
-                             xytext=(0, 10),
-                             ha='center')
+                             xytext=(10, -10),
+                             ha='left',
+                             fontsize=8)
 
             plt.title(f"Peaks for Lipid: {lipid}")
             plt.xlabel('Retention Time')
@@ -82,8 +83,9 @@ class Plot:
                 f"Peak Height: {properties['peak_heights'][i]:.2f}\nFWHM: {fwhm:.2f}\nArea: {properties['peak_heights'][i] * width_in_time:.2f}",
                 (group_data['Retention_Time'].iloc[peak], group_data['OzESI_Intensity'].iloc[peak]),
                 textcoords="offset points",
-                xytext=(0, 10),
-                ha='center'
+                xytext=(10, -10),
+                ha='left',
+                fontsize=8
             )
 
         if group_type == 'group_by_lipid':

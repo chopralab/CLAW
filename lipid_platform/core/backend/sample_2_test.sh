@@ -15,5 +15,5 @@ module load anaconda/2024.02-py311
 # Activate the conda environment
 source activate /home/iyer95/.conda/envs/CLAW
 
-# Run the Python script
-python core/python/sample_2_test.py
+# Pass 'yes' or 'no' for STD as an argument to the Python script
+python core/python/sample_2_test.py yes  # or 'no' based on your need
