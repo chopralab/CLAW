@@ -1,1 +1,1 @@
-[[{"Genotype": ["5xFAD"], "Brain Region": ["cerebellum"], "Sex": []}, {"Genotype": ["WT"], "Brain Region": ["cerebellum"], "Sex": []}], [{"Genotype": ["5xFAD"], "Brain Region": ["cortex"], "Sex": []}, {"Genotype": ["WT"], "Brain Region": ["cortex"], "Sex": []}]]
+[[{"Genotype": ["5xFAD"], "Brain Region": [], "Sex": []}, {"Genotype": ["WT"], "Brain Region": [], "Sex": []}], [{"Genotype": [], "Brain Region": ["cortex"], "Sex": []}, {"Genotype": [], "Brain Region": ["diencephalon"], "Sex": []}]]
