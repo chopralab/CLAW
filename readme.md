@@ -106,3 +106,21 @@ If you wish to contribute to CLAW, feel free to submit issues, bug reports, or p
 We acknowledge the developers of `pymzml`, `plotly`,`edgeR` and other open-source libraries used in this workflow, which greatly facilitate lipidomics data analysis.
 
 **Happy lipidomics research with CLAW!**
+
+###Packages needed to install if YML file fails
+conda install pandas=1.5.2 
+pip install pymzml==2.5.2
+conda install matplotlib
+conda install ipywidgets
+pip install plotly
+conda install ipykernel
+pip install jupyterhub jupyterlab jupyter jsonschema jupyterlab-server
+conda install openpyxl
+pip install -U kaleido
+pip install langchain==0.0.345
+pip install openai==1.3.7
+
+
+
+
+

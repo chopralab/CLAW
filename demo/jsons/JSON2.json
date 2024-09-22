@@ -1,10 +1,10 @@
 {
   "Cage": [],
-  "Sex": [],
+  "Sex": [
+    "Female"
+  ],
   "Genotype": [
     "WT"
   ],
-  "Brain Region": [
-    "hippocampus"
-  ]
+  "Brain Region": []
 }
