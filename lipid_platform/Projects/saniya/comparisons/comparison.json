@@ -1,0 +1,66 @@
+{
+    "Group1": [
+        {
+            "Combined_Name": "SV22_s1",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "s1"
+        },
+        {
+            "Combined_Name": "SV22_s3",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "s3"
+        },
+        {
+            "Combined_Name": "SV22_s2",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "s2"
+        },
+        {
+            "Combined_Name": "SV22_p3",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "p3"
+        },
+        {
+            "Combined_Name": "SV22_p2",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "p2"
+        },
+        {
+            "Combined_Name": "SV22_p1",
+            "Sample_Name": "SV22",
+            "Sup_Pel": "p1"
+        }
+    ],
+    "Group2": [
+        {
+            "Combined_Name": "DMSO_s2",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "s2"
+        },
+        {
+            "Combined_Name": "DMSO_s3",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "s3"
+        },
+        {
+            "Combined_Name": "DMSO_s1",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "s1"
+        },
+        {
+            "Combined_Name": "DMSO_p1",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "p1"
+        },
+        {
+            "Combined_Name": "DMSO_p2",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "p2"
+        },
+        {
+            "Combined_Name": "DMSO_p3",
+            "Sample_Name": "DMSO",
+            "Sup_Pel": "p3"
+        }
+    ]
+}

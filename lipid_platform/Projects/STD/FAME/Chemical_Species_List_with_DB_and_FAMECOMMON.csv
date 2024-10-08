@@ -1,0 +1,41 @@
+Chemical_Name,Species,Common_Name,FAMECOMMON,DB
+Methyl Octanoate,8:00,Caprylic Acid Methyl Ester,Octanoic Acid (Caprylic Acid),-
+Methyl Decanoate,10:00,Capric Acid Methyl Ester,Decanoic Acid (Capric Acid),-
+Methyl Laurate,12:00,Lauric Acid Methyl Ester,Lauric Acid,-
+Methyl Tridecanoate,13:00,Tridecylic Acid Methyl Ester,Tridecanoic Acid,-
+Methyl Myristate,14:00,Myristic Acid Methyl Ester,Myristic Acid,-
+Methyl Palmitate,16:00,Palmitic Acid Methyl Ester,Palmitic Acid,-
+Methyl Palmitate,16:00,Palmitic Acid Methyl Ester,Palmitic Acid,-
+Methyl Palmitate,16:00,Palmitic Acid Methyl Ester,Palmitic Acid,-
+Methyl Palmitate,16:00,Palmitic Acid Methyl Ester,Palmitic Acid,-
+Methyl Palmitoleate,16:01,Palmitoleic Acid Methyl Ester,Palmitoleic Acid,n-7
+Methyl Heptadecanoate,17:00,Heptadecylic Acid Methyl Ester,Heptadecanoic Acid (Margaric Acid),-
+Methyl Stearate,18:00,Stearic Acid Methyl Ester,Stearic Acid,-
+Methyl Oleate,18:01,Oleic Acid Methyl Ester,Elaidic Acid,n-9
+Methyl Oleate,18:01,Oleic Acid Methyl Ester,Oleic Acid,n-9
+Methyl Oleate,18:01,Oleic Acid Methyl Ester,Elaidic Acid,n-9
+Methyl Oleate,18:01,Oleic Acid Methyl Ester,Oleic Acid,n-9
+Methyl Linoleate,18:02,Linoleic Acid Methyl Ester,Linoelaidic Acid,"n-6, n-9"
+Methyl Linoleate,18:02,Linoleic Acid Methyl Ester,Linoleic Acid,"n-6, n-9"
+Methyl Linoleate,18:02,Linoleic Acid Methyl Ester,Linoelaidic Acid,"n-6, n-9"
+Methyl Linoleate,18:02,Linoleic Acid Methyl Ester,Linoleic Acid,"n-6, n-9"
+Methyl Linolenate,18:03,Linolenic Acid Methyl Ester,α-Linolenic Acid,"n-3, n-6, n-9"
+Methyl Linolenate,18:03,Linolenic Acid Methyl Ester,γ-Linolenic Acid,"n-3, n-6, n-9"
+Methyl Linolenate,18:03,Linolenic Acid Methyl Ester,α-Linolenic Acid,"n-6, n-9, n-12"
+Methyl Linolenate,18:03,Linolenic Acid Methyl Ester,γ-Linolenic Acid,"n-6, n-9, n-12"
+Methyl Arachidate,20:00,Arachidic Acid Methyl Ester,Arachidic Acid,-
+Methyl 11-Eicosenoate,20:01,Gondoic Acid Methyl Ester,11(Z)-Eicosenoic Acid (Gondoic Acid),n-9
+Methyl Heneicosanoate,21:00,Heneicosylic Acid Methyl Ester,Heneicosanoic Acid,-
+Methyl Arachidonate,20:04,Arachidonic Acid Methyl Ester,Arachidonic Acid,"n-6, n-9, n-12, n-15"
+Methyl 11-14-17-Eicosatrienoate,20:03,Dihomo-γ-linolenic Acid Methyl Ester,Dihomo-γ-Linolenic Acid,"n-6, n-9, n-12"
+Methyl 11-14-17-Eicosatrienoate,20:03,Dihomo-γ-linolenic Acid Methyl Ester,Mead Acid,"n-6, n-9, n-12"
+Methyl 11-14-17-Eicosatrienoate,20:03,Dihomo-γ-linolenic Acid Methyl Ester,Dihomo-γ-Linolenic Acid,"n-3, n-6, n-9"
+Methyl 11-14-17-Eicosatrienoate,20:03,Dihomo-γ-linolenic Acid Methyl Ester,Mead Acid,"n-3, n-6, n-9"
+Methyl Eicosapentaenoate,20:05,Eicosapentaenoic Acid Methyl Ester,Eicosapentaenoic Acid (EPA),"n-3, n-6, n-9, n-12, n-15"
+Methyl Behenate,22:00,Behenic Acid Methyl Ester,Docosanoic Acid (Behenic Acid),-
+Methyl Erucate,22:01,Erucic Acid Methyl Ester,13(Z)-Docosenoic Acid (Erucic Acid),n-9
+Methyl Tricosanoate,23:00,Tricosylic Acid Methyl Ester,Tricosanoic Acid,-
+Methyl Docosapentaenoate,22:05,Docosapentaenoic Acid Methyl Ester,,
+Methyl Lignocerate,24:00:00,Lignoceric Acid Methyl Ester,Lignoceric Acid,-
+Methyl Docosahexaenoate,22:06,Docosahexaenoic Acid Methyl Ester,Docosahexaenoic Acid (DHA),"n-3, n-6, n-9, n-12, n-15, n-18"
+Methyl Nervonate,24:01:00,Nervonic Acid Methyl Ester,Nervonic Acid,n-9

@@ -6,7 +6,7 @@ import sys
 import logging
 
 # Setup logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MatchLipids:
     def __init__(self, mrm_database, tolerance=0.3):
@@ -70,7 +70,7 @@ class MatchLipids:
             for _, row in OzOFF_database.iterrows():
                 logging.info(f"STD_RT_OFF: {row['STD_RT_OFF']}, STD_RT_ON: {df_sample_2['STD_RT_ON'].iloc[0]}, STD_RT_Dif: {row['STD_RT_Dif']}")
 
-            # add to OzON results df
+            # Add STD_RT_Dif to df_sample_2
             df_sample_2['STD_RT_Dif'] = OzOFF_database['STD_RT_OFF'] - df_sample_2['STD_RT_ON']
             
             # Proceed with the lipid matching process
@@ -85,21 +85,28 @@ class MatchLipids:
 
             matcher = MatchLipids(temp_OzON_database, tolerance=tolerance)
 
-
             for index, row in tqdm(OzOFF_database.iterrows(), total=len(OzOFF_database), desc="Processing OzOFF Database"):
                 species = row['Species']
                 retention_time_value = row['Retention_Time']
                 sample_value = row['Sample']
                 std_rt_dif = row['STD_RT_Dif']
+                std_rt_off = row['STD_RT_OFF']  # This is the OFF retention time
+
+                # Calculate the adjusted retention time value
+                adjusted_retention_time_value = retention_time_value + std_rt_dif
 
                 logging.info(f"Processing row {index}: Species: {species}, Sample: {sample_value}")
+                logging.info(f"OzOFF RT (STD_RT_OFF) being referenced: {std_rt_off}")
                 logging.info(f"Retention Time Value: {retention_time_value}, STD_RT_Dif: {std_rt_dif}")
+                logging.info(f"Adjusted Retention Time Value: {adjusted_retention_time_value}")
 
                 # Adjust the retention time window with the STD_RT_Dif
-                adjusted_retention_time_start = retention_time_value + std_rt_dif - retention_time_window
-                adjusted_retention_time_end = retention_time_value + std_rt_dif + retention_time_window
+                adjusted_retention_time_start = adjusted_retention_time_value - retention_time_window
+                adjusted_retention_time_end = adjusted_retention_time_value + retention_time_window
 
-                logging.info(f"Adjusted Retention Time Window: Start = {adjusted_retention_time_start}, End = {adjusted_retention_time_end}")
+                # Log the adjusted retention time window and the OzOFF reference retention time (STD_RT_OFF)
+                logging.debug(f"Adjusted Retention Time Window for Species '{species}' and Sample '{sample_value}': Start = {adjusted_retention_time_start}, End = {adjusted_retention_time_end}")
+                logging.info(f"OzOFF Reference Retention Time (STD_RT_OFF) for Species '{species}': {std_rt_off}")
 
                 # Filtering df_sample_2 based on adjusted retention time window and sample value
                 filtered_df_sample_2 = df_sample_2.loc[
@@ -111,38 +118,39 @@ class MatchLipids:
                 if filtered_df_sample_2.empty:
                     logging.info(f"No matching entries found in df_sample_2 for Species: {species}, Sample: {sample_value} within the adjusted retention time window.")
                 else:
-                    logging.info(f"Found {len(filtered_df_sample_2)} matching entries in df_sample_2 for Species: {species}, Sample: {sample_value}")
+                    logging.info(f"Found {len(filtered_df_sample_2)} matching entries in df_sample_2 for Species: {species}, Sample: {sample_value} within the adjusted retention time window.")
 
-                    # Assign species to the filtered data
+                    # Assign species and add Adjusted_RT to the filtered data
                     filtered_df_sample_2.loc[:, 'Species'] = species
+                    filtered_df_sample_2['Adjusted_RT'] = adjusted_retention_time_value  # Add Adjusted_RT column with the adjusted retention time
                     temp_OzON_data = filtered_df_sample_2.copy()
 
-                    logging.info(f"Assigned Species '{species}' to the filtered data. Preparing for matching...")
+                    logging.info(f"Assigned Species '{species}' and Adjusted_RT to the filtered data. Preparing for matching...")
 
-
-                    
                     # Ensure that the matched DataFrame includes the necessary columns
                     matched_temp_OzON_data = matcher.match_lipids_parser(temp_OzON_data)
                     matched_temp_OzON_data['STD_RT_OFF'] = row['STD_RT_OFF']
                     matched_temp_OzON_data['STD_RT_ON'] = filtered_df_sample_2['STD_RT_ON'].iloc[0]
-                    #std rt dif calculated at start before adjustment
                     matched_temp_OzON_data['STD_RT_Dif'] = std_rt_dif
-                    # Logging the values for debugging
-                    logging.info(f"Matched Lipid: {matched_temp_OzON_data['Lipid'].iloc[0]}")  # Log the matched lipid for context
-                    logging.info(f"STD_RT_OFF: {matched_temp_OzON_data['STD_RT_OFF'].iloc[0]}")
-                    logging.info(f"STD_RT_ON: {matched_temp_OzON_data['STD_RT_ON']}")
-                    logging.info(f"Calculated STD_RT_Dif: {matched_temp_OzON_data['STD_RT_Dif'].iloc[0]}")
+                    matched_temp_OzON_data['Adjusted_RT'] = adjusted_retention_time_value  # Add Adjusted_RT to the matched data
 
-                    # Additional logging for verification
+                    # Log the matched retention times and difference
+                    logging.info(f"Matched Lipid: {matched_temp_OzON_data['Lipid'].iloc[0]}")
+                    logging.info(f"Matched STD_RT_OFF: {matched_temp_OzON_data['STD_RT_OFF'].iloc[0]}, STD_RT_ON: {matched_temp_OzON_data['STD_RT_ON']}, Calculated STD_RT_Dif: {std_rt_dif}")
+                    logging.info(f"Adjusted Retention Time (Adjusted_RT) for this match: {adjusted_retention_time_value}")
+
+                    # Log additional verification details
                     logging.info(f"Row Index: {index}, Species: {species}")
                     logging.info(f"Adjusted Retention Time Start: {adjusted_retention_time_start}")
                     logging.info(f"Adjusted Retention Time End: {adjusted_retention_time_end}")
                     logging.info(f"Filtered Rows: {len(filtered_df_sample_2)}")
-                                        
-                    # Log the STD_RT_OFF, STD_RT_ON, and STD_RT_Dif again after matching
-                    logging.info(f"Matched STD_RT_OFF: {matched_temp_OzON_data['STD_RT_OFF'].iloc[0]}, STD_RT_ON: {matched_temp_OzON_data['STD_RT_ON'].iloc[0]}, STD_RT_Dif: {row['STD_RT_Dif']}")
-                    
+
+                    # Add matched data to the results DataFrame
                     OzON_results_df = pd.concat([OzON_results_df, matched_temp_OzON_data], ignore_index=True)
+
+            # After processing, log the DataFrame column names to ensure Adjusted_RT is present
+            logging.info(f"Final DataFrame Columns: {OzON_results_df.columns}")
+
 
             if output:
                 output_file = os.path.join(output, f"df_match_3_{sample_value}.parquet")
@@ -164,10 +172,10 @@ class MatchLipids:
         files = os.listdir(OzOFF_dir)
         sample_key = sample_value
         for file in files:
-            #if file.startswith('_OzOFF_RT_') and sample_key in file:
             if sample_key in file and file.endswith('.parquet'):
                 return os.path.join(OzOFF_dir, file)
         return None
+
 
 # Example usage:
 if __name__ == "__main__":

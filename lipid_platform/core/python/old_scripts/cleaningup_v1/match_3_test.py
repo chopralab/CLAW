@@ -102,8 +102,8 @@ if __name__ == "__main__":
     sample_path = sys.argv[3]
     output_dir = sys.argv[4]
 
-    tolerance = 0.9
-    retention_time_window = 1.5
+    tolerance = 0.3
+    retention_time_window = 0.5
 
     logging.info(f"Loading OzOFF database from {OzOFF_database_path}")
     OzOFF_database = pd.read_parquet(OzOFF_database_path)

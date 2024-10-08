@@ -1,0 +1,32 @@
+Common Name,Shorthand Lipid Formula,Species,FA,Sample_Data,Sample_Retention_Time,Sample_OzESI_Intensity,Sample_Parent_Ion,Match
+Decanoic Acid (Capric Acid),10:0,10:0,FA(10:0),FA(10:0),4.086,88307.0,339.3,Yes
+Undecanoic Acid,11:0,11:0,FA(11:0),FA(11:0),4.3736500000000005,238663.0,353.3,Yes
+Lauric Acid,12:0,12:0,FA(12:0),FA(12:0),4.81825,705102.0,367.3,Yes
+Tridecanoic Acid,13:0,13:0,FA(13:0),FA(13:0),5.525183333333334,504149.0,381.3,Yes
+Myristic Acid,14:0,14:0,FA(14:0),FA(14:0),6.337033333333333,1573355.0,395.4,Yes
+Myristoleic Acid,14:1,14:1,FA(14:1),FA(14:1),5.3144,834263.0,393.4,Yes
+Pentadecanoic Acid,15:0,15:0,FA(15:0),FA(15:0),7.2791500000000005,857885.0,409.4,Yes
+10(Z)-Pentadecenoic Acid,15:1,15:1,FA(15:1),FA(15:1),6.072883333333333,1323773.0,407.4,Yes
+Palmitic Acid,16:0,16:0,FA(16:0),FA(16:0),8.19595,2398234.0,423.4,Yes
+Palmitoleic Acid,16:1,16:1,FA(16:1),FA(16:1),6.910983333333333,1813371.0,421.4,Yes
+Heptadecanoic Acid (Margaric Acid),17:0,17:0,FA(17:0),FA(17:0),9.217216666666667,547385.0,437.4,Yes
+cis-10-Heptadecenoic Acid,17:1,17:1,FA(17:1),FA(17:1),7.801083333333334,2232096.0,435.4,Yes
+Stearic Acid,18:0,18:0,FA(18:0),FA(18:0),10.211783333333333,659183.0,451.4,Yes
+Elaidic Acid,18:1 (trans-9),18:1,FA(18:1),FA(18:1),8.7432,4043347.0,449.4,Yes
+Linoleic Acid,"18:2 (cis-9,12)",18:2,FA(18:2),FA(18:2),8.035350000000001,1831706.0,447.4,Yes
+α-Linolenic Acid,"18:3 (cis-9,12,15)",18:3,FA(18:3),FA(18:3),6.776616666666667,2320712.0,445.4,Yes
+Arachidic Acid,20:0,20:0,FA(20:0),FA(20:0),12.25525,144205.0,479.4,Yes
+11(Z)-Eicosenoic Acid (Gondoic Acid),20:1 (cis-11),20:1,FA(20:1),FA(20:1),10.629233333333334,1023483.0,477.4,Yes
+"11(Z),14(Z)-Eicosadienoic Acid","20:2 (cis-11,14)",20:2,FA(20:2),FA(20:2),9.318033333333334,1269626.0,475.4,Yes
+homo-γ-Linolenic Acid (Dihomo-γ-linolenic acid),"20:3 (cis-8,11,14)",20:3,FA(20:3),FA(20:3),8.269166666666667,2384459.0,473.4,Yes
+Arachidonic Acid,"20:4 (cis-5,8,11,14)",20:4,FA(20:4),FA(20:4),7.6138,2003592.0,471.4,Yes
+Eicosapentaenoic Acid (EPA),"20:5 (cis-5,8,11,14,17)",20:5,FA(20:5),FA(20:5),6.669866666666667,1621650.0,469.4,Yes
+Heneicosanoic Acid,21:0,21:0,FA(21:0),FA(21:0),13.356583333333335,25096.0,493.4,Yes
+Docosanoic Acid (Behenic Acid),22:0,22:0,FA(22:0),FA(22:0),14.37785,20790.0,507.4,Yes
+13(Z)-Docosenoic Acid (Erucic Acid),22:1 (cis-13),22:1,FA(22:1),FA(22:1),12.541983333333334,274078.0,505.4,Yes
+Docosadienoic Acid,22:2,22:2,FA(22:2),FA(22:2),11.178316666666667,436034.0,503.4,Yes
+Docosahexaenoic Acid (DHA),"22:6 (cis-4,7,10,13,16,19)",22:6,FA(22:6),FA(22:6),7.558583333333334,2139168.0,495.4,Yes
+Tricosanoic Acid,23:0,23:0,FA(23:0),FA(23:0),15.479166666666668,2677.0,521.4,Yes
+Lignoceric Acid,24:0,24:0,FA(24:0),FA(24:0),14.533866666666666,2242.0,535.4,Yes
+Nervonic Acid,24:1 (cis-15),24:1,FA(24:1),FA(24:1),14.534316666666667,55694.0,533.4,Yes
+Octanoic Acid (Caprylic Acid),8:0,8:0,FA(8:0),FA(8:0),3.5893833333333336,23194.0,311.3,Yes

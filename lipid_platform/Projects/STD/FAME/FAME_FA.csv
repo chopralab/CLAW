@@ -1,0 +1,39 @@
+Index,Common Name,Species,DB
+0,Butyric Acid,FA(4:0),-
+1,Hexanoic Acid (Caproic Acid),FA(6:0),-
+2,Octanoic Acid (Caprylic Acid),FA(8:0),-
+3,Decanoic Acid (Capric Acid),FA(10:0),-
+4,Undecanoic Acid,FA(11:0),-
+5,Lauric Acid,FA(12:0),-
+6,Tridecanoic Acid,FA(13:0),-
+7,Myristic Acid,FA(14:0),-
+8,Myristoleic Acid,FA(14:1),n-5
+9,Pentadecanoic Acid,FA(15:0),-
+10,10(Z)-Pentadecenoic Acid,FA(15:1),n-5
+11,Palmitic Acid,FA(16:0),-
+12,Palmitic Acid,FA(16:0),-
+13,Palmitoleic Acid,FA(16:1),n-7
+14,Heptadecanoic Acid (Margaric Acid),FA(17:0),-
+15,cis-10-Heptadecenoic Acid,FA(17:1),n-7
+16,Stearic Acid,FA(18:0),-
+17,Elaidic Acid,FA(18:1),n-9
+18,Oleic Acid,FA(18:1),n-9
+19,Linoelaidic Acid,FA(18:2),"n-6, n-9"
+20,Linoleic Acid,FA(18:2),"n-6, n-9"
+21,α-Linolenic Acid,FA(18:3),"n-3, n-6, n-9"
+22,Arachidic Acid,FA(20:0),-
+23,γ-Linolenic Acid,FA(18:3),"n-6, n-9, n-12"
+24,Heneicosanoic Acid,FA(21:0),-
+25,11(Z)-Eicosenoic Acid (Gondoic Acid),FA(20:1),n-9
+26,"11(Z),14(Z)-Eicosadienoic Acid",FA(20:2),"n-6, n-9"
+27,Dihomo-γ-Linolenic Acid,FA(20:3),"n-6, n-9, n-12"
+28,Docosanoic Acid (Behenic Acid),FA(22:0),-
+29,13(Z)-Docosenoic Acid (Erucic Acid),FA(22:1),n-9
+30,Mead Acid,FA(20:3),"n-3, n-6, n-9"
+31,Arachidonic Acid,FA(20:4),"n-6, n-9, n-12, n-15"
+32,Tricosanoic Acid,FA(23:0),-
+33,Lignoceric Acid,FA(24:0),-
+34,Eicosapentaenoic Acid (EPA),FA(20:5),"n-3, n-6, n-9, n-12, n-15"
+35,Docosadienoic Acid,FA(22:2),"n-6, n-9"
+36,Nervonic Acid,FA(24:1),n-9
+37,Docosahexaenoic Acid (DHA),FA(22:6),"n-3, n-6, n-9, n-12, n-15, n-18"
