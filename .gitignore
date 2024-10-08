@@ -27,7 +27,8 @@ lipid_platform/Projects/AMP/**/*.txt
 # Ignore all .txt files
 *.txt
 
-
+# Ignore all .png files
+*.png
 
 # Ignore specific large CSV files
 lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
