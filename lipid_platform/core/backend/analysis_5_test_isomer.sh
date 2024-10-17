@@ -39,7 +39,7 @@ echo "Processing file: $input_file_path" >&2
 start_time=$(date +%s)
 
 # Run the Python script with the input file path
-python core/python/analysis_5_test_v3.py "$input_file_path" 1000 2 0.5
+python core/python/analysis_5_test_isomer.py "$input_file_path" 1000 2 0.5
 
 end_time=$(date +%s)
 elapsed_time=$(( end_time - start_time ))

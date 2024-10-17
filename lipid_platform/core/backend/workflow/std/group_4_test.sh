@@ -1,16 +1,16 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/analysis/analysis_5_%A_%a_output.txt
-#SBATCH --error=core/backend/logs/analysis/analysis_5_%A_%a_err.txt
+#SBATCH --output=core/backend/logs/group/group_4_%A_%a_output.txt
+#SBATCH --error=core/backend/logs/group/group_4_%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
-#SBATCH --time=01:00:00
-#SBATCH --array=0-1  # Adjust the array size based on the number of files
+#SBATCH --time=10:00:00
+#SBATCH --array=0-1  # Array indices for the first 5 files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
-#SBATCH --job-name=analysis_5_task_${current_date_time}_%a
+#SBATCH --job-name=group_4_task_${current_date_time}_%a
 
 # Load Anaconda module
 module load anaconda/2024.02-py311
@@ -19,8 +19,12 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Define input and output directories
-input_dir="Projects/STD/group/ON/"
-output_dir="Projects/STD/analysis/ON/"
+input_dir="Projects/STD/match/ON/"
+output_dir="Projects/STD/group/ON/"
+
+# Remove trailing slashes if they exist
+input_dir=$(echo $input_dir | sed 's:/*$::')
+output_dir=$(echo $output_dir | sed 's:/*$::')
 
 # Create the output directory if it doesn't exist
 mkdir -p $output_dir
@@ -35,17 +39,8 @@ input_file_path=${input_files[$SLURM_ARRAY_TASK_ID]}
 pwd >&2
 echo "Processing file: $input_file_path" >&2
 
-# Measure and print the time taken by the Python script
-start_time=$(date +%s)
-
 # Run the Python script with the input file path
-python core/python/analysis_5_test_v3.py "$input_file_path" 1000 2 0.5
-
-end_time=$(date +%s)
-elapsed_time=$(( end_time - start_time ))
+python core/python/group_4_test.py "$input_file_path"
 
 # Print the current working directory to the error log after running the Python script
 pwd >&2
-
-# Print the execution time to the log
-echo "Script execution time: ${elapsed_time} seconds" >&2
