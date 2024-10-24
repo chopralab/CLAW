@@ -19,6 +19,8 @@ lipid_platform/Projects/AMP/**/*.csv
 lipid_platform/Projects/AMP/**/*.xlsx
 lipid_platform/Projects/AMP/*.txt
 lipid_platform/Projects/AMP/**/*.txt
+lipid_platform/Projects/AMP/*.parquet
+lipid_platform/Projects/AMP/**/*.parquet
 
 
 # Ignore all .parquet files
