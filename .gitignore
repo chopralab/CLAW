@@ -26,6 +26,7 @@ lipid_platform/Projects/AMP/**/*.parquet
 
 #IGNORE NOTEBOOKS
 lipid_platform/ignore_notebooks/
+lipid_platform/Variable_Storage/old_notebooks/
 
 
 # Ignore all .parquet files
