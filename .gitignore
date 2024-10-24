@@ -21,6 +21,11 @@ lipid_platform/Projects/AMP/*.txt
 lipid_platform/Projects/AMP/**/*.txt
 lipid_platform/Projects/AMP/*.parquet
 lipid_platform/Projects/AMP/**/*.parquet
+*.zip
+*.log
+
+#IGNORE NOTEBOOKS
+lipid_platform/ignore_notebooks/
 
 
 # Ignore all .parquet files
