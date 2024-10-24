@@ -21,7 +21,7 @@ lipid_platform/Projects/AMP/*.txt
 lipid_platform/Projects/AMP/**/*.txt
 lipid_platform/Projects/AMP/*.parquet
 lipid_platform/Projects/AMP/**/*.parquet
-lipid_platform/Projects/AMP/mzml/**/*.mzML
+#lipid_platform/Projects/AMP/mzml/**/*.mzML
 *.zip
 *.log
 
