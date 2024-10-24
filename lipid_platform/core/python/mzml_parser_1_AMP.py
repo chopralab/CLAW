@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import pymzml
-import sys  # Import the sys module
+import sys
 import pyarrow as pq
 
 class MzMLParser:
@@ -25,6 +25,7 @@ class MzMLParser:
             'Transition'
         ])
         self.time_and_intensity_df = pd.DataFrame(columns=['Time', 'Intensity'])
+        self.created_files = []  # Track created files
 
     def mzml_parser(self, file_path, plot_chromatogram=False):
         rows = []
@@ -97,7 +98,24 @@ class MzMLParser:
         df.to_parquet(file_path, index=False, compression='brotli')
         file_sizes['Parquet'] = os.path.getsize(file_path)
 
+        # Track the created file
+        self.created_files.append(file_path)
+
         return file_sizes
+
+    def print_debug_summary(self):
+        # Print the number of unique Sample_ID values
+        unique_samples = self.OzESI_df['Sample_ID'].nunique()
+        print(f"Number of unique Sample_ID values: {unique_samples}")
+
+        # Print each file name that was created
+        print("\nFiles created:")
+        for file in self.created_files:
+            print(file)
+
+        # Print the total number of files created
+        print(f"\nTotal number of files created: {len(self.created_files)}")
+
 
 # Example usage:
 if __name__ == "__main__":
@@ -109,7 +127,6 @@ if __name__ == "__main__":
 
     mzml_data = sys.argv[1]
     print(f"mzML data folder path: {mzml_data}", flush=True)
-
 
     parser = MzMLParser()
     parser.mzml_parser_batch(mzml_data)
@@ -124,7 +141,10 @@ if __name__ == "__main__":
     print("File sizes for df_transition_summed_1:")
     for format, size in transition_summed_sizes.items():
         print(f"{format}: {size / (1024 * 1024):.2f} MB")
-    
+
     print("\nFile sizes for df_mzml_parser_1:")
     for format, size in OzESI_sizes.items():
         print(f"{format}: {size / (1024 * 1024):.2f} MB")
+
+    # Print the debugging summary
+    parser.print_debug_summary()

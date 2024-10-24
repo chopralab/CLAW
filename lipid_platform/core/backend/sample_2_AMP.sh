@@ -16,4 +16,4 @@ module load anaconda/2024.02-py311
 source activate /home/iyer95/.conda/envs/CLAW
 
 # Pass 'yes' or 'no' for STD as an argument to the Python script
-python core/python/sample_2_AMP.py no  # or 'no' based on your need
+python core/python/sample_2_AMP.py no  # or 'no' based on if std sample or not

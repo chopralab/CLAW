@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from scipy.signal import find_peaks
+import logging
 
 class SampleIDExtract:
     def __init__(self, new_columns=None):
@@ -42,14 +43,16 @@ class SampleIDExtract:
         else:
             sample_name = 'Unknown'
         # Debugging print statement
-        print(f"Sample ID: {sample_id}, Extracted Sample Name: {sample_name}")
+        logging.debug(f"Sample ID: {sample_id}, Extracted Sample Name: {sample_name}")
 
         std_name = matched_parts['STD'] if matched_parts['STD'] else 'None'
         return sample_name, std_name
 
     def find_std_rt_on(self, df, std, parent_ion, product_ion, tolerance):
+        logging.info(f"Filtering DataFrame for standard based on Parent Ion: {parent_ion}, Product Ion: {product_ion}, with tolerance: {tolerance}")
         condition = (abs(df['Parent_Ion'] - parent_ion) <= tolerance) & (abs(df['Product_Ion'] - product_ion) <= tolerance)
         filtered_df = df[condition].copy()
+        logging.info(f"Number of rows matching the ion filter condition: {len(filtered_df)}")
         df['STD_RT_ON'] = np.nan
 
         def get_highest_intensity_peak(group):
@@ -71,10 +74,18 @@ class SampleIDExtract:
         return df
 
 def main():
+    logging.basicConfig(filename='sample_extraction_debug.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.DEBUG)
+    console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    logging.getLogger().addHandler(console_handler)
+
+    start_time = time.time()
+
     if len(sys.argv) > 1:
         std = sys.argv[1].strip().lower()
     else:
-        print("Error: Please provide STD as a command-line argument (yes/no)")
+        logging.error("Error: Please provide STD as a command-line argument (yes/no)")
         sys.exit(1)
 
     new_columns = {
@@ -88,32 +99,48 @@ def main():
     output_dir = 'Projects/AMP/samples/ON/'
     os.makedirs(output_dir, exist_ok=True)
 
-    print("Loading Parquet file...")
+    logging.info("Loading Parquet file...")
     OzESI_df = pd.read_parquet("Projects/AMP/mzml_parsed/ON/df_mzml_parser_1_AMP.parquet")
     
-    print("Parquet file loaded successfully.")
+    logging.info("Parquet file loaded successfully.")
 
     sample_extractor = SampleIDExtract(new_columns)
 
-    parent_ion = 425.40
-    product_ion = 183
-    tolerance = 0.3
+    # Defining parameters for standard ion extraction
+    parent_ion = 425.40  # Mass-to-charge ratio of the parent ion for the standard
+    product_ion = 183    # Mass-to-charge ratio of the product ion for the standard
+    tolerance = 0.3      # Tolerance for matching ion values
 
-    print(f"Applying extraction with STD: {std} and finding STD_RT_ON...")
+    logging.info(f"Applying extraction with STD: {std} and finding STD_RT_ON...")
     OzON_Data = sample_extractor.apply_extraction(OzESI_df, std, parent_ion, product_ion, tolerance)
-    print("Extraction and STD_RT_ON calculation applied successfully.")
+    logging.info("Extraction and STD_RT_ON calculation applied successfully.")
 
     unique_samples = OzON_Data['Sample'].unique()
+    file_names = []
     for sample in tqdm(unique_samples, desc="Processing Samples"):
-        start_time = time.time()
-        print(f"Processing sample: {sample}")
+        sample_start_time = time.time()
+        logging.info(f"Processing sample: {sample}")
         sample_df = OzON_Data[OzON_Data['Sample'] == sample]
         filename = os.path.join(output_dir, f"df_sample_2_{sample}_ON.parquet")
-        print(f"Saving {filename}...")
+        logging.info(f"Saving {filename}...")
         sample_df.to_parquet(filename, index=False, compression="brotli")
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"File {filename} saved successfully. Processing took {elapsed_time:.2f} seconds.")
+        file_names.append(filename)
+        sample_end_time = time.time()
+        elapsed_time = sample_end_time - sample_start_time
+        logging.info(f"File {filename} saved successfully. Processing took {elapsed_time:.2f} seconds.")
+
+    end_time = time.time()
+    total_time = end_time - start_time
+
+    logging.info("Summary of Execution:")
+    summary = (
+        f"Number of unique Sample_ID values in input DataFrame: {len(OzESI_df['Sample_ID'].unique())}\n"
+        f"Number of files created in output directory: {len(file_names)}\n"
+        f"All output file names sorted: {sorted(file_names)}\n"
+        f"Total script execution time: {total_time:.2f} seconds"
+    )
+    logging.info(summary)
+    print(summary)
 
 if __name__ == "__main__":
     main()
