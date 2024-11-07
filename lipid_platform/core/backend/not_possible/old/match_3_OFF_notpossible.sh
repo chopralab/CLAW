@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-1  # Array indices for 100 jobs, with a check to only process 41 files
+#SBATCH --array=0-40  # Array indices for 100 jobs, with a check to only process 41 files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
@@ -21,7 +21,7 @@ source activate /home/iyer95/.conda/envs/CLAW
 # Define input variables
 #NOW OZON DATABASE to show lipids that are not possible
 OzOFF_database_path="lipid_database/OzOFF_database/Database_OzOFF.parquet"
-OzON_database_path = "lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"
+OzON_database_path="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"
 input_dir="Projects/STD/samples/OFF/"
 output_dir="Projects/STD/match/OFF/"
 

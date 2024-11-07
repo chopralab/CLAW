@@ -4,6 +4,7 @@ import time
 import pandas as pd
 from tqdm import tqdm
 from scipy.signal import find_peaks, peak_widths
+from scipy.stats import linregress
 import re
 import matplotlib.pyplot as plt
 
@@ -23,9 +24,6 @@ class LipidAnalysis:
     def extract_species_info(species):
         """
         Extract carbon number and double bond information from species string.
-
-        :param species: String containing species information.
-        :return: Tuple containing carbon number and double bond count.
         """
         parts = species.split(':')
         carbon_number = float(parts[0].replace('d2-', '').replace('inf', '0')) if parts[0].isdigit() else float('inf')
@@ -36,23 +34,16 @@ class LipidAnalysis:
     def extract_lipid_info(lipid):
         """
         Extract carbon number and double bond information from lipid string.
-
-        :param lipid: String containing lipid information.
-        :return: Tuple containing carbon number and double bond count.
         """
         match = re.match(r'FA\((\d+):(\d+)\)', lipid)
         if match:
             return int(match.group(1)), int(match.group(2))
         else:
-            return float('inf'), float('inf')  # Return a large number to push unknown formats to the end
+            return float('inf'), float('inf')  # For unknown formats
 
     def set_parameters(self, height=1000, width=None, rel_height=0.5):
         """
         Set parameters for peak finding.
-
-        :param height: Minimum height of peaks.
-        :param width: Minimum width of peaks.
-        :param rel_height: Relative height for peak width calculation.
         """
         self.height = height
         self.width = width
@@ -61,11 +52,6 @@ class LipidAnalysis:
     def find_lipid_peaks(self, output_file, user_input="OFF", max_peaks=False):
         """
         Find peaks in lipid data.
-
-        :param output_file: Path to save the output DataFrame.
-        :param user_input: String to determine if user input is ON or OFF.
-        :param max_peaks: Boolean to determine if maximum peaks should be calculated.
-        :return: DataFrame containing peak data.
         """
         if user_input not in ["ON", "OFF"]:
             raise ValueError("user_input must be 'ON' or 'OFF'")
@@ -80,27 +66,43 @@ class LipidAnalysis:
                 peaks, properties = find_peaks(group_data['OzESI_Intensity'], height=self.height, width=self.width)
                 results_half = peak_widths(group_data['OzESI_Intensity'], peaks, rel_height=self.rel_height)
 
+                # Calculate slope values for each peak
                 retention_times = group_data['Retention_Time'].values
+                ozesi_intensity = group_data['OzESI_Intensity'].values
                 if len(retention_times) > 1:
                     sampling_interval = retention_times[1] - retention_times[0]
                 else:
-                    sampling_interval = 1  # Fallback value in case there's only one retention time
+                    sampling_interval = 1  # Fallback
 
                 for i, peak in enumerate(peaks):
                     metadata_columns = ['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Lipid', 'STD_RT_ON', 'STD_RT_OFF', 'STD_RT_Dif']
-                    
-                    # Check if the sample is FAME and adjust columns accordingly
                     if group_data.iloc[peak]['Sample'] != 'FAME':
                         metadata_columns += ['Biology', 'Genotype', 'Cage', 'Mouse']
 
                     metadata = group_data.iloc[peak][metadata_columns]
-                    left_ip = results_half[2][i]
-                    right_ip = results_half[3][i]
-                    left_time = group_data['Retention_Time'].iloc[int(left_ip)]
-                    right_time = group_data['Retention_Time'].iloc[int(right_ip)]
+
+                    left_ip = int(results_half[2][i])
+                    right_ip = int(results_half[3][i])
+
+                    left_time = group_data['Retention_Time'].iloc[left_ip]
+                    right_time = group_data['Retention_Time'].iloc[right_ip]
                     width_in_time = right_time - left_time
 
                     fwhm = results_half[0][i] * sampling_interval
+
+                    # Linear regression for left and right of the peak
+                    left_indices = range(max(0, peak - 5), peak)  # Left side points
+                    right_indices = range(peak + 1, min(peak + 6, len(ozesi_intensity)))  # Right side points
+                    
+                    if len(left_indices) > 1:
+                        slope_left = linregress(retention_times[left_indices], ozesi_intensity[left_indices]).slope
+                    else:
+                        slope_left = float('nan')
+                    
+                    if len(right_indices) > 1:
+                        slope_right = linregress(retention_times[right_indices], ozesi_intensity[right_indices]).slope
+                    else:
+                        slope_right = float('nan')
 
                     peak_data.append({
                         'Lipid': metadata['Lipid'],
@@ -117,16 +119,18 @@ class LipidAnalysis:
                         'Class': group_data.iloc[peak]['Class'],
                         'Possible_Lipids': group_data.iloc[peak]['Possible_Lipids'],
                         'Peak_Height': properties['peak_heights'][i],
+                        'Prominence': properties['prominences'][i],
                         'FWHM': fwhm,
                         'Peak_Width': width_in_time,
                         'Peak_Area': properties['peak_heights'][i] * width_in_time,
-                        'Filter_Column': filter_col,  # Track which column was used for filtering
+                        'Filter_Column': filter_col,
                         'STD_RT_ON': metadata['STD_RT_ON'],
                         'STD_RT_OFF': metadata['STD_RT_OFF'],
-                        'STD_RT_Dif': metadata['STD_RT_Dif']
+                        'STD_RT_Dif': metadata['STD_RT_Dif'],
+                        'Slope_Left': slope_left,
+                        'Slope_Right': slope_right
                     })
 
-                    # Only include mouse-related data if Sample is not FAME
                     if group_data.iloc[peak]['Sample'] != 'FAME':
                         peak_data[-1].update({
                             'Biology': metadata['Biology'],
@@ -134,7 +138,6 @@ class LipidAnalysis:
                             'Cage': metadata['Cage'],
                             'Mouse': metadata['Mouse']
                         })
-
 
         peaks_df = pd.DataFrame(peak_data)
 

@@ -16,40 +16,42 @@ class LipidGrouper:
     def extract_species(self, lipid):
         """
         Extract the species from the Lipid column using the FA(##:#) pattern.
-        Special handling for cases like FA(d2-16:0).
+        Ignores any additional characters following the main FA(##:#) structure.
         """
         if pd.isna(lipid) or lipid.strip() == "":
             return f"Unknown_{self.unknown_count}"  # Assign a unique Unknown species
         if lipid.startswith('FA(d2-'):
             lipid = lipid.replace('d2-', '')  # Remove 'd2-' prefix
-        match = re.search(r'FA\((\d+:\d+)\)', lipid)  # Looking for FA(##:#) pattern
+        
+        # Match pattern for FA(##:#), ignoring anything after it
+        match = re.search(r'FA\((\d+:\d+)\)', lipid)
         if match:
-            return match.group(1)
+            return match.group(1)  # Returns just the core FA(##:#) part
         else:
             print(f"Warning: Could not extract species from lipid: {lipid}", file=sys.stderr)
             return f"Unknown_{self.unknown_count}"
 
     def species_create(self, df):
         """
-        Create a Species column from the Lipid column.
+        Create a Species column from the Lipid column, extracting entries by '|' and keeping all species in a single row.
         """
         print(f"Checking 'Lipid' column for non-empty values. Sample values from the 'Lipid' column:", file=sys.stderr)
         print(df['Lipid'].unique(), file=sys.stderr)  # Print unique values for debugging
 
-        # Convert Lipid column to string explicitly
-        df['Lipid'] = df['Lipid'].astype(str)
-        
-        # Apply the species extraction function
-        df['Species'] = df['Lipid'].apply(lambda lipid: self.extract_species(lipid))
+        # Convert Lipid column to string explicitly and split each entry by '|'
+        df['Lipid_list'] = df['Lipid'].astype(str).str.split('|')
 
-        # Update the unknown counter for each row that has 'Unknown' species
-        df['Species'] = df.apply(lambda row: self.increment_unknown_count(row), axis=1)
+        # Extract species for each lipid part and combine them in a single entry
+        df['Species'] = df['Lipid_list'].apply(lambda lipids: '|'.join([self.extract_species(lipid) for lipid in lipids]))
 
-        # Print some rows of the Lipid and Species columns for further debugging
-        print("Species column created. Sample output:", file=sys.stderr)
+        # Drop the helper column
+        df = df.drop(columns=['Lipid_list'])
+
+        print("Species column created with all species retained in a single row. Sample output:", file=sys.stderr)
         print(df[['Lipid', 'Species']].head(), file=sys.stderr)
         
-        return df  # Ensure the modified DataFrame is returned
+        return df
+
 
     def increment_unknown_count(self, row):
         if 'Unknown' in row['Species']:
@@ -145,8 +147,6 @@ class LipidGrouper:
         print("DataFrame sorted by 'group_by_lipid' and 'Retention_Time'.", file=sys.stderr)
         return df
 
-
-
     def save_grouped_results(self, df, file_path):
         """
         Save the grouped DataFrame to a Parquet file.
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     print(f"DataFrame loaded. Head of the DataFrame:", file=sys.stderr)
     print(OzON_results.head(), file=sys.stderr)
 
-    # Create Species column from the Lipid column
+    # Create Species column from the Lipid column, expanding entries by '|'
     OzON_results = grouper.species_create(OzON_results)
 
     # Perform grouping
