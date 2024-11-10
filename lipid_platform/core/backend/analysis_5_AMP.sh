@@ -1,51 +1,31 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/analysis/analysis_5_AMPon_%A_%a_output.txt
-#SBATCH --error=core/backend/logs/analysis/analysis_5_AMPon_%A_%a_err.txt
+#SBATCH --output=core/backend/logs/isomer/isomer_filter_6_%A_%a_output.txt
+#SBATCH --error=core/backend/logs/isomer/isomer_filter_6_%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=01:00:00
-#SBATCH --array=0-1  # Adjust the array size based on the number of files
+#SBATCH --array=0
 
-# Generate a timestamp-based job name
-current_date_time=$(date +"%Y%m%d_%H%M%S")
-#SBATCH --job-name=analysis_5_task_${current_date_time}_%a
-
-# Load Anaconda module
 module load anaconda/2024.02-py311
-
-# Activate the conda environment
 source activate /home/iyer95/.conda/envs/CLAW
 
-# Define input and output directories
-input_dir="Projects/AMP/group/ON/"
-output_dir="Projects/AMP/analysis/ON/"
+# Set the working directory
+cd /scratch/negishi/iyer95/iyer95/
 
-# Create the output directory if it doesn't exist
-mkdir -p $output_dir
+# Absolute Paths
+input_dir="/scratch/negishi/iyer95/iyer95/Projects/AMP/analysis/ON/"
+off_possible_dir="/scratch/negishi/iyer95/iyer95/Projects/AMP/analysis/OFF/off_possible/"
+output_dir="/scratch/negishi/iyer95/iyer95/Projects/AMP/isomer_filter_6/"
 
-# List all input files in the input directory
-input_files=($(ls $input_dir/*.parquet))
+# Create output directory
+mkdir -p "$output_dir"
 
-# Get the specific file for this array task
-input_file_path=${input_files[$SLURM_ARRAY_TASK_ID]}
-
-# Print the current working directory and input file to the error log
-pwd >&2
-echo "Processing file: $input_file_path" >&2
-
-# Measure and print the time taken by the Python script
-start_time=$(date +%s)
-
-# Run the Python script with the input file path
-python core/python/analysis_5_AMP.py "$input_file_path" 500 2 0.5
-
-end_time=$(date +%s)
-elapsed_time=$(( end_time - start_time ))
-
-# Print the current working directory to the error log after running the Python script
-pwd >&2
-
-# Print the execution time to the log
-echo "Script execution time: ${elapsed_time} seconds" >&2
+# Run the Python script
+python core/python/isomer_filter_6_AMP.py \
+    --input_dir "$input_dir" \
+    --off_possible_dir "$off_possible_dir" \
+    --output_dir "$output_dir" \
+    --retention_time_tolerance 0.15 \
+    > core/backend/logs/isomer/${SLURM_ARRAY_TASK_ID}_output.log 2>&1

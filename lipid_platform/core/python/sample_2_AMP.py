@@ -1,11 +1,13 @@
-import sys
-import os
-import time
+from scipy.signal import find_peaks
+from scipy.integrate import simps  # For peak area integration
 import pandas as pd
 import numpy as np
+import os
+import sys
+import time
 from tqdm import tqdm
-from scipy.signal import find_peaks
 import logging
+
 
 class SampleIDExtract:
     def __init__(self, new_columns=None):
@@ -42,36 +44,55 @@ class SampleIDExtract:
             sample_name = matched_parts['STD']
         else:
             sample_name = 'Unknown'
-        # Debugging print statement
-        logging.debug(f"Sample ID: {sample_id}, Extracted Sample Name: {sample_name}")
-
+        
         std_name = matched_parts['STD'] if matched_parts['STD'] else 'None'
         return sample_name, std_name
 
-    def find_std_rt_on(self, df, std, parent_ion, product_ion, tolerance):
-        logging.info(f"Filtering DataFrame for standard based on Parent Ion: {parent_ion}, Product Ion: {product_ion}, with tolerance: {tolerance}")
+    def calculate_peak_metrics(self, data, intensity_column, rt_column, peak_window=0.2):
+        """
+        Identify peaks and calculate peak retention time, intensity, and area.
+        """
+        peaks, properties = find_peaks(data[intensity_column], prominence=1)  # Adjust 'prominence' as needed
+        if len(peaks) > 0:
+            # Find the highest peak
+            peak_idx = data.iloc[peaks][intensity_column].idxmax()
+            peak_rt = data.loc[peak_idx, rt_column]
+            peak_intensity = data.loc[peak_idx, intensity_column]
+            
+            # Calculate area around the peak within the specified window
+            area_window = data[(data[rt_column] >= peak_rt - peak_window) &
+                               (data[rt_column] <= peak_rt + peak_window)]
+            peak_area = simps(area_window[intensity_column], area_window[rt_column])
+            
+            return pd.Series({'STD_RT_ON': peak_rt, 'STD_Peak_Intensity': peak_intensity, 'STD_Peak_Area': peak_area})
+        else:
+            return pd.Series({'STD_RT_ON': np.nan, 'STD_Peak_Intensity': np.nan, 'STD_Peak_Area': np.nan})
+
+    def find_peak_and_area(self, df, parent_ion, product_ion, tolerance):
+        """
+        Find peak retention time, intensity, and area for each sample.
+        """
+        logging.info("Finding peaks and areas for each sample.")
+
+        # Filter for the standard
         condition = (abs(df['Parent_Ion'] - parent_ion) <= tolerance) & (abs(df['Product_Ion'] - product_ion) <= tolerance)
         filtered_df = df[condition].copy()
-        logging.info(f"Number of rows matching the ion filter condition: {len(filtered_df)}")
-        df['STD_RT_ON'] = np.nan
 
-        def get_highest_intensity_peak(group):
-            peaks, _ = find_peaks(group['OzESI_Intensity'])
-            if len(peaks) > 0:
-                peak_idx = group.iloc[peaks]['OzESI_Intensity'].idxmax()
-                return group.loc[peak_idx, 'Retention_Time']
-            else:
-                return np.nan
+        # Group by Sample and calculate peak metrics
+        peak_data = filtered_df.groupby('Sample').apply(
+            lambda group: self.calculate_peak_metrics(group, 'OzESI_Intensity', 'Retention_Time')
+        ).reset_index()
 
-        rt_on_map = filtered_df.groupby('Sample').apply(get_highest_intensity_peak).to_dict()
-        df['STD_RT_ON'] = df['Sample'].map(rt_on_map)
+        # Merge back with the original DataFrame
+        df = df.merge(peak_data, on='Sample', how='left')
         return df
 
     def apply_extraction(self, df, std, parent_ion, product_ion, tolerance):
-        tqdm.pandas(desc="Extracting Sample Parts")
-        df[['Sample', 'STD']] = df['Sample_ID'].progress_apply(lambda x: self.extract_sample_parts(x, std)).apply(pd.Series)
-        df = self.find_std_rt_on(df, std, parent_ion, product_ion, tolerance)
+        logging.info("Applying extraction to calculate peaks and areas.")
+        df[['Sample', 'STD']] = df['Sample_ID'].apply(lambda x: self.extract_sample_parts(x, std)).apply(pd.Series)
+        df = self.find_peak_and_area(df, parent_ion, product_ion, tolerance)
         return df
+
 
 def main():
     logging.basicConfig(filename='sample_extraction_debug.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -100,7 +121,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     logging.info("Loading Parquet file...")
-    OzESI_df = pd.read_parquet("Projects/AMP/mzml_parsed/ON/df_mzml_parser_1_AMP.parquet")
+    OzESI_df = pd.read_parquet("Projects/AMP/mzml_parsed/ON/hippo.parquet")
     
     logging.info("Parquet file loaded successfully.")
 
@@ -112,6 +133,8 @@ def main():
     tolerance = 0.3      # Tolerance for matching ion values
 
     logging.info(f"Applying extraction with STD: {std} and finding STD_RT_ON...")
+
+    # Apply extraction and add the new columns for peak metrics
     OzON_Data = sample_extractor.apply_extraction(OzESI_df, std, parent_ion, product_ion, tolerance)
     logging.info("Extraction and STD_RT_ON calculation applied successfully.")
 
@@ -141,6 +164,7 @@ def main():
     )
     logging.info(summary)
     print(summary)
+
 
 if __name__ == "__main__":
     main()

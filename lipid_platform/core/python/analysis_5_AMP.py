@@ -5,6 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 from scipy.signal import find_peaks, peak_widths
 from scipy.stats import linregress
+import numpy as np
 import re
 import matplotlib.pyplot as plt
 
@@ -75,7 +76,7 @@ class LipidAnalysis:
                     sampling_interval = 1  # Fallback
 
                 for i, peak in enumerate(peaks):
-                    metadata_columns = ['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Lipid', 'STD_RT_ON', 'STD_RT_OFF', 'STD_RT_Dif']
+                    metadata_columns = ['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Lipid', 'STD_RT_ON', 'STD_RT_OFF', 'STD_RT_Dif', 'STD_Peak_Intensity', 'STD_Peak_Area', 'Adjusted_RT']
                     if group_data.iloc[peak]['Sample'] != 'FAME':
                         metadata_columns += ['Biology', 'Genotype', 'Cage', 'Mouse']
 
@@ -104,6 +105,20 @@ class LipidAnalysis:
                     else:
                         slope_right = float('nan')
 
+                    # Calculate peak area using the trapezoidal rule
+                    peak_region_times = retention_times[left_ip:right_ip + 1]
+                    peak_region_intensity = ozesi_intensity[left_ip:right_ip + 1]
+                    peak_area = np.trapz(peak_region_intensity, peak_region_times)
+
+                    # Calculate asymmetry factor
+                    asymmetry_factor = self.calculate_peak_asymmetry(peak, left_ip, right_ip, ozesi_intensity)
+
+                    # Calculate baseline drift
+                    baseline_drift = self.calculate_baseline_drift(retention_times, ozesi_intensity, left_ip, right_ip)
+
+                    # Detect peak shoulders
+                    shoulder_count = self.calculate_peak_shouldering(ozesi_intensity, peak, left_ip, right_ip)
+
                     peak_data.append({
                         'Lipid': metadata['Lipid'],
                         'Retention_Time': group_data.iloc[peak]['Retention_Time'],
@@ -122,13 +137,19 @@ class LipidAnalysis:
                         'Prominence': properties['prominences'][i],
                         'FWHM': fwhm,
                         'Peak_Width': width_in_time,
-                        'Peak_Area': properties['peak_heights'][i] * width_in_time,
+                        'Peak_Area': peak_area,
                         'Filter_Column': filter_col,
                         'STD_RT_ON': metadata['STD_RT_ON'],
                         'STD_RT_OFF': metadata['STD_RT_OFF'],
                         'STD_RT_Dif': metadata['STD_RT_Dif'],
+                        'STD_Peak_Intensity': metadata['STD_Peak_Intensity'],
+                        'STD_Peak_Area': metadata['STD_Peak_Area'],
+                        'Adjusted_RT': metadata['Adjusted_RT'],
                         'Slope_Left': slope_left,
-                        'Slope_Right': slope_right
+                        'Slope_Right': slope_right,
+                        'Asymmetry_Factor': asymmetry_factor,
+                        'Baseline_Drift': baseline_drift,
+                        'Shoulder_Count': shoulder_count
                     })
 
                     if group_data.iloc[peak]['Sample'] != 'FAME':
@@ -154,6 +175,50 @@ class LipidAnalysis:
         else:
             return peaks_df
 
+    @staticmethod
+    def calculate_peak_asymmetry(peak, left_ip, right_ip, intensity, percentage=0.2):
+        """
+        Calculate the asymmetry factor of a peak at a specified height percentage.
+
+        :param peak: Index of the peak apex.
+        :param left_ip: Index of the left intersection point.
+        :param right_ip: Index of the right intersection point.
+        :param intensity: Array of intensity values.
+        :param percentage: The percentage height at which to calculate asymmetry (default is 20%).
+        :return: Asymmetry factor.
+        """
+        height_at_percentage = intensity[peak] * percentage
+        left_percentage = left_ip
+        right_percentage = right_ip
+        for i in range(left_ip, peak):
+            if intensity[i] >= height_at_percentage:
+                left_percentage = i
+                break
+        for i in range(right_ip, peak, -1):
+            if intensity[i] >= height_at_percentage:
+                right_percentage = i
+                break
+        A = peak - left_percentage
+        B = right_percentage - peak
+        return B / A if A > 0 else float('inf')
+
+    @staticmethod
+    def calculate_baseline_drift(retention_times, intensity, left_ip, right_ip):
+        """
+        Calculate the baseline drift of a peak.
+        """
+        baseline_region_times = retention_times[left_ip:right_ip + 1]
+        baseline_region_intensity = intensity[left_ip:right_ip + 1]
+        slope, _, _, _, _ = linregress(baseline_region_times, baseline_region_intensity)
+        return slope
+
+    @staticmethod
+    def calculate_peak_shouldering(intensity, peak, left_ip, right_ip):
+        """
+        Detect the presence of shoulders around a peak.
+        """
+        small_peaks, _ = find_peaks(intensity[left_ip:right_ip], height=intensity[peak] * 0.5, prominence=intensity[peak] * 0.1)
+        return len(small_peaks)
 
     def create_max_peaks_df(self, peaks_df):
         """
@@ -242,8 +307,8 @@ if __name__ == "__main__":
     print("File saved successfully.")
     print("Added n_value column and sorted DataFrame by Species and n_value.")
 
-    # Plot the peaks
-    analysis.plot_peaks(peaks_df, project_results=plot_results_folder, file_name_to_save="lipid_analysis")
+    # Remove plot_peaks call as the function is not implemented
+    # analysis.plot_peaks(peaks_df, project_results=plot_results_folder, file_name_to_save="lipid_analysis")
 
     # End timing
     end_time = time.time()
