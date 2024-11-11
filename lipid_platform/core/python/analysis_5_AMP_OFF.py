@@ -1,11 +1,9 @@
-import os
-import sys
-import time
+import numpy as np
+from scipy.signal import find_peaks, peak_widths
 import pandas as pd
 from tqdm import tqdm
-from scipy.signal import find_peaks, peak_widths
-import re
-import matplotlib.pyplot as plt
+import time
+import sys 
 
 class LipidAnalysis:
     def __init__(self, data):
@@ -47,6 +45,7 @@ class LipidAnalysis:
             double_bond = float('inf')
         return carbon_number, double_bond
 
+
     def find_lipid_peaks(self, output_file, user_input="OFF", max_peaks=False, ignore_columns=False):
         """
         Find peaks in lipid data.
@@ -77,10 +76,11 @@ class LipidAnalysis:
                     sampling_interval = 1  # Fallback value in case there's only one retention time
 
                 for i, peak in enumerate(peaks):
-                    # metadata = group_data.iloc[peak][['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 'group_by_lipid', 'group_by_ion', 'Lipid']]
+                    # Include necessary columns (including STD_RT_OFF, STD_Peak_Intensity, STD_Peak_Area)
                     metadata = group_data.iloc[peak][['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 
-                                  'group_by_lipid', 'group_by_ion', 'Lipid', 
-                                  'STD', 'STD_RT_OFF']]  # Add 'STD_RT_OFF' explicitly
+                                'group_by_lipid', 'group_by_ion', 'Lipid', 'STD', 'STD_RT_OFF', 
+                                'STD_Peak_Intensity', 'STD_Peak_Area']]  # Add STD columns explicitly
+
                     # Ignore specific columns if flagged
                     if not ignore_columns:
                         metadata['Biology'] = group_data.iloc[peak]['Biology']
@@ -109,8 +109,10 @@ class LipidAnalysis:
                         'Product_Ion': metadata['Product_Ion'],
                         'Species': metadata['Species'],
                         'Class': group_data.iloc[peak]['Class'],
-                        'STD': metadata['STD'],  # Ensure 'STD' is included
-                        'STD_RT_OFF': metadata['STD_RT_OFF'],  # Ensure 'STD_RT_OFF' is included
+                        'STD': metadata['STD'],  # Keep STD column
+                        'STD_RT_OFF': metadata['STD_RT_OFF'],  # Keep STD_RT_OFF column
+                        'STD_Peak_Intensity': metadata['STD_Peak_Intensity'],  # Keep STD_Peak_Intensity
+                        'STD_Peak_Area': metadata['STD_Peak_Area'],  # Keep STD_Peak_Area
                         'Peak_Height': properties['peak_heights'][i],
                         'FWHM': fwhm,
                         'Peak_Width': width_in_time,
@@ -131,6 +133,8 @@ class LipidAnalysis:
             return max_peaks_df
         else:
             return peaks_df
+
+
 
 
 

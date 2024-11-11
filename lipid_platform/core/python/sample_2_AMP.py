@@ -1,5 +1,4 @@
 from scipy.signal import find_peaks
-from scipy.integrate import simps  # For peak area integration
 import pandas as pd
 import numpy as np
 import os
@@ -7,7 +6,6 @@ import sys
 import time
 from tqdm import tqdm
 import logging
-
 
 class SampleIDExtract:
     def __init__(self, new_columns=None):
@@ -51,19 +49,24 @@ class SampleIDExtract:
     def calculate_peak_metrics(self, data, intensity_column, rt_column, peak_window=0.2):
         """
         Identify peaks and calculate peak retention time, intensity, and area.
+        Ensures the data is sorted by Retention_Time before analysis.
         """
+        # Ensure the data is sorted by Retention_Time
+        data = data.sort_values(by=rt_column)
+
+        # Identify peaks in the intensity data
         peaks, properties = find_peaks(data[intensity_column], prominence=1)  # Adjust 'prominence' as needed
         if len(peaks) > 0:
             # Find the highest peak
             peak_idx = data.iloc[peaks][intensity_column].idxmax()
             peak_rt = data.loc[peak_idx, rt_column]
             peak_intensity = data.loc[peak_idx, intensity_column]
-            
+
             # Calculate area around the peak within the specified window
             area_window = data[(data[rt_column] >= peak_rt - peak_window) &
                                (data[rt_column] <= peak_rt + peak_window)]
-            peak_area = simps(area_window[intensity_column], area_window[rt_column])
-            
+            peak_area = np.trapz(area_window[intensity_column], area_window[rt_column])
+
             return pd.Series({'STD_RT_ON': peak_rt, 'STD_Peak_Intensity': peak_intensity, 'STD_Peak_Area': peak_area})
         else:
             return pd.Series({'STD_RT_ON': np.nan, 'STD_Peak_Intensity': np.nan, 'STD_Peak_Area': np.nan})
@@ -71,9 +74,8 @@ class SampleIDExtract:
     def find_peak_and_area(self, df, parent_ion, product_ion, tolerance):
         """
         Find peak retention time, intensity, and area for each sample.
+        Ensures each group is sorted by Retention_Time before calculating metrics.
         """
-        logging.info("Finding peaks and areas for each sample.")
-
         # Filter for the standard
         condition = (abs(df['Parent_Ion'] - parent_ion) <= tolerance) & (abs(df['Product_Ion'] - product_ion) <= tolerance)
         filtered_df = df[condition].copy()
@@ -88,10 +90,13 @@ class SampleIDExtract:
         return df
 
     def apply_extraction(self, df, std, parent_ion, product_ion, tolerance):
-        logging.info("Applying extraction to calculate peaks and areas.")
+        """
+        Extract and calculate peaks and areas, adding new columns to the DataFrame.
+        """
         df[['Sample', 'STD']] = df['Sample_ID'].apply(lambda x: self.extract_sample_parts(x, std)).apply(pd.Series)
         df = self.find_peak_and_area(df, parent_ion, product_ion, tolerance)
         return df
+
 
 
 def main():
