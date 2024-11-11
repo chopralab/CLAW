@@ -4,7 +4,6 @@ import os
 import numpy as np
 from scipy.signal import find_peaks
 import time
-from scipy.integrate import trapz
 
 class SampleIDExtract:
     def __init__(self, new_columns=None):
@@ -49,46 +48,26 @@ class SampleIDExtract:
 
         return sample_name, std_name
 
-    def get_highest_intensity_peak_and_area(self, group):
-        # Find peaks using scipy's find_peaks function
-        peaks, _ = find_peaks(group['OzESI_Intensity'])
-
-        if len(peaks) > 0:
-            # Get the index of the highest peak intensity
-            peak_idx = group.iloc[peaks]['OzESI_Intensity'].idxmax()
-
-            # Get the retention time for the highest intensity peak
-            rt_peak = group.loc[peak_idx, 'Retention_Time']
-
-            # Calculate the area under the peak using trapezoidal rule
-            peak_data = group.iloc[peaks]  # Data for the peaks
-            peak_area = trapz(peak_data['OzESI_Intensity'], peak_data['Retention_Time'])
-
-            return rt_peak, group.loc[peak_idx, 'OzESI_Intensity'], peak_area
-        else:
-            return np.nan, np.nan, np.nan
-
     def find_std_rt_off(self, df, std, parent_ion, product_ion, tolerance):
         condition = (abs(df['Parent_Ion'] - parent_ion) <= tolerance) & \
                     (abs(df['Product_Ion'] - product_ion) <= tolerance)
 
         filtered_df = df[condition].copy()
 
-        df['STD_RT_OFF'] = np.nan
-        df['STD_Peak_Intensity'] = np.nan
-        df['STD_Peak_Area'] = np.nan
+        df['STD_RT_OFF'] = np.nan  # Change from 'STD_RT_ON' to 'STD_RT_OFF'
 
-        # Apply the function to each sample to get retention time, peak intensity, and peak area
-        def apply_peak_info(group):
-            rt_peak, peak_intensity, peak_area = self.get_highest_intensity_peak_and_area(group)
-            return pd.Series([rt_peak, peak_intensity, peak_area], index=['STD_RT_OFF', 'STD_Peak_Intensity', 'STD_Peak_Area'])
+        def get_highest_intensity_peak(group):
+            peaks, _ = find_peaks(group['OzESI_Intensity'])
 
-        peak_info_map = filtered_df.groupby('Sample').apply(apply_peak_info)
+            if len(peaks) > 0:
+                peak_idx = group.iloc[peaks]['OzESI_Intensity'].idxmax()
+                return group.loc[peak_idx, 'Retention_Time']
+            else:
+                return np.nan
 
-        # Map the results back to the DataFrame
-        df['STD_RT_OFF'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_RT_OFF'] if x in peak_info_map.index else np.nan)
-        df['STD_Peak_Intensity'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_Peak_Intensity'] if x in peak_info_map.index else np.nan)
-        df['STD_Peak_Area'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_Peak_Area'] if x in peak_info_map.index else np.nan)
+        rt_off_map = filtered_df.groupby('Sample').apply(get_highest_intensity_peak).to_dict()
+
+        df['STD_RT_OFF'] = df['Sample'].map(rt_off_map)
 
         return df
 
@@ -96,7 +75,7 @@ class SampleIDExtract:
         tqdm.pandas(desc="Extracting Sample Parts")
         extracted = df['Sample_ID'].progress_apply(self.extract_sample_parts)
         df[['Sample', 'STD']] = pd.DataFrame(extracted.tolist(), index=df.index)
-        df = self.find_std_rt_off(df, std, parent_ion, product_ion, tolerance)
+        df = self.find_std_rt_off(df, std, parent_ion, product_ion, tolerance)  # Change method call to 'find_std_rt_off'
         return df
 
 def main():

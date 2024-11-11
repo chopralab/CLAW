@@ -162,6 +162,9 @@ class LipidAnalysis:
 
         peaks_df = pd.DataFrame(peak_data)
 
+        # Normalize Peak_Area to STD_Peak_Area
+        peaks_df = self.normalize_peak_area(peaks_df)
+
         peaks_df['species_sort'] = peaks_df['Species'].apply(self.extract_species_info)
         peaks_df = peaks_df.sort_values(by=['species_sort', 'Parent_Ion', 'Sample'], ascending=[True, False, True]).drop(columns='species_sort')
 
@@ -219,6 +222,17 @@ class LipidAnalysis:
         """
         small_peaks, _ = find_peaks(intensity[left_ip:right_ip], height=intensity[peak] * 0.5, prominence=intensity[peak] * 0.1)
         return len(small_peaks)
+
+    @staticmethod
+    def normalize_peak_area(df):
+        """
+        Normalize the Peak_Area to the STD_Peak_Area.
+
+        :param df: DataFrame containing 'Peak_Area' and 'STD_Peak_Area' columns.
+        :return: DataFrame with an added 'Normalized_Peak_Area' column.
+        """
+        df['Normalized_Peak_Area'] = df['Peak_Area'] / df['STD_Peak_Area']
+        return df
 
     def create_max_peaks_df(self, peaks_df):
         """

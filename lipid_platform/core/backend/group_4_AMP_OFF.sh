@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/group/group_4_AMP_%A_%a_output.txt
-#SBATCH --error=core/backend/logs/group/group_4_AMP_%A_%a_err.txt
+#SBATCH --output=core/backend/logs/group/OFF/group_4_AMP_%A_%a_output.txt
+#SBATCH --error=core/backend/logs/group/OFF/group_4_AMP_%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=10:00:00
-#SBATCH --array=0-40  # Adjust this to the number of files you have
+#SBATCH --array=0  # Adjust this to the number of files you have
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
