@@ -1,5 +1,46 @@
 import pandas as pd
 
+def literature_removal(df):
+    # Filter rows with 'n-2' or 'n-3' in the Lipid column
+    filtered_df = df[df['Lipid'].str.contains('n-2|n-3', na=False)].copy()
+    
+    # Remove rows with 'n-2' or 'n-3' from the original DataFrame
+    original_df = df[~df['Lipid'].str.contains('n-2|n-3', na=False)].copy()
+    
+    return original_df, filtered_df
+
+def filter_highest_intensity(df):
+    """
+    Filters the DataFrame to keep only the row with the highest OzESI_Intensity
+    for each unique combination of Lipid and OzOFF_Isomer.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: A filtered DataFrame.
+    """
+    # Sort the DataFrame by Lipid, OzOFF_Isomer, and OzESI_Intensity in descending order
+    sorted_df = df.sort_values(by=['Lipid', 'OzOFF_Isomer', 'OzESI_Intensity'], ascending=[True, True, False])
+    
+    # Drop duplicates, keeping the first (highest intensity) for each Lipid and OzOFF_Isomer combination
+    filtered_df = sorted_df.drop_duplicates(subset=['Lipid', 'OzOFF_Isomer', 'Sample'], keep='first')
+    
+    return filtered_df
+def duplicate_removal(df):
+    """
+    Removes duplicate rows based on Lipid and OzESI_Intensity columns.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: A DataFrame with duplicates removed based on specified columns.
+    """
+    return df.drop_duplicates(subset=['Lipid', 'OzESI_Intensity'])
+
+import pandas as pd
+
 def save_df_csv(df: pd.DataFrame, path: str) -> None:
     """
     Saves a DataFrame to a CSV file at the specified path, appending '.csv' to the file name if necessary.

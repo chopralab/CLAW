@@ -4,6 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import time
 import sys 
+from scipy.integrate import trapz
 
 class LipidAnalysis:
     def __init__(self, data):
@@ -46,6 +47,8 @@ class LipidAnalysis:
         return carbon_number, double_bond
 
 
+
+
     def find_lipid_peaks(self, output_file, user_input="OFF", max_peaks=False, ignore_columns=False):
         """
         Find peaks in lipid data.
@@ -76,10 +79,12 @@ class LipidAnalysis:
                     sampling_interval = 1  # Fallback value in case there's only one retention time
 
                 for i, peak in enumerate(peaks):
-                    # Include necessary columns (including STD_RT_OFF, STD_Peak_Intensity, STD_Peak_Area)
-                    metadata = group_data.iloc[peak][['Parent_Ion', 'Product_Ion', 'Sample', 'Species', 
-                                'group_by_lipid', 'group_by_ion', 'Lipid', 'STD', 'STD_RT_OFF', 
-                                'STD_Peak_Intensity', 'STD_Peak_Area']]  # Add STD columns explicitly
+                    # Extract metadata
+                    metadata = group_data.iloc[peak][[
+                        'Parent_Ion', 'Product_Ion', 'Sample', 'Species', 
+                        'group_by_lipid', 'group_by_ion', 'Lipid', 'STD', 
+                        'STD_RT_OFF', 'STD_Peak_Intensity', 'STD_Peak_Area'
+                    ]]
 
                     # Ignore specific columns if flagged
                     if not ignore_columns:
@@ -94,7 +99,14 @@ class LipidAnalysis:
                     right_time = group_data['Retention_Time'].iloc[int(right_ip)]
                     width_in_time = right_time - left_time
 
+                    # Calculate FWHM
                     fwhm = results_half[0][i] * sampling_interval
+
+                    # Calculate peak area using trapezoidal integration
+                    peak_indices = np.arange(int(left_ip), int(right_ip) + 1)
+                    intensity_values = group_data['OzESI_Intensity'].iloc[peak_indices].values
+                    time_values = group_data['Retention_Time'].iloc[peak_indices].values
+                    peak_area = trapz(intensity_values, time_values)  # Integrate intensity over time
 
                     peak_data.append({
                         'Lipid': metadata['Lipid'],
@@ -116,7 +128,7 @@ class LipidAnalysis:
                         'Peak_Height': properties['peak_heights'][i],
                         'FWHM': fwhm,
                         'Peak_Width': width_in_time,
-                        'Peak_Area': properties['peak_heights'][i] * width_in_time,
+                        'Peak_Area': peak_area,  # Use trapezoidal integration for area
                         'Filter_Column': filter_col  # Track which column was used for filtering
                     })
 
@@ -133,6 +145,7 @@ class LipidAnalysis:
             return max_peaks_df
         else:
             return peaks_df
+
 
 
 

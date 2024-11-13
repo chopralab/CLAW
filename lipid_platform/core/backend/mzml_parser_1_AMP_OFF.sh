@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/mzml_parser/mzml_parser_1_AMP_%j_output.txt
-#SBATCH --error=core/backend/logs/mzml_parser/mzml_parser_1_AMP_%j_err.txt
+#SBATCH --output=core/backend/logs/mzml_parser/OFF/mzml_parser_1_AMP_%j_output.txt
+#SBATCH --error=core/backend/logs/mzml_parser/OFF/mzml_parser_1_AMP_%j_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G

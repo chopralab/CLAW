@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=10:00:00
-#SBATCH --array=0 # make sure its the same as the match_3_AMP.sh array
+#SBATCH --array=0-40 # make sure its the same as the match_3_AMP.sh array
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")

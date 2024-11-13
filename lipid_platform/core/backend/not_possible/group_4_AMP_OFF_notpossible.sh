@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=10:00:00
-#SBATCH --array=0-1  # Adjust this to the number of files you have
+#SBATCH --array=0-40  # Adjust this to the number of files you have
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")

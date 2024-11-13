@@ -1,12 +1,10 @@
 import pandas as pd
-import numpy as np
 from tqdm import tqdm
 import os
-import time
+import numpy as np
 from scipy.signal import find_peaks
+import time
 from scipy.integrate import trapz
-from concurrent.futures import ProcessPoolExecutor
-import dask.dataframe as dd
 
 class SampleIDExtract:
     def __init__(self, new_columns=None):
@@ -33,6 +31,7 @@ class SampleIDExtract:
                             matched_parts[key] = value
                             break
 
+        # Construct the Sample name in the desired order
         if matched_parts['Biology'] and matched_parts['Genotype'] and matched_parts['Mouse'] and matched_parts['Cage']:
             sample_name = '_'.join([
                 matched_parts['Biology'], 
@@ -43,19 +42,28 @@ class SampleIDExtract:
         elif matched_parts['STD']:
             sample_name = matched_parts['STD']
         else:
-            sample_name = 'Unknown'
+            sample_name = 'Unknown'  # Fallback if neither criteria are met
 
+        # Determine if 'FAME' or other STD is present in the sample ID
         std_name = matched_parts['STD'] if matched_parts['STD'] else 'None'
 
         return sample_name, std_name
 
     def get_highest_intensity_peak_and_area(self, group):
+        # Find peaks using scipy's find_peaks function
         peaks, _ = find_peaks(group['OzESI_Intensity'])
+
         if len(peaks) > 0:
+            # Get the index of the highest peak intensity
             peak_idx = group.iloc[peaks]['OzESI_Intensity'].idxmax()
+
+            # Get the retention time for the highest intensity peak
             rt_peak = group.loc[peak_idx, 'Retention_Time']
-            peak_data = group.iloc[peaks]
+
+            # Calculate the area under the peak using trapezoidal rule
+            peak_data = group.iloc[peaks]  # Data for the peaks
             peak_area = trapz(peak_data['OzESI_Intensity'], peak_data['Retention_Time'])
+
             return rt_peak, group.loc[peak_idx, 'OzESI_Intensity'], peak_area
         else:
             return np.nan, np.nan, np.nan
@@ -66,11 +74,18 @@ class SampleIDExtract:
 
         filtered_df = df[condition].copy()
 
+        df['STD_RT_OFF'] = np.nan
+        df['STD_Peak_Intensity'] = np.nan
+        df['STD_Peak_Area'] = np.nan
+
+        # Apply the function to each sample to get retention time, peak intensity, and peak area
         def apply_peak_info(group):
             rt_peak, peak_intensity, peak_area = self.get_highest_intensity_peak_and_area(group)
             return pd.Series([rt_peak, peak_intensity, peak_area], index=['STD_RT_OFF', 'STD_Peak_Intensity', 'STD_Peak_Area'])
 
         peak_info_map = filtered_df.groupby('Sample').apply(apply_peak_info)
+
+        # Map the results back to the DataFrame
         df['STD_RT_OFF'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_RT_OFF'] if x in peak_info_map.index else np.nan)
         df['STD_Peak_Intensity'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_Peak_Intensity'] if x in peak_info_map.index else np.nan)
         df['STD_Peak_Area'] = df['Sample'].map(lambda x: peak_info_map.loc[x, 'STD_Peak_Area'] if x in peak_info_map.index else np.nan)
@@ -78,43 +93,20 @@ class SampleIDExtract:
         return df
 
     def apply_extraction(self, df, std, parent_ion, product_ion, tolerance):
-        print("[DEBUG] Extracting sample parts for each row...")
         tqdm.pandas(desc="Extracting Sample Parts")
-        
-        # Apply `extract_sample_parts` to each row of the DataFrame
         extracted = df['Sample_ID'].progress_apply(self.extract_sample_parts)
-        
-        # Assign the extracted parts back to the DataFrame
         df[['Sample', 'STD']] = pd.DataFrame(extracted.tolist(), index=df.index)
-        print("[DEBUG] Sample and STD columns added to DataFrame.")
-
-        # Apply `find_std_rt_off` to the DataFrame
-        print("[DEBUG] Finding STD_RT_OFF for the entire DataFrame...")
         df = self.find_std_rt_off(df, std, parent_ion, product_ion, tolerance)
-        print("[DEBUG] STD_RT_OFF calculation completed.")
-        
         return df
 
-
-
-def process_sample(sample, OzON_Data, output_dir):
-    print(f"[DEBUG] Processing sample: {sample}")
-    sample_df = OzON_Data[OzON_Data['Sample'] == sample]
-    filename = os.path.join(output_dir, f"df_sample_2_{sample}.parquet")
-    sample_df.to_parquet(filename, index=False, compression="brotli")
-    print(f"[DEBUG] Sample {sample} written to file: {filename}")
-    return f"Sample {sample} processed."
-
 def main():
-    start_time = time.time()  # Start tracking the execution time
-    
     new_columns = {
         'Biology': ['cortex', 'dienc', 'hippo', 'cereb'],
         'Genotype': ['5xFAD', 'WT'],
         'Cage': ['FAD231', 'FAD259', 'FAD257', 'FAD263', 'FAD249', 'FAD246', 'FAD245'],
         'Mouse': ['m1', 'm2', 'm3', 'm4', 'm5'],
         'Other': ['Blank', 'blank'],
-        'STD': ['FAME']
+        'STD': ['FAME']  # Standard identifier added here
     }
 
     output_dir = 'Projects/AMP/samples/OFF/'
@@ -136,20 +128,21 @@ def main():
     print("Extraction and STD_RT_OFF calculation applied successfully.")
 
     unique_samples = OzON_Data['Sample'].unique()
-
-    print("Processing samples in parallel...")
-    with ProcessPoolExecutor(max_workers=64) as executor:
-        results = list(tqdm(executor.map(process_sample, unique_samples, [OzON_Data] * len(unique_samples), [output_dir] * len(unique_samples)),
-                            total=len(unique_samples), desc="Processing Samples"))
-        print("[DEBUG] Parallel sample processing complete.")
-        for result in results:
-            print(result)
-
-    # Log the total execution time
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Total execution time: {elapsed_time:.2f} seconds.")
-
+    for sample in tqdm(unique_samples, desc="Processing Samples"):
+        start_time = time.time()
+        
+        print(f"Processing sample: {sample}")
+        sample_df = OzON_Data[OzON_Data['Sample'] == sample]
+        filename = os.path.join(output_dir, f"df_sample_2_{sample}.parquet")
+        
+        print(f"Saving {filename}...")
+        sample_df.to_parquet(filename, index=False, compression="brotli")
+        
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        
+        print(f"File {filename} saved successfully.")
+        print(f"Processing and saving took {elapsed_time:.2f} seconds.")
 
 if __name__ == "__main__":
     main()

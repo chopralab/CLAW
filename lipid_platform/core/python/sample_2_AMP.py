@@ -126,7 +126,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     logging.info("Loading Parquet file...")
-    OzESI_df = pd.read_parquet("Projects/AMP/mzml_parsed/ON/hippo.parquet")
+    OzESI_df = pd.read_parquet("Projects/AMP/mzml_parsed/ON/df_mzml_parser_1_AMP.parquet")
     
     logging.info("Parquet file loaded successfully.")
 
