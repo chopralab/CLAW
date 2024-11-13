@@ -10,6 +10,7 @@ lipid_platform/Projects/Brain_5xFAD*
 lipid_platform/Projects/FaceFats/*
 lipid_platform/Projects/04_29_23/*
 lipid_platform/Projects/Caitlin_paper/*
+lipid_platform/core/backend/logs/*
 
 #AMP
 #lipid_platform/Projects/AMP/*
@@ -30,14 +31,14 @@ lipid_platform/ignore_notebooks/
 lipid_platform/Variable_Storage/old_notebooks/
 
 
-# Ignore all .parquet files
-*.parquet
+# Ignore all CSV files everywhere
+**/*.csv
 
-# Ignore all .txt files
-*.txt
-
-# Ignore all .png files
-*.png
+# Ignore large data files
+**/*.parquet
+**/*.xlsx
+**/*.txt
+**/*.mzML
 
 # Ignore specific large CSV files
 lipid_platform/Projects/FaceFats/dfs/OzESI/oz_matched/Combined_FF_OzMatched.csv
