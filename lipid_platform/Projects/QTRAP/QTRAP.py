@@ -24,11 +24,31 @@ def parse_chromatogram_data(input_dir, output_dir):
     q3_values = []
     summed_intensities = []
     lipids = []
+    dates = []          # List for Date
+    sample_names = []   # List for Sample_Name
+    samples = []        # List for Sample
 
     # Iterate through all .txt files in the specified directory
     for file_name in os.listdir(input_dir):
         if file_name.endswith('.txt'):
             file_path = os.path.join(input_dir, file_name)
+
+            # Extract Date and Sample_Name from the filename
+            base_name = os.path.splitext(file_name)[0]  # Removes the .txt extension
+            parts = base_name.split('_', 1)             # Split only on the first underscore
+            if len(parts) == 2:
+                date_str = parts[0]                     # e.g., '20241115'
+                sample_name = parts[1]                  # e.g., 'Plasma_Acyl-Carnitines'
+            else:
+                # Handle unexpected filename formats
+                date_str = ''
+                sample_name = ''
+
+            # Determine the Sample value based on Sample_Name
+            if 'Blank' in sample_name:
+                sample = 'Blank'
+            else:
+                sample = 'Sample'
 
             # Open and read the file
             with open(file_path, 'r') as file:
@@ -75,15 +95,37 @@ def parse_chromatogram_data(input_dir, output_dir):
                             q3_values.append(current_q3)
                             summed_intensities.append(current_intensity_sum)
                             lipids.append(current_lipid)
+                            dates.append(date_str)              # Append Date
+                            sample_names.append(sample_name)    # Append Sample_Name
+                            samples.append(sample)              # Append Sample
 
     # Create a DataFrame
     chromatogram_df = pd.DataFrame({
+        'Date': dates,                        # Date column
+        'Sample_Name': sample_names,          # Sample_Name column
+        'Sample': samples,                    # Sample column
         'Lipid': lipids,
         'Q1': q1_values,
         'Q3': q3_values,
         'Intensity': summed_intensities,
         'Filename': filenames,
     })
+
+    # Create Base_Sample_Name by removing 'Blank_' prefix if present
+    chromatogram_df['Base_Sample_Name'] = chromatogram_df['Sample_Name'].str.replace('Blank_', '', regex=False)
+
+    # Assign group numbers based on Base_Sample_Name
+    chromatogram_df['Blank_Group'] = pd.factorize(chromatogram_df['Base_Sample_Name'])[0] + 1  # Start groups at 1
+
+    # Optionally, drop the Base_Sample_Name column if not needed
+    chromatogram_df.drop(columns=['Base_Sample_Name'], inplace=True)
+
+    # Optionally, convert Date to datetime format
+    # chromatogram_df['Date'] = pd.to_datetime(chromatogram_df['Date'], format='%Y%m%d')
+
+    # Reorder columns for better readability
+    columns_order = ['Date', 'Sample_Name', 'Sample', 'Blank_Group', 'Lipid', 'Q1', 'Q3', 'Intensity', 'Filename']
+    chromatogram_df = chromatogram_df[columns_order]
 
     # Save the DataFrame to a CSV file
     chromatogram_df.to_csv(output_file, index=False)

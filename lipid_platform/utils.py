@@ -1,13 +1,42 @@
 import pandas as pd
 
-def literature_removal(df):
-    # Filter rows with 'n-2' or 'n-3' in the Lipid column
-    filtered_df = df[df['Lipid'].str.contains('n-2|n-3', na=False)].copy()
-    
-    # Remove rows with 'n-2' or 'n-3' from the original DataFrame
-    original_df = df[~df['Lipid'].str.contains('n-2|n-3', na=False)].copy()
-    
+def literature_removal(df, *n_values):
+    """
+    Removes rows from the DataFrame based on specified n-values in the 'Lipid' column.
+
+    Parameters:
+    - df (pd.DataFrame): The input DataFrame containing a 'Lipid' column.
+    - *n_values (int): Variable length argument list specifying which n-values to filter out.
+                       For example, n_values=2, 3 will filter out 'n-2' and 'n-3'.
+
+    Returns:
+    - original_df (pd.DataFrame): DataFrame without the specified n-values.
+    - filtered_df (pd.DataFrame): DataFrame containing only the specified n-values.
+    """
+    if not n_values:
+        raise ValueError("At least one n_value must be provided.")
+
+    # Ensure all n_values are integers
+    if not all(isinstance(n, int) for n in n_values):
+        raise TypeError("All n_values must be integers.")
+
+    # Create a regex pattern like 'n-2|n-3|n-4' based on provided n_values
+    pattern = '|'.join([f'n-{n}' for n in n_values])
+
+    # Debug: Print the constructed pattern
+    print(f"Constructed regex pattern: {pattern}")
+
+    # Filter rows that contain any of the specified n-values
+    filtered_df = df[df['Lipid'].str.contains(pattern, na=False, regex=True)].copy()
+
+    # Remove the filtered rows from the original DataFrame
+    original_df = df[~df['Lipid'].str.contains(pattern, na=False, regex=True)].copy()
+
     return original_df, filtered_df
+
+# Example Usage:
+# Assuming you have a DataFrame `df` with a 'Lipid' column
+# original_df, filtered_df = literature_removal(df, 2, 3)
 
 def filter_highest_intensity(df):
     """

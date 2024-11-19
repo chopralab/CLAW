@@ -11,6 +11,22 @@ lipid_platform/Projects/FaceFats/*
 lipid_platform/Projects/04_29_23/*
 lipid_platform/Projects/Caitlin_paper/*
 lipid_platform/core/backend/logs/*
+Pathway_analysis/**/*.png
+# Ignore .mzML files in specific directories
+lipid_platform/Projects/QTRAP/mzml/**/*.mzML
+# Ignore .mzML files in specific directories
+lipid_platform/Projects/QTRAP/mzml/**/*.mzML
+lipid_platform/Projects/AMP/mzml/**/*.mzML
+# Ignore all .mzML files
+*.mzML
+# Ignore PNG files in specific directories
+lipid_platform/Projects/QTRAP/result/plots/**/*.png
+lipid_platform/Projects/STD/plots/OFF_plots/*.png
+lipid_platform/results/plots/*.png
+
+# Ignore all PNG files
+*.png
+
 
 #AMP
 #lipid_platform/Projects/AMP/*
