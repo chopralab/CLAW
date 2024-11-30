@@ -94,7 +94,6 @@ class MatchLipids:
 
                 logging.info(f"Processing row {index}: Species: {species}, Sample: {sample_value}")
                 logging.info(f"OzOFF RT (STD_RT_OFF) being referenced: {std_rt_off}")
-                logging.info(f"Retention Time Value: {retention_time_value}, STD_RT_Dif: {std_rt_dif}")
 
                 # Define the retention time window around the adjusted retention time value
                 adjusted_retention_time_value = retention_time_value + std_rt_dif
@@ -109,23 +108,21 @@ class MatchLipids:
                 # Calculate Adjusted_RT for each row in filtered_df_sample_2
                 filtered_df_sample_2['Adjusted_RT'] = filtered_df_sample_2['Retention_Time'] + std_rt_dif
 
-                # Log Adjusted_RT for debugging
-                logging.debug(f"Adjusted_RT values for filtered_df_sample_2: {filtered_df_sample_2['Adjusted_RT'].tolist()}")
-
-                # Filter based on the retention time window using Adjusted_RT
+                # Filter based on the adjusted retention time window
                 filtered_df_sample_2 = filtered_df_sample_2.loc[
                     (filtered_df_sample_2['Adjusted_RT'] >= retention_time_window_start) &
                     (filtered_df_sample_2['Adjusted_RT'] <= retention_time_window_end)
                 ]
 
                 if filtered_df_sample_2.empty:
-                    logging.info(f"No matching entries found in df_sample_2 for Species: {species}, Sample: {sample_value} within the retention time window.")
+                    logging.info(f"No matching entries found in df_sample_2 for Species: {species}, Sample: {sample_value} within the adjusted retention time window.")
                 else:
-                    logging.info(f"Found {len(filtered_df_sample_2)} matching entries in df_sample_2 for Species: {species}, Sample: {sample_value} within the retention time window.")
+                    logging.info(f"Found {len(filtered_df_sample_2)} matching entries in df_sample_2 for Species: {species}, Sample: {sample_value} within the adjusted retention time window.")
 
                     # Assign species to the filtered data
                     filtered_df_sample_2.loc[:, 'Species'] = species
 
+                    # Prepare the data for matching
                     temp_OzON_data = filtered_df_sample_2.copy()
 
                     logging.info(f"Assigned Species '{species}' and calculated Adjusted_RT for each row. Preparing for matching...")
@@ -144,8 +141,10 @@ class MatchLipids:
                     # Add matched data to the results DataFrame
                     OzON_results_df = pd.concat([OzON_results_df, matched_temp_OzON_data], ignore_index=True)
 
+
             # After processing, log the DataFrame column names to ensure Adjusted_RT is present
             logging.info(f"Final DataFrame Columns: {OzON_results_df.columns}")
+
 
             if output:
                 output_file = os.path.join(output, f"df_match_3_{sample_value}.parquet")
@@ -154,10 +153,9 @@ class MatchLipids:
                 logging.info(f"Output file saved successfully to {output_file}")
 
             logging.info("Lipid matching process completed.")
-
+  
             # Return results df
             return OzON_results_df
-
         else:
             logging.error(f"No matching OzOFF file found for Sample: {sample_value}")
             sys.exit(1)
@@ -185,7 +183,7 @@ if __name__ == "__main__":
     output_dir = sys.argv[4]
 
     tolerance = 0.3
-    retention_time_window = 0.5
+    retention_time_window = 0.85
 
     logging.info(f"OzOFF directory: {OzOFF_dir}")
 
