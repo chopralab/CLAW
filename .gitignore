@@ -1,3 +1,5 @@
+lipid_platform/archive/*
+
 # General directories to ignore
 lipid_platform/old/*
 lipid_platform/.ipynb_checkpoints/*
