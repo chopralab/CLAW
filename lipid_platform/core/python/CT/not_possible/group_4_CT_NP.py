@@ -1,8 +1,9 @@
 import pandas as pd
 import os
 import re
-from tqdm import tqdm
 import sys
+import argparse
+from tqdm import tqdm
 
 class LipidGrouper:
     def __init__(self, new_columns=None):
@@ -19,93 +20,76 @@ class LipidGrouper:
         Ignores any additional characters following the main FA(##:#) structure.
         """
         if pd.isna(lipid) or lipid.strip() == "":
-            return f"Unknown_{self.unknown_count}"  # Assign a unique Unknown species
+            species = f"Unknown_{self.unknown_count}"
+            self.unknown_count += 1
+            return species  # Assign a unique Unknown species
         if lipid.startswith('FA(d2-'):
             lipid = lipid.replace('d2-', '')  # Remove 'd2-' prefix
-        
+
         # Match pattern for FA(##:#), ignoring anything after it
         match = re.search(r'FA\((\d+:\d+)\)', lipid)
         if match:
             return match.group(1)  # Returns just the core FA(##:#) part
         else:
             print(f"Warning: Could not extract species from lipid: {lipid}", file=sys.stderr)
-            return f"Unknown_{self.unknown_count}"
+            species = f"Unknown_{self.unknown_count}"
+            self.unknown_count += 1
+            return species
 
     def species_create(self, df):
         """
         Create a Species column from the Lipid column, extracting entries by '|' and keeping all species in a single row.
         """
-        print(f"Checking 'Lipid' column for non-empty values. Sample values from the 'Lipid' column:", file=sys.stderr)
-        print(df['Lipid'].unique(), file=sys.stderr)  # Print unique values for debugging
-
-        # Convert Lipid column to string explicitly and split each entry by '|'
+        print("Creating Species column from 'Lipid' column...", file=sys.stderr)
         df['Lipid_list'] = df['Lipid'].astype(str).str.split('|')
 
         # Extract species for each lipid part and combine them in a single entry
-        df['Species'] = df['Lipid_list'].apply(lambda lipids: '|'.join([self.extract_species(lipid) for lipid in lipids]))
+        df['Species'] = df['Lipid_list'].apply(
+            lambda lipids: '|'.join([self.extract_species(lipid) for lipid in lipids])
+        )
 
         # Drop the helper column
-        df = df.drop(columns=['Lipid_list'])
+        df.drop(columns=['Lipid_list'], inplace=True)
 
-        print("Species column created with all species retained in a single row. Sample output:", file=sys.stderr)
-        print(df[['Lipid', 'Species']].head(), file=sys.stderr)
-        
+        print("Species column created successfully.", file=sys.stderr)
         return df
-
-
-    def increment_unknown_count(self, row):
-        if 'Unknown' in row['Species']:
-            self.unknown_count += 1
-        return row['Species']
 
     def extract_values_from_sample(self, sample):
         """
         Extract specific values from a sample name based on predefined columns.
         """
-        print(f"Extracting values from sample name: {sample}", file=sys.stderr)
         extracted_values = {}
         for col, values in self.new_columns.items():
-            extracted_values[col] = next((value for value in values if value in sample), '')
-        print(f"Extracted values: {extracted_values}", file=sys.stderr)
+            extracted_values[col] = next((value for value in values if value in sample), 'Unknown')
         return extracted_values
 
     def create_columns_from_sample(self, df):
         """
         Create new columns in the DataFrame based on the sample names.
         """
-        print(f"Creating new columns from 'Sample' column for DataFrame with {len(df)} rows.", file=sys.stderr)
-        df_copy = df.copy()
+        print("Creating new columns from 'Sample' column...", file=sys.stderr)
+        extracted_df = df['Sample'].apply(self.extract_values_from_sample).apply(pd.Series)
 
-        extracted_df = df_copy['Sample'].apply(self.extract_values_from_sample)
-        extracted_df = pd.DataFrame(extracted_df.tolist(), index=df_copy.index)
+        # Replace missing values with 'Unknown' if necessary
+        extracted_df.fillna('Unknown', inplace=True)
 
-        for col in self.new_columns.keys():
-            if col in df_copy.columns:
-                df_copy.drop(columns=[col], inplace=True)
-
-        df_copy = pd.concat([df_copy, extracted_df], axis=1)
-        print("New columns created from Sample. DataFrame now has the following columns:", file=sys.stderr)
-        print(df_copy.columns, file=sys.stderr)
-        return df_copy
+        df = pd.concat([df, extracted_df], axis=1)
+        return df
 
     def group_by_ion(self, df):
         """
         Group DataFrame rows by ion information and create a new column for group IDs.
         """
-        print(f"Grouping by ion information for DataFrame with {len(df)} rows.", file=sys.stderr)
+        print("Grouping by ion information...", file=sys.stderr)
         df['group_by_ion'] = df.groupby(['Parent_Ion', 'Product_Ion', 'Sample_ID']).ngroup()
-        print("Grouping by ion complete. Sample output:", file=sys.stderr)
-        print(df[['Parent_Ion', 'Product_Ion', 'Sample_ID', 'group_by_ion']].head(), file=sys.stderr)
         return df
 
-    def group_by_lipid(self, df, group_columns=None):
+    def group_by_lipid(self, df, group_columns):
         """
         Group DataFrame rows by lipid information and create a new column for group IDs.
         """
         print(f"Grouping by lipid information using columns: {group_columns}", file=sys.stderr)
         df['group_by_lipid'] = df.groupby(group_columns).ngroup()
-        print("Grouping by lipid complete. Sample output:", file=sys.stderr)
-        print(df[['Lipid', 'group_by_lipid']].head(), file=sys.stderr)
         return df
 
     def group_by_func(self, df, group_columns=None, STD_Only=None):
@@ -113,19 +97,17 @@ class LipidGrouper:
         Perform a series of grouping operations on the DataFrame and sort by retention time.
         If STD_Only is set to 'STD', it will skip grouping by certain columns.
         """
-        print(f"Starting grouping process for DataFrame with {len(df)} rows.", file=sys.stderr)
+        print("Starting grouping process...", file=sys.stderr)
 
-        # Check if 'Sample' or 'Std' column contains 'FAME'
-        if 'Sample' in df.columns and df['Sample'].str.contains('FAME').any():
-            print("Sample column contains 'FAME'. Using simplified grouping.", file=sys.stderr)
-            group_columns = ['Lipid']
-        elif 'Std' in df.columns and df['Std'].str.contains('FAME').any():
-            print("Std column contains 'FAME'. Using simplified grouping.", file=sys.stderr)
+        # Determine grouping columns based on STD_Only flag and content
+        if ('Sample' in df.columns and df['Sample'].str.contains('FAME').any()) or \
+           ('Std' in df.columns and df['Std'].str.contains('FAME').any()):
+            print("Detected 'FAME' in 'Sample' or 'Std' column. Using simplified grouping.", file=sys.stderr)
             group_columns = ['Lipid']
         else:
             if STD_Only == 'STD':
-                print(f"STD_Only is set to '{STD_Only}', skipping Biology, Genotype, Mouse, and Cage columns.", file=sys.stderr)
-                group_columns = ['Lipid']  # Only group by Lipid if STD_Only is 'STD'
+                print("STD_Only is set. Using only 'Lipid' for grouping.", file=sys.stderr)
+                group_columns = ['Lipid']
             else:
                 if group_columns is None:
                     group_columns = ['Lipid', 'Biology', 'Genotype', 'Mouse', 'Cage']
@@ -136,24 +118,26 @@ class LipidGrouper:
         df = self.group_by_ion(df)
         df = self.group_by_lipid(df, group_columns)
 
-        df = df.sort_values(by=['group_by_lipid', 'Retention_Time'])
+        df.sort_values(by=['group_by_lipid', 'Retention_Time'], inplace=True)
 
         if STD_Only == 'STD':
-            # Drop the unnecessary columns if STD_Only is 'STD'
             columns_to_drop = ['Biology', 'Genotype', 'Cage', 'Mouse']
-            df = df.drop(columns=[col for col in columns_to_drop if col in df.columns])
-            print(f"Columns {columns_to_drop} dropped as STD_Only is set to 'STD'.", file=sys.stderr)
+            df.drop(columns=[col for col in columns_to_drop if col in df.columns], inplace=True)
+            print(f"Dropped columns {columns_to_drop} as STD_Only is set.", file=sys.stderr)
 
-        print("DataFrame sorted by 'group_by_lipid' and 'Retention_Time'.", file=sys.stderr)
+        print("Grouping and sorting completed.", file=sys.stderr)
         return df
 
-    def save_grouped_results(self, df, file_path):
+    def save_grouped_results(self, df, output_dir):
         """
-        Save the grouped DataFrame to a Parquet file.
+        Save the grouped DataFrame to a Parquet file in the specified output directory.
         """
-        print(f"Saving DataFrame with {len(df)} rows to file: {file_path}", file=sys.stderr)
-        df.to_parquet(file_path, index=False)
-        print(f"File successfully saved to: {file_path}", file=sys.stderr)
+        sample_value = df['Sample'].iloc[0] if not df.empty and 'Sample' in df.columns else 'unknown_sample'
+        output_file_path = os.path.join(output_dir, f"df_grouped_{sample_value}_OFF.parquet")
+        
+        print(f"Saving DataFrame to {output_file_path}...", file=sys.stderr)
+        df.to_parquet(output_file_path, index=False)
+        print(f"File saved to {output_file_path}.", file=sys.stderr)
 
     def create_folder(self, folder_path):
         """
@@ -161,20 +145,37 @@ class LipidGrouper:
         """
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-            print(f"Folder created: {folder_path}", file=sys.stderr)
+            print(f"Created folder: {folder_path}", file=sys.stderr)
         else:
             print(f"Folder already exists: {folder_path}", file=sys.stderr)
 
 
-if __name__ == "__main__":
-    # Ensure the correct number of arguments are provided
-    if len(sys.argv) != 3:
-        print("Usage: python group_4_AMP_notpossible.py <input_file_path> <STD_Only>", file=sys.stderr)
-        sys.exit(1)
+def parse_arguments():
+    """
+    Parse command-line arguments.
+    """
+    parser = argparse.ArgumentParser(description="Group lipid data based on specified parameters.")
+    parser.add_argument(
+        "--input_file",
+        required=True,
+        help="Path to the input Parquet file."
+    )
+    parser.add_argument(
+        "--std_only",
+        required=True,
+        choices=['STD', 'Sample'],
+        help="Flag to indicate STD_ONLY mode ('STD' or 'Sample')."
+    )
+    parser.add_argument(
+        "--output_dir",
+        required=True,
+        help="Directory where the output Parquet file will be saved."
+    )
+    return parser.parse_args()
 
-    # Parse command-line arguments
-    input_file_path = sys.argv[1]
-    STD_Only = sys.argv[2]
+
+def main():
+    args = parse_arguments()
 
     # Initialize LipidGrouper with new columns definition
     grouper = LipidGrouper(new_columns={
@@ -185,33 +186,34 @@ if __name__ == "__main__":
     })
 
     # Load the input DataFrame
-    print(f"Loading input DataFrame from file: {input_file_path}", file=sys.stderr)
-    OzON_results = pd.read_parquet(input_file_path)
+    print(f"Loading input DataFrame from file: {args.input_file}", file=sys.stderr)
+    try:
+        OzON_results = pd.read_parquet(args.input_file)
+    except Exception as e:
+        print(f"Error loading input file: {e}", file=sys.stderr)
+        sys.exit(1)
 
     # Convert relevant columns to strings
     OzON_results['Lipid'] = OzON_results['Lipid'].astype(str)
     OzON_results['Sample'] = OzON_results['Sample'].astype(str)
-    print(f"DataFrame loaded. Head of the DataFrame:", file=sys.stderr)
+    print("DataFrame loaded successfully. Here's a preview:", file=sys.stderr)
     print(OzON_results.head(), file=sys.stderr)
 
-    # Create Species column from the Lipid column, expanding entries by '|'
+    # Create Species column from the Lipid column
     OzON_results = grouper.species_create(OzON_results)
 
     # Perform grouping
-    df_grouped = grouper.group_by_func(OzON_results, STD_Only=STD_Only)
+    df_grouped = grouper.group_by_func(OzON_results, STD_Only=args.std_only)
 
-    # Handle empty DataFrame before accessing Sample
-    if df_grouped.empty:
-        print("Warning: df_grouped is empty. Assigning 'unknown_sample'.", file=sys.stderr)
-        sample_value = 'unknown_sample'
-    else:
-        sample_value = df_grouped['Sample'].iloc[0] if 'Sample' in df_grouped.columns else 'unknown_sample'
+    # Create output directory if it doesn't exist
+    grouper.create_folder(args.output_dir)
 
     # Save the grouped results
-    output_file_path = f"Projects/AMP/group/OFF/notpossible/df_group_4_{sample_value}_OFF.parquet"
-    grouper.create_folder("Projects/AMP/group/OFF/notpossible/")
-    grouper.save_grouped_results(df_grouped, output_file_path)
+    grouper.save_grouped_results(df_grouped, args.output_dir)
 
-    # View the final grouped DataFrame
-    print(f"Final grouped DataFrame:", file=sys.stderr)
+    print("Final grouped DataFrame preview:", file=sys.stderr)
     print(df_grouped.head(), file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

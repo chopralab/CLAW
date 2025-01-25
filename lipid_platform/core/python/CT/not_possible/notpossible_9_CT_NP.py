@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import glob
+import argparse
 
 def list_files_in_dirs(dir1, dir2, extension='*.parquet'):
     """
@@ -22,22 +23,17 @@ def list_files_in_dirs(dir1, dir2, extension='*.parquet'):
     print(f"Files in {dir1}: {files1}")
     print(f"Files in {dir2}: {files2}")
 
-
-
     # Extract keys for OFF files
     def extract_key_from_off(filename):
         parts = os.path.basename(filename).replace('df_analysis_5_', '').replace('_OFF.parquet', '').split('_')
         return "_".join(parts[:5])  # Ensure matching format as ON files
-    
+
     # Extract keys for ON files
     def extract_key_from_on(filename):
         parts = os.path.basename(filename).split('_')
         if len(parts) >= 4:
             return "_".join(parts[:4])  # Extract first 4 parts: region_condition_mouseID_sampleID
         return filename  # Fallback to full filename if parsing fails
-
- 
-
 
     # Create DataFrames with extracted keys
     df1 = pd.DataFrame({
@@ -68,7 +64,6 @@ def list_files_in_dirs(dir1, dir2, extension='*.parquet'):
     return merged_df
 
 
-
 def match_lipids_with_adjusted_rt_to_rt_from_dirs(dir1, dir2, output_dir, rt_window=0.05):
     """
     Matches lipids between files in two directories using retention time and keys.
@@ -78,7 +73,7 @@ def match_lipids_with_adjusted_rt_to_rt_from_dirs(dir1, dir2, output_dir, rt_win
     dir1 (str): Directory containing OzON files.
     dir2 (str): Directory containing OzOFF files.
     output_dir (str): Directory to save matched and unmatched results.
-    rt_window (float): Retention time window for matching (default: 0.5).
+    rt_window (float): Retention time window for matching (default: 0.05).
     """
     file_pairs = list_files_in_dirs(dir1, dir2)
 
@@ -150,11 +145,27 @@ def match_lipids_with_adjusted_rt_to_rt_from_dirs(dir1, dir2, output_dir, rt_win
     print(f"Saved master unmatched DataFrame to {master_unmatched_file}")
 
 
+def parse_arguments():
+    """
+    Parses command-line arguments.
+
+    Returns:
+    Namespace: Parsed arguments.
+    """
+    parser = argparse.ArgumentParser(description="Match lipids between OzON and OzOFF directories based on retention time and keys.")
+    parser.add_argument('--ozon_dir', type=str, required=True, help='Path to the OzON directory.')
+    parser.add_argument('--ozoff_dir', type=str, required=True, help='Path to the OzOFF directory.')
+    parser.add_argument('--output_dir', type=str, required=True, help='Path to the output directory.')
+    parser.add_argument('--rt_window', type=float, default=0.05, help='Retention time window for matching (default: 0.05).')
+
+    return parser.parse_args()
+
 
 if __name__ == "__main__":
-    # Example usage
-    ozon_dir = 'Projects/AMP/isomer_filter_6/'
-    ozoff_dir = 'Projects/AMP/analysis/OFF/notpossible/'
-    output_dir = 'Projects/AMP/notpossible_9/'
-
-    match_lipids_with_adjusted_rt_to_rt_from_dirs(ozon_dir, ozoff_dir, output_dir, rt_window=0.05)
+    args = parse_arguments()
+    match_lipids_with_adjusted_rt_to_rt_from_dirs(
+        dir1=args.ozon_dir,
+        dir2=args.ozoff_dir,
+        output_dir=args.output_dir,
+        rt_window=args.rt_window
+    )

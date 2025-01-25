@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/analysis/notpossible/analysis_AMP_notpossible_%A_%a_output.txt
-#SBATCH --error=core/backend/logs/analysis/notpossible/analysis_AMP_notpossible_%A_%a_err.txt
+#SBATCH --output=logs/CT/NP/notpossible/%A_%a_output.txt
+#SBATCH --error=logs/CT/NP/notpossible/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
@@ -12,27 +12,31 @@
 current_date_time=$(date +"%Y%m%d_%H%M%S")
 #SBATCH --job-name=lipid_matching_${current_date_time}_%a
 
+
 # Load Anaconda module
 module load anaconda/2024.02-py311
+source activate /scratch/negishi/iyer95/conda/CLAW
 
-# Activate the conda environment
-source activate /home/iyer95/.conda/envs/CLAW
 
-# Define directories
-ozon_dir="Projects/AMP/isomer_filter_6/"
-ozoff_dir="Projects/AMP/analysis/OFF/notpossible/"
-output_dir="Projects/AMP/notpossible_9/"
+# Define default directories and parameters
+DEFAULT_OZON_DIR="Projects/CT/isomer_filter_6/"
+DEFAULT_OZOFF_DIR="Projects/CT/analysis/OFF/notpossible/"
+DEFAULT_OUTPUT_DIR="Projects/CT/notpossible_9/"
+DEFAULT_RT_WINDOW=0.05
+
+# Accept input parameters with defaults
+ozon_dir=${1:-$DEFAULT_OZON_DIR}
+ozoff_dir=${2:-$DEFAULT_OZOFF_DIR}
+output_dir=${3:-$DEFAULT_OUTPUT_DIR}
+rt_window=${4:-$DEFAULT_RT_WINDOW}
 
 # Remove trailing slashes if they exist
-ozon_dir=$(echo $ozon_dir | sed 's:/*$::')
-ozoff_dir=$(echo $ozoff_dir | sed 's:/*$::')
-output_dir=$(echo $output_dir | sed 's:/*$::')
+ozon_dir=$(echo "$ozon_dir" | sed 's:/*$::')
+ozoff_dir=$(echo "$ozoff_dir" | sed 's:/*$::')
+output_dir=$(echo "$output_dir" | sed 's:/*$::')
 
 # Create the output directory if it doesn't exist
-mkdir -p $output_dir
-
-# Accept retention time window as input (default is 0.1 if not provided)
-rt_window=${1:-0.1}
+mkdir -p "$output_dir"
 
 # Print the current working directory and parameters to the error log
 pwd >&2
@@ -45,8 +49,12 @@ echo "  Retention Time Window: $rt_window" >&2
 # Measure and print the time taken by the Python script
 start_time=$(date +%s)
 
-# Run the Python script
-python core/python/not_possible/notpossible_9_AMP.py --ozon_dir "$ozon_dir" --ozoff_dir "$ozoff_dir" --output_dir "$output_dir" --rt_window $rt_window
+# Run the Python script with all flags
+python core/python/CT/NP/notpossible_9_CT_NP.py \
+    --ozon_dir "$ozon_dir" \
+    --ozoff_dir "$ozoff_dir" \
+    --output_dir "$output_dir" \
+    --rt_window "$rt_window"
 
 end_time=$(date +%s)
 elapsed_time=$(( end_time - start_time ))

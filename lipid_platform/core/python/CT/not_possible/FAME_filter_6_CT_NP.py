@@ -1,18 +1,19 @@
-# core/python/fame_filter_AMP_7.py
+#!/usr/bin/env python3
 
 import pandas as pd
 import os
 import re
+import argparse
 from tqdm import tqdm
 
-def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5):
+def filter_OzOFF_by_fame_std(input_dir, fame_std_path, output_dir, fame_rt_window=0.5):
     """
     Filters parquet files in the input directory based on fame_std retention times and species,
     using Adjusted_RT_FAME from the input files to compare against fame_std Retention_Time.
     Updates Species to only contain the matched species and saves the filtered result as parquet files
     in the output directory. Logs and removed lipids CSVs are saved in a log directory inside the output directory.
     """
-
+    
     def filter_fa_species(df, species_pattern):
         """
         Filters DataFrame rows based on the provided fatty acid species pattern (e.g., 'FA(16:1)').
@@ -20,8 +21,16 @@ def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5
         """
         pattern = rf'\b{species_pattern}(?:_[^|]*)?'
         filtered_df = df[df['Lipid'].str.contains(pattern, regex=True)]
+        filtered_df = filtered_df.copy()
         filtered_df['Lipid'] = filtered_df['Lipid'].apply(lambda x: '|'.join(re.findall(pattern, x)))
         return filtered_df
+
+    # Load fame_std DataFrame
+    try:
+        fame_std = pd.read_parquet(fame_std_path)
+    except Exception as e:
+        print(f"Error loading fame_std file: {e}")
+        return
 
     print("Starting filter_OzOFF_by_fame_std function")
     print(f"Input directory: {input_dir}")
@@ -46,7 +55,12 @@ def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5
     # Iterate over all parquet files in the input directory with progress tracking
     for parquet_file in tqdm(input_files, desc="Processing parquet files"):
         file_path = os.path.join(input_dir, parquet_file)
-        filtered_ozON = pd.read_parquet(file_path)
+        try:
+            filtered_ozON = pd.read_parquet(file_path)
+        except Exception as e:
+            print(f"Error reading {parquet_file}: {e}")
+            continue
+
         filtered_ozON['Lipid_Possible'] = filtered_ozON['Lipid']
 
         # Detailed logging information for input data
@@ -64,15 +78,28 @@ def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5
             print(f"Number of entries after filtering by {species_pattern}: {len(filtered_species_df)}")
 
         # Concatenate all filtered DataFrames
-        filtered_ozON = pd.concat(all_filtered_dataframes).drop_duplicates().reset_index(drop=True)
-        print(f"Number of entries after concatenating filtered species dataframes: {len(filtered_ozON)}")
+        if all_filtered_dataframes:
+            filtered_ozON = pd.concat(all_filtered_dataframes).drop_duplicates().reset_index(drop=True)
+            print(f"Number of entries after concatenating filtered species dataframes: {len(filtered_ozON)}")
+        else:
+            print("No species matched. Skipping file.")
+            continue
 
         # Prepare lists for logging
         drop_indices = []
         removed_lipids = []
 
         # Get sample name from Sample column
-        sample_name = filtered_ozON['Sample'].unique()[0]
+        if 'Sample' not in filtered_ozON.columns:
+            print(f"'Sample' column not found in {parquet_file}. Skipping this file.")
+            continue
+
+        sample_names = filtered_ozON['Sample'].unique()
+        if len(sample_names) != 1:
+            print(f"Multiple or no sample names found in {parquet_file}. Skipping this file.")
+            continue
+
+        sample_name = sample_names[0]
         log_filename = f"{sample_name}_fame_filter_log_debug.txt"
         log_file_path = os.path.join(log_dir, log_filename)
         csv_filename = f"{sample_name}_fame_filter_removed_lipids_debug.csv"
@@ -92,7 +119,10 @@ def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5
 
             # Filter entries within the defined Adjusted_RT_FAME window and matching Species
             for index, row in filtered_ozON.iterrows():
-                adjusted_rt = row['Adjusted_RT_FAME']
+                adjusted_rt = row.get('Adjusted_RT_FAME')
+                if adjusted_rt is None:
+                    print(f"Row index: {index} missing 'Adjusted_RT_FAME'. Skipping this row.")
+                    continue
                 species_list = row['Species'].split('|')
                 print(f"Row index: {index}, Adjusted_RT_FAME: {adjusted_rt}, Species list: {species_list}")
 
@@ -113,16 +143,56 @@ def filter_OzOFF_by_fame_std(input_dir, fame_std, output_dir, fame_rt_window=0.5
                     print(f"Non-matching entry added to removal list - RT difference: {rt_diff}")
 
         # Drop all collected indices
-        filtered_ozON = filtered_ozON.drop(drop_indices).reset_index(drop=True)
-        print(f"Number of entries after dropping non-matching rows: {len(filtered_ozON)}")
+        if drop_indices:
+            filtered_ozON = filtered_ozON.drop(drop_indices).reset_index(drop=True)
+            print(f"Number of entries after dropping non-matching rows: {len(filtered_ozON)}")
+        else:
+            print("No entries to drop.")
 
         # Save filtered DataFrame and removed lipids log to CSV
-        filtered_ozON.to_parquet(os.path.join(output_dir, f"{sample_name}_filtered.parquet"))
-        pd.DataFrame(removed_lipids).to_csv(csv_file_path, index=False)
+        try:
+            filtered_output_path = os.path.join(output_dir, f"{sample_name}_filtered.parquet")
+            filtered_ozON.to_parquet(filtered_output_path)
+            print(f"Filtered data saved to {filtered_output_path}")
+        except Exception as e:
+            print(f"Error saving filtered parquet file: {e}")
+
+        removed_lipids_df = pd.DataFrame(removed_lipids)
+        if not removed_lipids_df.empty:
+            try:
+                removed_lipids_df.to_csv(csv_file_path, index=False)
+                print(f"Removed lipids saved to {csv_file_path}")
+            except Exception as e:
+                print(f"Error saving removed lipids CSV: {e}")
+        else:
+            print(f"No lipids removed for sample {sample_name}.")
 
         # Write log entries to a text file
-        with open(log_file_path, 'w') as log_file:
-            for entry in removed_lipids:
-                log_file.write(str(entry) + '\n')
+        try:
+            with open(log_file_path, 'w') as log_file:
+                for entry in removed_lipids:
+                    log_file.write(str(entry) + '\n')
+            print(f"Log file written to {log_file_path}")
+        except Exception as e:
+            print(f"Error writing log file: {e}")
 
     print("filter_OzOFF_by_fame_std function completed.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Filter parquet files based on FAME standards.")
+    parser.add_argument('--input_dir', required=True, help='Input directory containing parquet files.')
+    parser.add_argument('--fame_std', required=True, help='Path to fame_std parquet file.')
+    parser.add_argument('--output_dir', required=True, help='Output directory to save filtered parquet files and logs.')
+    parser.add_argument('--fame_rt_window', type=float, default=0.5, help='Retention time window for filtering (default: 0.5).')
+
+    args = parser.parse_args()
+
+    filter_OzOFF_by_fame_std(
+        input_dir=args.input_dir,
+        fame_std_path=args.fame_std,
+        output_dir=args.output_dir,
+        fame_rt_window=args.fame_rt_window
+    )
+
+if __name__ == "__main__":
+    main()

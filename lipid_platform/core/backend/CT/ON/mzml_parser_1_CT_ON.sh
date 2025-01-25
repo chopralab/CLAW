@@ -1,9 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=core/backend/logs/mzml_parser/mzml_parser_1_%j_output.txt
-#SBATCH --error=core/backend/logs/mzml_parser/mzml_parser_1_%j_err.txt
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=10:00:00
 
@@ -11,35 +9,37 @@
 current_date_time=$(date +"%Y%m%d_%H%M%S")
 #SBATCH --job-name=cpu_task_${current_date_time}
 
-# Load Anaconda module
+# Define log directories
+OUTPUT_LOG_DIR="core/backend/logs/mzml_parser/mzml_parser_1_CT_ON"
+mkdir -p "${OUTPUT_LOG_DIR}/output" "${OUTPUT_LOG_DIR}/error"
+
+# SBATCH output and error paths
+#SBATCH --output=${OUTPUT_LOG_DIR}/output/mzml_parser_1_%A_%a_output.txt
+#SBATCH --error=${OUTPUT_LOG_DIR}/error/mzml_parser_1_%A_%a_err.txt
+
+# Load Anaconda module and activate the environment
 module load anaconda/2024.02-py311
-
-# Activate the conda environment
-source activate /home/iyer95/.conda/envs/CLAW
-
-# Redirect all output to both stdout and stderr
-exec > >(tee -a core/backend/logs/mzml_parser/mzml_parser_1_${SLURM_JOB_ID}_output.txt)
-exec 2> >(tee -a core/backend/logs/mzml_parser/mzml_parser_1_${SLURM_JOB_ID}_err.txt >&2)
+source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Print the current working directory to the error log
 pwd >&2
 
-# Define variables for each flag
-PYTHON_SCRIPT="core/python/mzml_parser_1_CT_NP.py"
-INPUT_FOLDER="/path/to/your/mzml/data"  # Update this path as needed
-OUTPUT_TRANSITION="core/output/transition_summed"  # Define your desired output prefix
-OUTPUT_OZESI="core/output/ozesi_data"  # Define your desired output prefix
+# Define input and output paths
+INPUT_FOLDER="Projects/CT/mzml/ON/"
+OUTPUT_TRANSITION="Projects/CT/mzml_parsed/ON/sum/df_transition_summed_1_CT_ON"
+OUTPUT_OZESI="Projects/CT/mzml_parsed/ON/df_mzml_parser_1_CT_ON"
 
-# Optionally, you can make the paths dynamic or pass them as environment variables
+# Define the Python script path
+PYTHON_SCRIPT="core/python/CT/ON/mzml_parser_1_CT_ON.py"
 
 # Record the start time
 start_time=$(date +%s)
 
-# Run the Python script with the defined flags
-python "$PYTHON_SCRIPT" \
-    --input_folder "$INPUT_FOLDER" \
-    --output_transition "$OUTPUT_TRANSITION" \
-    --output_ozesi "$OUTPUT_OZESI"
+# Run the Python script with the defined arguments
+python "${PYTHON_SCRIPT}" \
+    --input_folder "${INPUT_FOLDER}" \
+    --output_transition "${OUTPUT_TRANSITION}" \
+    --output_ozesi "${OUTPUT_OZESI}"
 
 # Record the end time
 end_time=$(date +%s)
