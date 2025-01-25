@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import logging
 import os
@@ -14,38 +16,82 @@ class SampleIDExtract:
     def __init__(self, new_columns):
         self.new_columns = new_columns
 
-    def extract_sample_parts(self, sample_id, std):
+    def extract_sample_parts(self, sample_id):
+        """
+        Extracts sample name and STD name from the Sample_ID.
+
+        Parameters:
+            sample_id (str): The Sample_ID string.
+
+        Returns:
+            tuple: (sample_name, std_name)
+        """
+        # Split the Sample_ID into parts
         parts = sample_id.replace('-', '_').split('_')
         matched_parts = {key: None for key in ['Biology', 'Genotype', 'Mouse', 'Cage', 'STD']}
 
-        if std == 'yes':
-            if 'FAME' in sample_id:
-                matched_parts['STD'] = 'FAME'
-            return 'FAME', matched_parts['STD']
+        # Convert all parts to lowercase for case-insensitive matching
+        lower_parts = [part.lower() for part in parts]
 
+        # Check if any part contains "blank"
+        if any("blank" in part for part in lower_parts):
+            sample_name = "Blank"  # Assign Sample as "Blank"
+            std_name = None  # No STD for Blank
+            return sample_name, std_name
+
+        # Check if any part contains "cistrans"
+        if any("cistrans" in part for part in lower_parts):
+            sample_name = "CisTrans"  # Assign Sample as "CisTrans"
+            std_name = None  # No STD for CisTrans
+            return sample_name, std_name
+
+        # Match other parts based on the columns configuration
         for part in parts:
-            for key in ['Biology', 'Genotype', 'Mouse', 'Cage']:
+            lower_part = part.lower()
+            for key in matched_parts.keys():
                 if matched_parts[key] is None:
                     for value in self.new_columns.get(key, []):
-                        if value in part:
+                        if value.lower() in lower_part:  # Case-insensitive matching
                             matched_parts[key] = value
                             break
 
-        sample_name = '_'.join(
-            [matched_parts[key] for key in ['Biology', 'Genotype', 'Mouse', 'Cage'] if matched_parts[key]]
-        ) or ('FAME' if matched_parts['STD'] else 'Unknown')
+        # Determine the sample_name based on the matches
+        if all(matched_parts[key] for key in ['Biology', 'Genotype', 'Mouse', 'Cage']):
+            sample_name = '_'.join([
+                matched_parts['Biology'],
+                matched_parts['Genotype'],
+                matched_parts['Mouse'],
+                matched_parts['Cage']
+            ])
+        elif matched_parts['STD']:
+            sample_name = matched_parts['STD']  # If only STD matches, use it as the sample name
+        else:
+            sample_name = 'Unknown'  # Default to "Unknown" if no matches
 
         std_name = matched_parts['STD'] if matched_parts['STD'] else 'None'
+
         return sample_name, std_name
 
     def calculate_peak_metrics(self, data, intensity_column, rt_column, peak_window=0.2):
+        """
+        Calculates peak metrics for a given dataset.
+
+        Parameters:
+            data (DataFrame): The input data.
+            intensity_column (str): Column name for intensity.
+            rt_column (str): Column name for retention time.
+            peak_window (float): Window around the peak to calculate area.
+
+        Returns:
+            Series: Peak metrics.
+        """
         data = data.sort_values(by=rt_column)
-        peaks, _ = find_peaks(data[intensity_column], prominence=1)
+        peaks, properties = find_peaks(data[intensity_column], prominence=1)
 
         if peaks.size > 0:
-            peak_idx = data.iloc[peaks][intensity_column].idxmax()
-            peak_rt = data.at[peak_idx, rt_column]
-            peak_intensity = data.at[peak_idx, intensity_column]
+            peak_idx = peaks[np.argmax(properties["prominences"])]
+            peak_rt = data.iloc[peak_idx][rt_column]
+            peak_intensity = data.iloc[peak_idx][intensity_column]
 
             area_window = data[(data[rt_column] >= peak_rt - peak_window) &
                                (data[rt_column] <= peak_rt + peak_window)]
@@ -64,6 +110,18 @@ class SampleIDExtract:
             })
 
     def find_peak_and_area(self, df, parent_ion, product_ion, tolerance):
+        """
+        Filters the dataframe based on ion parameters and calculates peak metrics.
+
+        Parameters:
+            df (DataFrame): The input dataframe.
+            parent_ion (float): Parent ion m/z ratio.
+            product_ion (float): Product ion m/z ratio.
+            tolerance (float): Tolerance for ion matching.
+
+        Returns:
+            DataFrame: Merged dataframe with peak metrics.
+        """
         condition = (
             (df['Parent_Ion'].between(parent_ion - tolerance, parent_ion + tolerance)) &
             (df['Product_Ion'].between(product_ion - tolerance, product_ion + tolerance))
@@ -77,14 +135,33 @@ class SampleIDExtract:
         return df.merge(peak_data, on='Sample', how='left')
 
     def apply_extraction(self, df, std, parent_ion, product_ion, tolerance):
+        """
+        Applies sample extraction and peak metric calculations.
+
+        Parameters:
+            df (DataFrame): The input dataframe.
+            std (str): STD usage flag.
+            parent_ion (float): Parent ion m/z ratio.
+            product_ion (float): Product ion m/z ratio.
+            tolerance (float): Tolerance for ion matching.
+
+        Returns:
+            DataFrame: Processed dataframe.
+        """
         df[['Sample', 'STD']] = df['Sample_ID'].apply(
-            lambda x: self.extract_sample_parts(x, std)
+            self.extract_sample_parts
         ).apply(pd.Series)
         df = self.find_peak_and_area(df, parent_ion, product_ion, tolerance)
         return df
 
 
 def parse_arguments():
+    """
+    Parses command-line arguments.
+
+    Returns:
+        Namespace: Parsed arguments.
+    """
     parser = argparse.ArgumentParser(description="Extract sample information and calculate peak metrics.")
     parser.add_argument('--std', choices=['yes', 'no'], required=True, help="Specify if STD is used ('yes' or 'no').")
     parser.add_argument('--input_parquet', required=True, help="Path to the input Parquet file.")
@@ -96,6 +173,9 @@ def parse_arguments():
 
 
 def setup_logging():
+    """
+    Sets up logging configuration.
+    """
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -117,7 +197,8 @@ def main():
         'Genotype': ['5xFAD', 'WT'],
         'Cage': ['FAD231', 'FAD259', 'FAD257', 'FAD263', 'FAD249', 'FAD246', 'FAD245'],
         'Mouse': ['m1', 'm2', 'm3', 'm4', 'm5'],
-        'Other': ['Blank', 'blank']
+        'STD': ['STD1', 'STD2'],  # Example STD values; update as needed
+        # 'Other': ['Blank', 'blank']  # Removed if handled separately
     }
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -175,4 +256,4 @@ def main():
 
 
 if __name__ == "__main__":
-        main()
+    main()

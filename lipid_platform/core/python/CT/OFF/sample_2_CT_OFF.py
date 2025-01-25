@@ -14,9 +14,23 @@ class SampleIDExtract:
         self.new_columns = new_columns or {}
 
     def extract_sample_parts(self, sample_id):
+        # Split the Sample_ID into parts
         parts = sample_id.replace('-', '_').split('_')
         matched_parts = {key: None for key in ['Biology', 'Genotype', 'Mouse', 'Cage', 'STD']}
+        
+        # Check if "Blank" is in the Sample_ID
+        if "Blank" in parts:
+            sample_name = "Blank"  # Assign Sample as "Blank"
+            std_name = None  # No STD for Blank
+            return sample_name, std_name
 
+        # Check if "CisTrans" is in the Sample_ID
+        if "CisTrans" in parts:
+            sample_name = "CT"  # Assign Sample as "CT"
+            std_name = None  # No STD for CisTrans
+            return sample_name, std_name
+
+        # Match other parts based on the columns configuration
         for part in parts:
             for key in matched_parts.keys():
                 if matched_parts[key] is None:
@@ -25,6 +39,7 @@ class SampleIDExtract:
                             matched_parts[key] = value
                             break
 
+        # Determine the sample_name and std_name based on the matches
         if matched_parts['Biology'] and matched_parts['Genotype'] and matched_parts['Mouse'] and matched_parts['Cage']:
             sample_name = '_'.join([
                 matched_parts['Biology'], 
@@ -33,13 +48,17 @@ class SampleIDExtract:
                 matched_parts['Cage']
             ])
         elif matched_parts['STD']:
-            sample_name = matched_parts['STD']
+            sample_name = matched_parts['STD']  # If only STD matches, use it as the sample name
         else:
-            sample_name = 'Unknown'
+            sample_name = 'Unknown'  # Default to "Unknown" if no matches
 
         std_name = matched_parts['STD'] if matched_parts['STD'] else 'None'
 
         return sample_name, std_name
+
+
+
+
 
     def get_highest_intensity_peak_and_area(self, group):
         peaks, _ = find_peaks(group['OzESI_Intensity'])

@@ -119,6 +119,7 @@ class MzMLParser:
 
         print(f"\nTotal number of files created: {len(self.created_files)}")
 
+        
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Parse mzML files and generate summarized data.")
     parser.add_argument(
@@ -128,16 +129,28 @@ def parse_arguments():
         help="Path to the folder containing mzML files."
     )
     parser.add_argument(
-        '--output_transition', 
+        '--output_folder', 
         type=str, 
         required=True, 
-        help="Output prefix path for the transition summed DataFrame."
+        help="Path to the folder for output files."
     )
     parser.add_argument(
-        '--output_ozesi', 
+        '--transition_subdir', 
         type=str, 
         required=True, 
-        help="Output prefix path for the OzESI DataFrame."
+        help="Subdirectory under the output folder for transition files."
+    )
+    parser.add_argument(
+        '--output_transition_file', 
+        type=str, 
+        required=True, 
+        help="Filename for the transition summed DataFrame."
+    )
+    parser.add_argument(
+        '--output_ozesi_file', 
+        type=str, 
+        required=True, 
+        help="Filename for the OzESI DataFrame."
     )
     return parser.parse_args()
 
@@ -147,20 +160,28 @@ def main():
     print(f"Current working directory: {os.getcwd()}", flush=True)
     print(f"mzML data folder path: {args.input_folder}", flush=True)
 
+    # Ensure the output directories exist
+    transition_dir = os.path.join(args.output_folder, args.transition_subdir)
+    os.makedirs(transition_dir, exist_ok=True)
+
     parser = MzMLParser()
     parser.mzml_parser_batch(args.input_folder)
 
     transition_summed_df = parser.get_transition_summed_df()
     ozesi_df = parser.get_OzESI_df()
 
+    # Construct full output paths
+    output_transition_path = os.path.join(transition_dir, args.output_transition_file)
+    output_ozesi_path = os.path.join(args.output_folder, args.output_ozesi_file)
+
     # Save the DataFrames and measure file sizes
     transition_sizes = parser.save_and_measure_size(
         transition_summed_df, 
-        args.output_transition
+        output_transition_path
     )
     ozesi_sizes = parser.save_and_measure_size(
         ozesi_df, 
-        args.output_ozesi
+        output_ozesi_path
     )
 
     print("\nFile sizes for transition summed DataFrame:")

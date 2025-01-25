@@ -1,41 +1,48 @@
 #!/bin/bash
+
 #SBATCH --account=gchopra
-#SBATCH --job-name=match_3_CT_ON_%A_%a
-#SBATCH --output=logs/CT/ON/match/%A_%a_output.txt
-#SBATCH --error=logs/CT/ON/match/%A_%a_err.txt
+#SBATCH --job-name=match_3_CT_ON_%j
+#SBATCH --output=logs/CT/ON/match/%j_output.txt
+#SBATCH --error=logs/CT/ON/match/%j_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=16G
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-40  # Adjust this range based on the number of input files
+#SBATCH --array=0-2  # Adjust this range based on the number of input files
 
 ### ============================ ###
 ###       Environment Setup      ###
 ### ============================ ###
 
-
 # Load Anaconda module and activate the environment
 module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
-
 ### ============================ ###
 ###        Variable Setup        ###
 ### ============================ ###
-INPUT_PARQUET="Projects/CT/mzml_parsed/ON/df_mzml_parser_1_CT_ON.parquet"
+
+# Define the Python script path
+PYTHON_SCRIPT="core/python/CT/ON/match_3_CT_ON.py"  # Ensure this path is correct
+
 # Define directories and file paths
-OZOFF_DIR="Projects/CT/analysis/OFF/off_possible/"        # Path to OzOFF directory
+OZOFF_DIR="Projects/CT/analysis/OFF/off_possible/"  # Directory containing OzOFF parquet files
 OZON_DATABASE="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"  # Path to OzON database
-INPUT_DIR="Projects/CT/samples/ON/"                      # Directory containing sample parquet files
-OUTPUT_DIR="Projects/CT/match/ON/"                      # Directory to save output files
+SAMPLE_DIR="Projects/CT/samples/ON/"                # Directory containing sample parquet files
+OUTPUT_DIR="Projects/CT/match/ON/"                  # Directory to save output files
 
 # Parameters for lipid matching (can be adjusted as needed)
 TOLERANCE=0.3
 RETENTION_TIME_WINDOW=0.5
 LOG_LEVEL="INFO"
 
-# Path to the Python script
-PYTHON_SCRIPT="core/python/CT/ON/match_3_CT_ON.py"
+# Additional processing parameters (if applicable)
+HEIGHT=500          # Example value; adjust as needed
+WIDTH=2             # Example value; adjust as needed
+REL_HEIGHT=0.5      # Example value; adjust as needed
+
+# Flag to create max peaks DataFrame
+MAX_PEAKS=true      # Set to true or false
 
 ### ============================ ###
 ###      Prepare Input Files     ###
@@ -44,14 +51,14 @@ PYTHON_SCRIPT="core/python/CT/ON/match_3_CT_ON.py"
 # Ensure the output directory exists
 mkdir -p "$OUTPUT_DIR"
 
-# Gather all .parquet files in the input directory
-mapfile -t files < <(ls "${INPUT_DIR}"*.parquet 2>/dev/null)
+# Gather all .parquet files in the sample directory
+mapfile -t files < <(ls "${SAMPLE_DIR}"*.parquet 2>/dev/null)
 
 # Total number of files found
 num_files=${#files[@]}
 
 # Log the number of files found
-echo "Found $num_files .parquet files in input directory: $INPUT_DIR"
+echo "Found $num_files .parquet files in input directory: $SAMPLE_DIR"
 
 ### ============================ ###
 ###          Processing          ###
@@ -63,7 +70,14 @@ if [ "$SLURM_ARRAY_TASK_ID" -lt "$num_files" ]; then
     sample_path="${files[$SLURM_ARRAY_TASK_ID]}"
     sample_filename=$(basename "$sample_path")
     
-    echo "Processing file [$SLURM_ARRAY_TASK_ID]: $sample_filename"
+    echo "Processing file [Task ID: $SLURM_ARRAY_TASK_ID]: $sample_filename"
+
+    # Determine the max_peaks flag
+    if $MAX_PEAKS; then
+        MAX_PEAKS_FLAG="--max_peaks"
+    else
+        MAX_PEAKS_FLAG=""
+    fi
 
     # Execute the Python script with appropriate flags
     python "$PYTHON_SCRIPT" \
@@ -73,7 +87,11 @@ if [ "$SLURM_ARRAY_TASK_ID" -lt "$num_files" ]; then
         --output_dir "$OUTPUT_DIR" \
         --tolerance "$TOLERANCE" \
         --retention_time_window "$RETENTION_TIME_WINDOW" \
-        --log_level "$LOG_LEVEL"
+        --log_level "$LOG_LEVEL" \
+        $MAX_PEAKS_FLAG \
+        --height "$HEIGHT" \
+        --width "$WIDTH" \
+        --rel_height "$REL_HEIGHT"
 
     # Check if the Python script executed successfully
     if [ $? -eq 0 ]; then

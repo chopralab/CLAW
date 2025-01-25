@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --account=gchopra
-#SBATCH --job-name=sample_extract
-#SBATCH --output=logs/CT/ON/sample/%A_%a_output.txt
-#SBATCH --error=logs/CT/ON/sample/%A_%a_err.txt
+#SBATCH --job-name=sample_2_%j
+#SBATCH --output=logs/CT/ON/sample/%j_output.txt
+#SBATCH --error=logs/CT/ON/sample/%j_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
@@ -16,7 +16,7 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 # Define variables
 STD="no"  # Change to 'yes' if using STD
 PYTHON_SCRIPT="core/python/CT/ON/sample_2_CT_ON.py"
-INPUT_PARQUET="Projects/CT/mzml_parsed/ON/df_mzml_parser_1_CT_ON.parquet"
+INPUT_PARQUET="Projects/CT/mzml_parsed/ON/mzml_parser_1_CT_ON.parquet"
 OUTPUT_DIR="Projects/CT/samples/ON/"
 
 # Define ion parameters

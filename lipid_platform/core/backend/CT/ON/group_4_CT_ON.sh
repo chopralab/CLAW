@@ -4,10 +4,10 @@
 #SBATCH --output=logs/CT/ON/group/%A_%a_output.txt
 #SBATCH --error=logs/CT/ON/group/%A_%a_err.txt
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=10:00:00
-#SBATCH --array=0-40  # Ensure this matches the number of input files
+#SBATCH --array=0-2  # Ensure this matches the number of input files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")

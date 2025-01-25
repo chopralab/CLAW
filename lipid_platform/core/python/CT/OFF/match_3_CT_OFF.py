@@ -40,6 +40,10 @@ class MatchLipids:
 
     @staticmethod
     def save_results(df, output_dir, sample_name='unknown'):
+        # Create the output directory if it doesn't exist
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
         output_file = os.path.join(output_dir, f"df_match_3_{sample_name}.parquet")
         df.to_parquet(output_file, index=False)
         return output_file
@@ -53,14 +57,18 @@ def main():
     parser.add_argument('--log-level', default='INFO', help='Logging level')
     args = parser.parse_args()
 
+    # Set up logging
     logging.basicConfig(level=args.log_level)
     
+    # Read database and input files
     database = pd.read_parquet(args.database)
     sample_data = pd.read_parquet(args.input)
     
+    # Process matching
     matcher = MatchLipids(database, args.tolerance)
     results = matcher.match_lipids_parser(sample_data)
     
+    # Get the sample name and save the results
     sample_name = sample_data.get('Sample', ['unknown']).iloc[0]
     output_file = matcher.save_results(results, args.output, sample_name)
     logging.info(f"Results saved to {output_file}")

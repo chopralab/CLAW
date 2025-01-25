@@ -4,11 +4,10 @@
 #SBATCH --output=logs/CT/OFF/match/%A_%a_output.txt
 #SBATCH --error=logs/CT/OFF/match/%A_%a_err.txt
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-40
-#SBATCH --job-name=match_3_$(date +"%Y%m%d_%H%M%S")_%a
+#SBATCH --array=0-2 # FOR CIS TRANS
 
 # Load Anaconda module and activate the environment
 module load anaconda/2024.02-py311
@@ -39,13 +38,13 @@ if [ "$SLURM_ARRAY_TASK_ID" -lt "$num_files" ]; then
     # Log the current working directory
     pwd >&2
     
-    # Run the Python script with the defined flags
     python "$PYTHON_SCRIPT" \
         --database "$DATABASE" \
-        --sample "$sample_path" \
+        --input "$sample_path" \
         --output "$OUTPUT_DIR" \
         --tolerance "$TOLERANCE" \
         --log-level "$LOG_LEVEL"
+
     
     # Log the current working directory after script execution
     pwd >&2

@@ -1,0 +1,8 @@
+{
+    "Biology": ["cereb", "cortex", "dienc", "hippo"],
+    "Genotype": ["WT", "5xFAD"],
+    "Mouse": ["m1", "m2", "m3", "m4", "m5"],
+    "Cage": ["FAD245", "FAD249", "FAD263", "FAD259", "FAD231", "FAD257", "FAD246"],
+    "STD": ["d2-16:0"]
+    
+}
