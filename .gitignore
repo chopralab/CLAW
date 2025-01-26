@@ -1,4 +1,5 @@
 lipid_platform/archive/*
+**/archive/**
 
 # General directories to ignore
 lipid_platform/old/*
