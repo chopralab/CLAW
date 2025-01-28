@@ -4,8 +4,8 @@
 #SBATCH --output=logs/CT/NP/mzml/%A_%a_output.txt
 #SBATCH --error=logs/CT/NP/mzml/%A_%a_err.txt
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=10:00:00
 
 # Load Anaconda module and activate the environment

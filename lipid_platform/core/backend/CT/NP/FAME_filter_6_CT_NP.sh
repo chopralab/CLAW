@@ -4,9 +4,9 @@
 #SBATCH --error=logs/CT/NP/FAME_filter/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=16G
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=01:00:00
-#SBATCH --array=0-99  # Adjust this range based on the number of files
+#SBATCH --array=0-3  # Adjust this range based on the number of files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")

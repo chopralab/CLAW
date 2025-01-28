@@ -4,9 +4,9 @@
 #SBATCH --error=logs/CT/NP/notpossible/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=16G
+#SBATCH --mem-per-cpu=8G
 #SBATCH --time=01:00:00
-#SBATCH --array=0-40  # Adjust this based on the number of input files or tasks
+#SBATCH --array=0-3  # Adjust this based on the number of input files or tasks
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
