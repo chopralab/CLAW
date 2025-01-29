@@ -30,21 +30,26 @@ echo "SLURM Array Task ID: ${SLURM_ARRAY_TASK_ID}"
 # Variable Definitions
 # ============================
 
-# Directories
-INPUT_DIR="/scratch/negishi/iyer95/Projects/FAME/analysis/ON/"
-OFF_POSSIBLE_DIR="/scratch/negishi/iyer95/Projects/FAME/analysis/OFF/"
-OUTPUT_DIR="/scratch/negishi/iyer95/Projects/FAME/isomer_filter_6/"
+# Absolute Paths for Directories
+INPUT_DIR="Projects/FAME/analysis/ON/"
+OFF_POSSIBLE_DIR="Projects/FAME/analysis/OFF/"
+OUTPUT_DIR="Projects/FAME/isomer_filter/"
 
 # Parameters
 RETENTION_TIME_TOLERANCE=0.15
-ISOMER_FILTER_OUTPUT="isomer_filter_output"
 
 # Python Script
-PYTHON_SCRIPT="core/python/FAME/ON/isomer_filter_6_CT_ON.py"
+PYTHON_SCRIPT="core/python/FAME/ON/isomer_filter_6_ON.py"
 
-# Optional: Specify specific files (Uncomment and modify if needed)
-# SPECIFIC_OFF_FILES=("file1.parquet" "file2.parquet")
-# SPECIFIC_ON_FILES=("fileA.parquet" "fileB.parquet")
+# ============================
+# Debugging: List Files Before Execution
+# ============================
+
+echo "Listing files in OzOFF directory: ${OFF_POSSIBLE_DIR}"
+ls -l "${OFF_POSSIBLE_DIR}"
+
+echo "Listing files in OzON directory: ${INPUT_DIR}"
+ls -l "${INPUT_DIR}"
 
 # ============================
 # Execute Python Script
@@ -54,12 +59,7 @@ python -u "${PYTHON_SCRIPT}" \
     --input_dir "${INPUT_DIR}" \
     --off_possible_dir "${OFF_POSSIBLE_DIR}" \
     --output_dir "${OUTPUT_DIR}" \
-    --retention_time_tolerance "${RETENTION_TIME_TOLERANCE}" \
-    --isomer_filter_output "${ISOMER_FILTER_OUTPUT}" \
-    # Uncomment the following lines to include specific files
-    # --specific_off_files "${SPECIFIC_OFF_FILES[@]}" \
-    # --specific_on_files "${SPECIFIC_ON_FILES[@]}" \
-    #> core/backend/logs/isomer/${SLURM_ARRAY_TASK_ID}_output.log 2>&1
+    --retention_time_tolerance "${RETENTION_TIME_TOLERANCE}"
 
 # ============================
 # Job Completion

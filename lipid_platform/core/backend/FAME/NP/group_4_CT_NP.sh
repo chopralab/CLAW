@@ -2,22 +2,22 @@
 
 #SBATCH --account=gchopra
 #SBATCH --job-name=group_4_NP_%A_%a
-#SBATCH --output=logs/CT/NP/group/group_4_CT_%A_%a_output.txt
-#SBATCH --error=logs/CT/NP/group/group_4_CT_%A_%a_err.txt
+#SBATCH --output=logs/FAME/NP/group/group_4_CT_%A_%a_output.txt
+#SBATCH --error=logs/FAME/NP/group/group_4_CT_%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=10:00:00
-#SBATCH --array=0-3  # Adjust this to the number of files you have
+#SBATCH --array=0-1  # Adjust this to the number of files you have
 
 module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Define hardcoded paths
-INPUT_DIR="Projects/CT/match/NP/"
-OUTPUT_DIR="Projects/CT/group/NP/"
+INPUT_DIR="Projects/FAME/match/NP/"
+OUTPUT_DIR="Projects/FAME/group/NP/"
 STD_ONLY="Sample"
-PYTHON_SCRIPT="core/python/CT/NP/group_4_CT_NP.py"
+PYTHON_SCRIPT="core/python/FAME/NP/group_4_CT_NP.py"
 
 # Create the output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"

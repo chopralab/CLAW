@@ -26,7 +26,7 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 PYTHON_SCRIPT="core/python/FAME/ON/match_3_CT_ON.py"  # Ensure this path is correct
 
 # Define directories and file paths
-OZOFF_DIR="Projects/FAME/analysis/OFF/off_possible/"  # Directory containing OzOFF parquet files
+OZOFF_DIR="Projects/FAME/analysis/OFF/"  # Directory containing OzOFF parquet files
 OZON_DATABASE="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"  # Path to OzON database
 SAMPLE_DIR="Projects/FAME/samples/ON/"                # Directory containing sample parquet files
 OUTPUT_DIR="Projects/FAME/match/ON/"                  # Directory to save output files

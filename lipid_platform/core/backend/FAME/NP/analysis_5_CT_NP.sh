@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=logs/CT/NP/analysis/%A_%a_output.txt
-#SBATCH --error=logs/CT/NP/analysis/%A_%a_err.txt
+#SBATCH --output=logs/FAME/NP/analysis/%A_%a_output.txt
+#SBATCH --error=logs/FAME/NP/analysis/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=01:00:00
-#SBATCH --array=0-3  # Adjust this based on the number of files
+#SBATCH --array=0-1  # Adjust this based on the number of files
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
@@ -18,10 +18,10 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 
 
 # Define configurable variables
-PYTHON_SCRIPT="core/python/CT/NP/analysis_5_CT_NP.py"
+PYTHON_SCRIPT="core/python/FAME/NP/analysis_5_CT_NP.py"
 
-INPUT_DIR="Projects/CT/group/NP/"
-OUTPUT_DIR="Projects/CT/analysis/NP/"
+INPUT_DIR="Projects/FAME/group/NP/"
+OUTPUT_DIR="Projects/FAME/analysis/NP/"
 HEIGHT=500
 WIDTH=2
 REL_HEIGHT=0.5
