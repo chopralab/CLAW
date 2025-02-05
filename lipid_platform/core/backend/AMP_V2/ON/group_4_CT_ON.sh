@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --account=gchopra
 #SBATCH --job-name=group_4_CT_ON_%A_%a
-#SBATCH --output=logs/CT/ON/group/%A_%a_output.txt
-#SBATCH --error=logs/CT/ON/group/%A_%a_err.txt
+#SBATCH --output=logs/AMP_V2/ON/group/%A_%a_output.txt
+#SBATCH --error=logs/AMP_V2/ON/group/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
@@ -19,9 +19,9 @@ module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Define variables
-PYTHON_SCRIPT="core/python/CT/ON/group_4_CT_ON.py"
-INPUT_DIR="Projects/CT/match/ON"
-OUTPUT_DIR="Projects/CT/group/ON"
+PYTHON_SCRIPT="core/python/AMP_V2/ON/group_4_CT_ON.py"
+INPUT_DIR="Projects/AMP_V2/match/ON"
+OUTPUT_DIR="Projects/AMP_V2/group/ON"
 
 # Remove trailing slashes
 INPUT_DIR="${INPUT_DIR%/}"

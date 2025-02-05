@@ -6,8 +6,8 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=10:00:00
-#SBATCH --output=logs/AMP_V2/OFF/mzml_parser_CT_%j_output.txt
-#SBATCH --error=logs/AMP_V2/OFF/mzml_parser_CT_%j_err.txt
+#SBATCH --output=logs/AMP_V2/OFF/mzml/mzml_parser_CT_%j_output.txt
+#SBATCH --error=logs/AMP_V2/OFF/mzml/mzml_parser_CT_%j_err.txt
 
 # Configuration
 INPUT_DIR="Projects/AMP_V2/mzml/OFF"

@@ -2,8 +2,8 @@
 
 #SBATCH --account=gchopra
 #SBATCH --job-name=analysis_5_CT_ON_%A_%a
-#SBATCH --output=logs/CT/ON/analysis/%A_%a_output.txt
-#SBATCH --error=logs/CT/ON/analysis/%A_%a_err.txt
+#SBATCH --output=logs/AMP_V2/ON/analysis/%A_%a_output.txt
+#SBATCH --error=logs/AMP_V2/ON/analysis/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
@@ -24,11 +24,11 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 # ============================
 
 # Define the Python script path
-PYTHON_SCRIPT="core/python/CT/ON/analysis_5_CT_ON.py"
+PYTHON_SCRIPT="core/python/AMP_V2/ON/analysis_5_CT_ON.py"
 
 # Define input and output directories
-INPUT_DIR="Projects/CT/group/ON/"
-OUTPUT_DIR="Projects/CT/analysis/ON/"
+INPUT_DIR="Projects/AMP_V2/group/ON/"
+OUTPUT_DIR="Projects/AMP_V2/analysis/ON/"
 
 # Define peak detection parameters
 HEIGHT=500          # Example value; adjust as needed

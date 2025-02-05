@@ -5,22 +5,22 @@
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=10:00:00
 #SBATCH --job-name=mzml_1_CT_ON_%j
-#SBATCH --output=logs/CT/ON/mzml/%j_output.txt
-#SBATCH --error=logs/CT/ON/mzml/%j_error.txt
+#SBATCH --output=logs/AMP_V2/ON/mzml/%j_output.txt
+#SBATCH --error=logs/AMP_V2/ON/mzml/%j_error.txt
 
 # Load Anaconda module and activate the environment
 module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Define input and output paths
-INPUT_FOLDER="Projects/CT/mzml/ON/"
-OUTPUT_FOLDER="Projects/CT/mzml_parsed/ON/"
+INPUT_FOLDER="Projects/AMP_V2/mzml/ON/"
+OUTPUT_FOLDER="Projects/AMP_V2/mzml_parsed/ON/"
 TRANSITION_SUBDIR="transitions/"
 OUTPUT_TRANSITION_FILE="mzml_transition_summed_1_CT_ON"
 OUTPUT_OZESI_FILE="mzml_parser_1_CT_ON"
 
 # Define the Python script path
-PYTHON_SCRIPT="core/python/CT/ON/mzml_parser_1_CT_ON.py"
+PYTHON_SCRIPT="core/python/AMP_V2/ON/mzml_parser_1_CT_ON.py"
 
 # Run the Python script
 python "${PYTHON_SCRIPT}" \

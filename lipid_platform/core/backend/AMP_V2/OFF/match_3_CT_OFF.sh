@@ -1,23 +1,23 @@
 #!/bin/bash
 
 #SBATCH --account=gchopra
-#SBATCH --output=logs/CT/OFF/match/%A_%a_output.txt
-#SBATCH --error=logs/CT/OFF/match/%A_%a_err.txt
+#SBATCH --output=logs/AMP_V2/OFF/match/%A_%a_output.txt
+#SBATCH --error=logs/AMP_V2/OFF/match/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-2 # FOR CIS TRANS
+#SBATCH --array=0-40 # FOR AMP_V2
 
 # Load Anaconda module and activate the environment
 module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Define input variables (modifiable flags)
-PYTHON_SCRIPT="core/python/CT/OFF/match_3_CT_OFF.py"  # Path to the Python script
+PYTHON_SCRIPT="core/python/AMP_V2/OFF/match_3_CT_OFF.py"  # Path to the Python script
 DATABASE="lipid_database/OzOFF_database/Database_OzOFF.parquet"
-INPUT_DIR="Projects/CT/samples/OFF/"
-OUTPUT_DIR="Projects/CT/match/OFF/"
+INPUT_DIR="Projects/AMP_V2/samples/OFF/"
+OUTPUT_DIR="Projects/AMP_V2/match/OFF/"
 TOLERANCE=0.3
 LOG_LEVEL="INFO"
 

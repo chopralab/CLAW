@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=logs/CT/OFF/analysis/%A_%a_output.txt
-#SBATCH --error=logs/CT/OFF/analysis/%A_%a_err.txt
+#SBATCH --output=logs/AMP_V2/OFF/analysis/%A_%a_output.txt
+#SBATCH --error=logs/AMP_V2/OFF/analysis/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
@@ -17,8 +17,8 @@ module load anaconda/2024.02-py311
 source activate /scratch/negishi/iyer95/conda/CLAW
 
 # Define input and output directories
-INPUT_DIR="Projects/CT/group/OFF"
-OUTPUT_DIR="Projects/CT/analysis/OFF"
+INPUT_DIR="Projects/AMP_V2/group/OFF"
+OUTPUT_DIR="Projects/AMP_V2/analysis/OFF"
 
 # Remove trailing slashes if they exist
 INPUT_DIR=$(echo "$INPUT_DIR" | sed 's:/*$::')
@@ -54,7 +54,7 @@ echo "Processing file: $input_file_path with ignore_columns_flag: $IGNORE_COLUMN
 start_time=$(date +%s)
 
 # Run the Python script with the input file path and parameters
-python core/python/CT/OFF/analysis_5_CT_OFF.py \
+python core/python/AMP_V2/OFF/analysis_5_CT_OFF.py \
   "$input_file_path" \
   "$HEIGHT" \
   "$WIDTH" \

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=logs/CT/OFF/group/%A_%a_output.txt
-#SBATCH --error=logs/CT/OFF/group/%A_%a_err.txt
+#SBATCH --output=logs/AMP_V2/OFF/group/%A_%a_output.txt
+#SBATCH --error=logs/AMP_V2/OFF/group/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
@@ -19,8 +19,8 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 
 
 # Define input and output directories
-input_dir="Projects/CT/match/OFF/"
-output_dir="Projects/CT/group/OFF/"
+input_dir="Projects/AMP_V2/match/OFF/"
+output_dir="Projects/AMP_V2/group/OFF/"
 
 # Create the output directory if it doesn't exist
 mkdir -p "$output_dir"
@@ -42,7 +42,7 @@ pwd >&2
 echo "Processing file: $input_file_path with STD_Only: $STD_Only" >&2
 
 # Run the Python script with the input file path, output directory, and STD_Only flag
-python core/python/CT/OFF/group_4_CT_OFF.py \
+python core/python/AMP_V2/OFF/group_4_CT_OFF.py \
     --input_file "$input_file_path" \
     --output_dir "$output_dir" \
     --STD_Only "$STD_Only"
