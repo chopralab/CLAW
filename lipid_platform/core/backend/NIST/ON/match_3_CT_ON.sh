@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-3  # Adjust this range based on the number of input files
+#SBATCH --array=0-5  # Adjust this range based on the number of input files
 
 ### ============================ ###
 ###       Environment Setup      ###
@@ -33,7 +33,7 @@ OUTPUT_DIR="Projects/NIST/match/ON/"                  # Directory to save output
 
 # Parameters for lipid matching (can be adjusted as needed)
 TOLERANCE=0.3
-RETENTION_TIME_WINDOW=0.5
+RETENTION_TIME_WINDOW=0.35
 LOG_LEVEL="INFO"
 
 # Additional processing parameters (if applicable)

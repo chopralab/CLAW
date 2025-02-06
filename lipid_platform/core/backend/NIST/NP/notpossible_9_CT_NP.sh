@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --output=logs/CT/NP/notpossible/%A_%a_output.txt
-#SBATCH --error=logs/CT/NP/notpossible/%A_%a_err.txt
+#SBATCH --output=logs/NIST/NP/notpossible/%A_%a_output.txt
+#SBATCH --error=logs/NIST/NP/notpossible/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=01:00:00
-#SBATCH --array=0-3  # Adjust this based on the number of input files or tasks
+#SBATCH --array=0  # Adjust this based on the number of input files or tasks
 
 # Generate a timestamp-based job name
 current_date_time=$(date +"%Y%m%d_%H%M%S")
@@ -19,10 +19,10 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 
 
 # Define default directories and parameters
-DEFAULT_OZON_DIR="Projects/CT/isomer_filter_6/"
-DEFAULT_OZOFF_DIR="Projects/CT/analysis/OFF/notpossible/"
-DEFAULT_OUTPUT_DIR="Projects/CT/notpossible_9/"
-DEFAULT_RT_WINDOW=0.05
+DEFAULT_OZON_DIR="Projects/NIST/isomer_filter/"
+DEFAULT_OZOFF_DIR="Projects/NIST/analysis/NP/"
+DEFAULT_OUTPUT_DIR="Projects/NIST/not_possible/"
+DEFAULT_RT_WINDOW=0.1
 
 # Accept input parameters with defaults
 ozon_dir=${1:-$DEFAULT_OZON_DIR}
@@ -50,7 +50,7 @@ echo "  Retention Time Window: $rt_window" >&2
 start_time=$(date +%s)
 
 # Run the Python script with all flags
-python core/python/CT/NP/notpossible_9_CT_NP.py \
+python core/python/NIST/NP/notpossible_9_CT_NP.py \
     --ozon_dir "$ozon_dir" \
     --ozoff_dir "$ozoff_dir" \
     --output_dir "$output_dir" \

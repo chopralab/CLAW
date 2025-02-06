@@ -27,7 +27,7 @@ echo "SLURM Array Task ID: ${SLURM_ARRAY_TASK_ID}"
 # Variable Definitions
 # ============================
 INPUT_DIR="Projects/NIST/analysis/ON/"
-OFF_POSSIBLE_DIR="Projects/NIST/analysis/OFF/"
+OFF_POSSIBLE_DIR="Projects/NIST/analysis/OFF/off_possible/"
 OUTPUT_DIR="Projects/NIST/isomer_filter/"
 RETENTION_TIME_TOLERANCE=0.25
 
