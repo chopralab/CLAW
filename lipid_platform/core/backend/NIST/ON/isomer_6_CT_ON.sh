@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --account=gchopra
-#SBATCH --job-name=isomer_6_CT_ON_%A_%a
-#SBATCH --output=logs/CT/ON/isomer/%A_%a_output.txt
-#SBATCH --error=logs/CT/ON/isomer/%A_%a_err.txt
+#SBATCH --job-name=isomer_6_NIST_ON_%A_%a
+#SBATCH --output=logs/NIST/ON/isomer/%A_%a_output.txt
+#SBATCH --error=logs/NIST/ON/isomer/%A_%a_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=16G
@@ -26,13 +26,13 @@ echo "SLURM Array Task ID: ${SLURM_ARRAY_TASK_ID}"
 # ============================
 # Variable Definitions
 # ============================
-INPUT_DIR="Projects/CT/analysis/ON/"
-OFF_POSSIBLE_DIR="Projects/CT/analysis/OFF/"
-OUTPUT_DIR="Projects/CT/isomer_filter/"
+INPUT_DIR="Projects/NIST/analysis/ON/"
+OFF_POSSIBLE_DIR="Projects/NIST/analysis/OFF/"
+OUTPUT_DIR="Projects/NIST/isomer_filter/"
 RETENTION_TIME_TOLERANCE=0.25
 
 # Python Script
-PYTHON_SCRIPT="core/python/CT/ON/isomer_filter_6_CT_ON.py"
+PYTHON_SCRIPT="core/python/NIST/ON/isomer_filter_6_CT_ON.py"
 
 # Optional: Specify specific files (Uncomment and modify if needed)
 # SPECIFIC_OFF_FILES=("file1.parquet" "file2.parquet")

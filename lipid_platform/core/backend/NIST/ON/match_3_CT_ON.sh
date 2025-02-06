@@ -2,13 +2,13 @@
 
 #SBATCH --account=gchopra
 #SBATCH --job-name=match_3_CT_ON_%j
-#SBATCH --output=logs/FAME/ON/match/%j_output.txt
-#SBATCH --error=logs/FAME/ON/match/%j_err.txt
+#SBATCH --output=logs/NIST/ON/match/%j_output.txt
+#SBATCH --error=logs/NIST/ON/match/%j_err.txt
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-1  # Adjust this range based on the number of input files
+#SBATCH --array=0-3  # Adjust this range based on the number of input files
 
 ### ============================ ###
 ###       Environment Setup      ###
@@ -23,13 +23,13 @@ source activate /scratch/negishi/iyer95/conda/CLAW
 ### ============================ ###
 
 # Define the Python script path
-PYTHON_SCRIPT="core/python/FAME/ON/match_3_CT_ON.py"  # Ensure this path is correct
+PYTHON_SCRIPT="core/python/NIST/ON/match_3_CT_ON.py"  # Ensure this path is correct
 
 # Define directories and file paths
-OZOFF_DIR="Projects/FAME/analysis/OFF/off_possible/"  # Directory containing OzOFF parquet files
+OZOFF_DIR="Projects/NIST/analysis/OFF/off_possible/"  # Directory containing OzOFF parquet files
 OZON_DATABASE="lipid_database/OzON_databases/OzON_Possible_Database_0.parquet"  # Path to OzON database
-SAMPLE_DIR="Projects/FAME/samples/ON/"                # Directory containing sample parquet files
-OUTPUT_DIR="Projects/FAME/match/ON/"                  # Directory to save output files
+SAMPLE_DIR="Projects/NIST/samples/ON/"                # Directory containing sample parquet files
+OUTPUT_DIR="Projects/NIST/match/ON/"                  # Directory to save output files
 
 # Parameters for lipid matching (can be adjusted as needed)
 TOLERANCE=0.3

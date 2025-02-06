@@ -45,10 +45,11 @@ class SampleIDExtract:
             std_name = None  # No STD for CisTrans
             return sample_name, std_name
                     # Check if "FAME" is in the Sample_ID
-        if "FAME" in parts:
-            sample_name = "FAME"  # Assign Sample as "FAME"
-            std_name = None  # No STD for FAME
+        if any("FAME" in part for part in parts):
+            sample_name = "FAME"
+            std_name = None
             return sample_name, std_name
+
 
         # Match other parts based on the columns configuration
         for part in parts:

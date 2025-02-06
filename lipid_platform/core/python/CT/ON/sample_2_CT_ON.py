@@ -39,11 +39,12 @@ class SampleIDExtract:
             std_name = None  # No STD for Blank
             return sample_name, std_name
 
-        # Check if any part contains "cistrans"
-        if any("cistrans" in part for part in lower_parts):
-            sample_name = "CisTrans"  # Assign Sample as "CisTrans"
-            std_name = None  # No STD for CisTrans
+        # Unified check for any form of 'cistrans'
+        if any('cistrans' in part.lower() for part in parts):
+            sample_name = "CT"
+            std_name = None
             return sample_name, std_name
+
 
         # Match other parts based on the columns configuration
         for part in parts:

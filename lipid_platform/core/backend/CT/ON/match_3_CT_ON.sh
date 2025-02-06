@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=8G
 #SBATCH --time=24:00:00
-#SBATCH --array=0-2  # Adjust this range based on the number of input files
+#SBATCH --array=0  # Adjust this range based on the number of input files
 
 ### ============================ ###
 ###       Environment Setup      ###
