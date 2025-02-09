@@ -1,0 +1,9 @@
+Starting job at Sat Feb  8 18:12:48 EST 2025
+Working directory: /scratch/negishi/iyer95/iyer95/CLAW_OzESI_Paper/CLAW/lipid_platform
+Found 3 mzML files in Projects/canola/mzml/OFF
+Parsing: Projects/canola/mzml/OFF/DegummedCanola_O3off_150gN3_02082023.mzML
+Parsing: Projects/canola/mzml/OFF/CrudeCanola_O3off_150gN3_02082023.mzML
+Parsing: Projects/canola/mzml/OFF/RBDCanola_O3off_150gN3_02082023.mzML
+Saved transition data: Projects/canola/mzml_parsed/OFF/mzml_parser_1_OFF_transition_summed.parquet (0.01 MB)
+Saved intensity data: Projects/canola/mzml_parsed/OFF/mzml_parser_1_OFF_intensity.parquet (1.27 MB)
+Job completed in 24 seconds

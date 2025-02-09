@@ -7,3 +7,5 @@ lipid_platform/.ipynb_checkpoints/*
 *.html
 *.svg
 */.ipynb_checkpoints/*
+
+**/archive/
