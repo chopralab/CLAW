@@ -1119,8 +1119,8 @@ def full_parse(data_base_name_location,mzml_folder, folder_name_to_save,labels_d
 
 
 
-    if custom_data ==False:
-        df_matched = add_subclass_and_length(df_matched)
+    # if custom_data ==False:
+    #     df_matched = add_subclass_and_length(df_matched)
     if save_data == True:
         
         save_dataframe(df_matched, folder_name_to_save, file_name_to_save)

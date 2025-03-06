@@ -1,0 +1,20 @@
+Query: increased MBOAT7 in Alzheimer's Disease
+No papers found.
+----------------------------------------
+
+Query: decreased PLA2G4E in Alzheimer's Disease
+Original Paper Details:
+Title: PLA2G4E, a candidate gene for resilience in Alzheimer´s disease and a new target for dementia treatment.
+DOI: 10.1016/j.pneurobio.2020.101818
+Summary: Clinical studies revealed that some aged-individuals accumulate a significant number of histopathological Alzheimer´s disease (AD) lesions in their brain, yet without developing any signs of dementia. Animal models of AD represent suitable tools to identify genes that might promote cognitive resilience and hence, this study first set out to identify cognitively resilient individuals in the aged-Tg2576 mouse model. A transcriptomic analysis of these mice identified PLA2G4E as a gene that might confer resistance to dementia. Indeed, a significant decrease in PLA2G4E is evident in the brain of late-stage AD patients, whereas no such changes are observed in early stage patients with AD neuropathological lesions but no signs of dementia. We demonstrated that adeno-associated viral vector-mediated overexpression of PLA2G4E in hippocampal neurons completely restored cognitive deficits in elderly APP/PS1 mice, without affecting the amyloid or tau pathology. These PLA2G4E overexpressing APP/PS1 mice developed significantly more dendritic spines than sham-injected mice, coinciding with the cognitive improvement observed. Hence, these results support the idea that a loss of PLA2G4E might play a key role in the onset of dementia in AD, highlighting the potential of PLA2G4E overexpression as a novel therapeutic strategy to manage AD and other disorders that course with memory deficits.
+
+Filtered Summary:
+Title: PLA2G4E, a candidate gene for resilience in Alzheimer´s disease and a new target for dementia treatment.
+DOI: 10.1016/j.pneurobio.2020.101818
+Summary: This study identifies PLA2G4E as a potential gene that might confer resistance to dementia. The study found a significant decrease in PLA2G4E in the brains of late-stage Alzheimer's disease patients, with no such changes observed in early-stage patients who have Alzheimer's disease neuropathological lesions but no signs of dementia. The overexpression of PLA2G4E in hippocampal neurons restored cognitive deficits in elderly APP/PS1 mice, without affecting the amyloid or tau pathology. The results of this study suggest that a loss of PLA2G4E might play a key role in the onset of dementia in Alzheimer's disease, and that PLA2G4E overexpression could be a potential new therapeutic strategy for managing Alzheimer's disease and other memory deficit disorders.
+----------------------------------------
+
+Query: decreased PLA2G4D in Alzheimer's Disease
+No papers found.
+----------------------------------------
+

@@ -1,0 +1,250 @@
+,Reaction,Gene Code,reaction_code,Lipid 1,Lipid 2,Class,reaction_type,Number,Gene
+0,1,1606,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,1606,DGKA
+1,1,1607,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,1607,DGKB
+2,1,8527,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,8527,DGKD
+3,1,8526,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,8526,DGKE
+4,1,1608,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,1608,DGKG
+5,1,160851,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,160851,DGKH
+6,1,9162,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,9162,DGKI
+7,1,139189,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,139189,DGKK
+8,1,1609,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,1609,DGKQ
+9,1,8525,1,DG,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,8525,DGKZ
+10,2,8611,2,PA,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,8611,PLPP1
+11,2,8612,2,PA,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,8612,PLPP2
+12,2,8613,2,PA,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,8613,PLPP3
+13,3,1040,3,PA,PG,Glycerolipids and Glycerophospholipids,Biosynthesis of PG,1040,CDS1
+14,3,8760,3,PA,PG,Glycerolipids and Glycerophospholipids,Biosynthesis of PG,8760,CDS2
+15,3,114971,3,PA,PG,Glycerolipids and Glycerophospholipids,Biosynthesis of PG,114971,PTPMT1
+16,4,1040,4,PA,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,1040,CDS1
+17,4,8760,4,PA,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8760,CDS2
+18,4,10423,4,PA,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,10423,CDIPT
+19,5,1040,5,PA,PS,Glycerolipids and Glycerophospholipids,Biosynthesis of PS,1040,CDS1
+20,5,9791,5,PA,PS,Glycerolipids and Glycerophospholipids,Biosynthesis of PS,9791,PTDSS1
+21,6,23761,6,PS,PE,Glycerolipids and Glycerophospholipids,Biosynthesis of PE,23761,PISD
+22,7,81490,7,PE,PS,Glycerolipids and Glycerophospholipids,Biosynthesis of PS,81490,PTDSS2
+23,8,10400,8,PE,PC,Glycerolipids and Glycerophospholipids,Biosynthesis of PC,10400,PEMT
+24,9,9791,9,PC,PS,Glycerolipids and Glycerophospholipids,Biosynthesis of PS,9791,PTDSS1
+25,10,8228,10,TG,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,8228,PNPLA4
+26,10,150379,10,TG,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,150379,PNPLA5
+27,11,84649,11,DG,TG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,84649,DGAT2
+28,12,54675,12,PG,CL,Glycerolipids and Glycerophospholipids,Biosynthesis of CL,54675,CRLS1
+29,13,81537,13,SPBP,SPB,Sphingolipids,Biosynthesis of Sphingosine,81537,SGPP1
+30,13,130367,13,SPBP,SPB,Sphingolipids,Biosynthesis of Sphingosine,130367,SGPP2
+31,14,8877,14,SPB,SPBP,Sphingolipids,Biosynthesis of Sphingosine-1-Phosphate,8877,SPHK1
+32,14,5684,14,SPB,SPBP,Sphingolipids,Biosynthesis of Sphingosine-1-Phosphate,5684,SPHK2
+33,15,125981,15,Cer,SPB,Sphingolipids,Biosynthesis of Sphingosine,125981,ACER1
+34,15,427,15,Cer,SPB,Sphingolipids,Biosynthesis of Sphingosine,427,ASAH1
+35,15,56624,15,Cer,SPB,Sphingolipids,Biosynthesis of Sphingosine,56624,ASAH2
+36,16,10715,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,10715,CERS1
+37,16,29956,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,29956,CERS2
+38,16,204219,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,204219,CERS3
+39,16,79603,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,79603,CERS4
+40,16,91012,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,91012,CERS5
+41,16,253782,16,SPB,Cer,Sphingolipids,Biosynthesis of Ceramide,253782,CERS6
+42,17,259230,17,Cer,SM,Sphingolipids,Biosynthesis of Sphingomyelin,259230,SGMS1
+43,17,166929,17,Cer,SM,Sphingolipids,Biosynthesis of Sphingomyelin,166929,SGMS2
+44,17,10087,17,Cer,SM,Sphingolipids,Biosynthesis of Sphingomyelin,10087,CERT1
+45,18,6609,18,SM,Cer,Sphingolipids,Biosynthesis of Ceramide,6609,SMPD1
+46,18,6610,18,SM,Cer,Sphingolipids,Biosynthesis of Ceramide,6610,SMPD2
+47,18,55512,18,SM,Cer,Sphingolipids,Biosynthesis of Ceramide,55512,SMPD3
+48,19,259230,19,dhCer,dhSM,Sphingolipids,Biosynthesis of Dihydrosphingomyelin,259230,SGMS1
+49,19,166929,19,dhCer,dhSM,Sphingolipids,Biosynthesis of Dihydrosphingomyelin,166929,SGMS2
+50,20,259230,20,dhSM,dhCer,Sphingolipids,Biosynthesis of Dihydroceramide,259230,SGMS1
+51,20,166929,20,dhSM,dhCer,Sphingolipids,Biosynthesis of Dihydroceramide,166929,SGMS2
+52,20,6609,20,dhSM,dhCer,Sphingolipids,Biosynthesis of Dihydroceramide,6609,SMPD1
+53,21,8560,21,dhCer,Cer,Sphingolipids,Biosynthesis of Ceramide,8560,DEGS1
+54,21,123099,21,dhCer,Cer,Sphingolipids,Biosynthesis of Ceramide,123099,DEGS2
+55,22,79888,22,LPC,PC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,79888,LPCAT1
+56,22,54947,22,LPC,PC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,54947,LPCAT2
+57,22,10162,22,LPC,PC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,10162,LPCAT3
+58,22,254531,22,LPC,PC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,254531,LPCAT4
+59,23,30814,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,30814,PLA2G2E
+60,23,5320,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,5320,PLA2G2A
+61,23,26279,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,26279,PLA2G2D
+62,23,64600,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,64600,PLA2G2F
+63,23,5319,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,5319,PLA2G1B
+64,23,5321,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,5321,PLA2G4A
+65,23,100137049,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,100137049,PLA2G4B
+66,23,8605,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,8605,PLA2G4C
+67,23,283748,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,283748,PLA2G4D
+68,23,123745,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,123745,PLA2G4E
+69,23,255189,23,PC,LPC,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PC,255189,PLA2G4F
+70,24,10554,24,LPA,PA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,10554,AGPAT1
+71,24,10555,24,LPA,PA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,10555,AGPAT2
+72,24,56894,24,LPA,PA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,56894,AGPAT3
+73,24,56895,24,LPA,PA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,56895,AGPAT4
+74,24,55326,24,LPA,PA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,55326,AGPAT5
+75,25,5321,25,PA,LPA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,5321,PLA2G4A
+76,25,283748,25,PA,LPA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,283748,PLA2G4D
+77,25,123745,25,PA,LPA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,123745,PLA2G4E
+78,25,255189,25,PA,LPA,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PA,255189,PLA2G4F
+79,26,154141,26,LPE,PE,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PE,154141,MBOAT1
+80,26,129642,26,LPE,PE,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PE,129642,MBOAT2
+81,26,10162,26,LPE,PE,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PE,10162,LPCAT3
+82,26,254531,26,LPE,PE,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PE,254531,LPCAT4
+83,27,8605,27,PE,LPE,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PE,8605,PLA2G4C
+84,28,79143,28,LPI,PI,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PI,79143,MBOAT7
+85,29,283748,29,PI,LPI,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PI,283748,PLA2G4D
+86,29,123745,29,PI,LPI,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PI,123745,PLA2G4E
+87,30,154141,30,LPS,PS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,154141,MBOAT1
+88,30,10162,30,LPS,PS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,10162,LPCAT3
+89,30,254531,30,LPS,PS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,254531,LPCAT4
+90,31,30814,31,PS,LPS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,30814,PLA2G2E
+91,31,5320,31,PS,LPS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,5320,PLA2G2A
+92,31,64600,31,PS,LPS,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PS,64600,PLA2G2F
+93,32,9926,32,LPG,PG,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PG,9926,LPGAT1
+94,32,54675,32,LPG,PG,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PG,54675,CRLS1
+95,33,283748,33,PG,LPG,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PG,283748,PLA2G4D
+96,33,255189,33,PG,LPG,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PG,255189,PLA2G4F
+97,33,54675,33,PG,LPG,Glycerolipids and Glycerophospholipids,Acyl chain remodelling of PG,54675,CRLS1
+98,34,5537,34,PC,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,5537,PLD1
+99,34,5338,34,PC,PA,Glycerolipids and Glycerophospholipids,Biosynthesis of PA,5338,PLD2
+100,35,23236,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,23236,PLCB1
+101,35,5330,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5330,PLCB2
+102,35,5331,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5331,PLCB3
+103,35,5332,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5332,PLCB4
+104,35,5333,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5333,PLCD1
+105,35,113026,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,113026,PLCD3
+106,35,84812,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,84812,PLCD4
+107,35,51196,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,51196,PLCE1
+108,35,5335,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5335,PLCG1
+109,35,5336,35,PIP2,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,5336,PLCG2
+110,37,56994,37,DG,PC,Glycerolipids and Glycerophospholipids,Biosynthesis of PC,56994,CHPT1
+111,38,10390,38,DG,PE,Glycerolipids and Glycerophospholipids,Biosynthesis of PE,10390,CEPT1
+112,39,4245,39,MG,DG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,4245,MGAT
+113,40,57140,40,DG,MG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,57140,PNPLA2
+114,40,80339,40,DG,MG,Glycerolipids and Glycerophospholipids,Biosynthesis of Mono/Di/Triacylglycerols,80339,PNPLA3
+115,41,64781,41,Cer,Cer1P,Sphingolipids,Biosynthesis of Ceramide-1-Phosphate,64781,CERK
+116,42,5524,42,Cer1P,Cer,Sphingolipids,Biosynthesis of Ceramide,5524,PTPA
+117,43,6610,43,SM,LysoSM,Sphingolipids,Biosynthesis of Sphingophosphotildycholine,6610,SMPD2
+118,44,6901,44,PC,CL,Glycerolipids and Glycerophospholipids,Biosynthesis of CL,6901,TAZ
+119,45,5297,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,5297,PI4KA
+120,45,55361,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,55361,PI4K2A
+121,45,55300,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,55300,PI4K2B
+122,45,8394,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,8394,PIP5K1A
+123,45,8395,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,8395,PIP5K1B
+124,45,714107,45,PI,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,714107,SACM1L
+125,46,8867,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8867,SYNJ1
+126,46,8871,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8871,SYNJ2
+127,46,714107,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,714107,SACM1L
+128,46,8776,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8776,MTMR1
+129,46,8898,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8898,MTMR2
+130,46,8897,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,8897,MTMR3
+131,46,9110,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,9110,MTMR4
+132,46,9107,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,9107,MTMR6
+133,46,9108,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,9108,MTMR7
+134,46,55613,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,55613,MTMR8
+135,46,66036,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,66036,MTMR9
+136,46,64419,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,64419,MTMR14
+137,46,5728,46,PIP,PI,Glycerolipids and Glycerophospholipids,Biosynthesis of PI,5728,PTEN
+138,47,200576,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,200576,PIKFYVE
+139,47,8394,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,8394,PIP5K1A
+140,47,8395,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,8395,PIP5K1B
+141,47,23396,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,23396,PIP5K1C
+142,47,5305,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,5305,PIP4K2A
+143,47,8396,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,8396,PIP4K2B
+144,47,79837,47,PIP,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,79837,PIP4K2C
+145,48,9896,48,PIP2,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,9896,FIG4
+146,48,4952,48,PIP2,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,4952,OCRL
+147,48,56623,48,PIP2,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,56623,INPP5E
+148,48,5728,48,PIP2,PIP,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP,5728,PTEN
+149,49,5290,49,PIP2,PIP3,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP3,5290,PIK3CA
+150,49,5291,49,PIP2,PIP3,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP3,5291,PIK3CB
+151,49,5293,49,PIP2,PIP3,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP3,5293,PIK3CD
+152,49,5294,49,PIP2,PIP3,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP3,5294,PIK3CG
+153,50,51763,50,PIP3,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,51763,INPP5K
+154,50,3635,50,PIP3,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,3635,INPP5D
+155,50,27124,50,PIP3,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,27124,INPP5J
+156,50,5728,50,PIP3,PIP2,Glycerolipids and Glycerophospholipids,Biosynthesis of PIP2,5728,PTEN
+157,51,5168,51,LPC,LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of LPA,5168,ENPP2
+158,52,30049,52,FA(16:0),FA(16:1),Fatty acid metabolism,Desaturation,30049,SCD3
+159,53,60481,53,FA(16:1),FA(18:1),Fatty acid metabolism,Elongation,60481,ELOVL5
+160,53,79071,53,FA(16:1),FA(18:1),Fatty acid metabolism,Elongation,79071,ELOVL6
+161,54,9415,54,FA(16:1),FA(16:2),Fatty acid metabolism,Desaturation,9415,FADS2
+162,55,9415,55,FA(18:2),FA(18:3),Fatty acid metabolism,Desaturation,9415,FADS2
+163,56,60481,56,FA(18:3),FA(20:3),Fatty acid metabolism,Elongation,60481,ELOVL5
+164,56,79993,56,FA(18:3),FA(20:3),Fatty acid metabolism,Elongation,79993,ELOVL7
+165,57,79071,57,FA(16:0),FA(18:0),Fatty acid metabolism,Elongation,79071,ELOVL6
+166,58,6319,58,FA(18:0),FA(18:1),Fatty acid metabolism,Desaturation,6319,SCD1
+167,59,9415,59,FA(18:1),FA(18:2),Fatty acid metabolism,Desaturation,9415,FADS2
+168,60,60481,60,FA(18:2),FA(20:2),Fatty acid metabolism,Elongation,60481,ELOVL5
+169,61,3992,61,FA(20:2),FA(20:3),Fatty acid metabolism,Desaturation,3992,FADS1
+170,62,83401,62,FA(18:1),FA(20:1),Fatty acid metabolism,Elongation,83401,ELOVL3
+171,63,83401,63,FA(20:1),FA(22:1),Fatty acid metabolism,Elongation,83401,ELOVL3
+172,64,83401,64,FA(22:1),FA(24:1),Fatty acid metabolism,Elongation,83401,ELOVL3
+173,65,64834,65,FA(18:0),FA(20:0),Fatty acid metabolism,Elongation,64834,ELOVL1
+174,65,79993,65,FA(18:0),FA(20:0),Fatty acid metabolism,Elongation,79993,ELOVL7
+175,65,83401,65,FA(18:0),FA(20:0),Fatty acid metabolism,Elongation,83401,ELOVL3
+176,66,64834,66,FA(20:0),FA(22:0),Fatty acid metabolism,Elongation,64834,ELOVL1
+177,66,79993,66,FA(20:0),FA(22:0),Fatty acid metabolism,Elongation,79993,ELOVL7
+178,66,83401,66,FA(20:0),FA(22:0),Fatty acid metabolism,Elongation,83401,ELOVL3
+179,67,64834,67,FA(22:0),FA(24:0),Fatty acid metabolism,Elongation,64834,ELOVL1
+180,67,79993,67,FA(22:0),FA(24:0),Fatty acid metabolism,Elongation,79993,ELOVL7
+181,67,83401,67,FA(22:0),FA(24:0),Fatty acid metabolism,Elongation,83401,ELOVL3
+182,68,64834,68,FA(24:0),FA(26:0),Fatty acid metabolism,Elongation,64834,ELOVL1
+183,68,83401,68,FA(24:0),FA(26:0),Fatty acid metabolism,Elongation,83401,ELOVL3
+184,69,6785,69,FA(26:0),FA(28:0),Fatty acid metabolism,Elongation,6785,ELOVL4
+185,70,6785,70,FA(28:0),FA(30:0),Fatty acid metabolism,Elongation,6785,ELOVL4
+186,71,3992,71,FA(20:3),FA(20:4),Fatty acid metabolism,Desaturation,3992,FADS1
+187,72,60481,72,FA(20:4),FA(22:4),Fatty acid metabolism,Elongation,60481,ELOVL5
+188,72,54898,72,FA(20:4),FA(22:4),Fatty acid metabolism,Elongation,54898,ELOVL2
+189,73,54898,73,FA(22:4),FA(24:4),Fatty acid metabolism,Elongation,54898,ELOVL2
+190,74,9415,74,FA(24:4),FA(24:5),Fatty acid metabolism,Desaturation,9415,FADS2
+191,75,9415,75,FA(18:3),FA(18:4),Fatty acid metabolism,Desaturation,9415,FADS2
+192,76,60481,76,FA(18:4),FA(20:4),Fatty acid metabolism,Elongation,60481,ELOVL5
+193,77,3992,77,FA(20:4),FA(20:5),Fatty acid metabolism,Desaturation,3992,FADS1
+194,78,60481,78,FA(20:5),FA(22:5),Fatty acid metabolism,Elongation,60481,ELOVL5
+195,78,54898,78,FA(20:5),FA(22:5),Fatty acid metabolism,Elongation,54898,ELOVL2
+196,79,54898,79,FA(22:5),FA(24:5),Fatty acid metabolism,Elongation,54898,ELOVL2
+197,80,9415,80,FA(24:5),FA(24:6),Fatty acid metabolism,Desaturation,9415,FADS2
+198,81,54898,81,FA(24:6),FA(34:6),Fatty acid metabolism,Elongation,54898,ELOVL2
+199,81,6785,81,FA(24:6),FA(34:6),Fatty acid metabolism,Elongation,6785,ELOVL4
+200,82,56994,82,O-DG,O-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-PC,56994,CHPT1
+201,83,10390,83,O-DG,O-PE,Glycerolipids and Glycerophospholipids,Biosynthesis of O-PE,10390,CEPT1
+202,84,387521,84,O-PE,P-PE,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PE,387521,PEDS1
+203,85,10390,85,P-PE,P-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PC,10390,CEPT1
+204,85,5537,85,P-PE,P-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PC,5537,PLD1
+205,85,8611,85,P-PE,P-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PC,8611,PLPP1
+206,85,8612,85,P-PE,P-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PC,8612,PLPP2
+207,85,56994,85,P-PE,P-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-PC,56994,CHPT1
+208,86,30814,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,30814,PLA2G2E
+209,86,5320,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,5320,PLA2G2A
+210,86,26279,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,26279,PLA2G2D
+211,86,64600,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,64600,PLA2G2F
+212,86,5319,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,5319,PLA2G1B
+213,86,5321,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,5321,PLA2G4A
+214,86,100137049,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,100137049,PLA2G4B
+215,86,8605,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,8605,PLA2G4C
+216,86,283748,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,283748,PLA2G4D
+217,86,123745,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,123745,PLA2G4E
+218,86,255189,86,O-PC,O-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPC,255189,PLA2G4F
+219,87,30814,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,30814,PLA2G2E
+220,87,5320,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,5320,PLA2G2A
+221,87,26279,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,26279,PLA2G2D
+222,87,64600,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,64600,PLA2G2F
+223,87,5319,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,5319,PLA2G1B
+224,87,5321,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,5321,PLA2G4A
+225,87,100137049,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,100137049,PLA2G4B
+226,87,8605,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,8605,PLA2G4C
+227,87,283748,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,283748,PLA2G4D
+228,87,123745,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,123745,PLA2G4E
+229,87,255189,87,P-PC,P-LPC,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPC,255189,PLA2G4F
+230,88,8605,88,O-PE,O-LPE,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPE,8605,PLA2G4C
+231,89,8605,89,P-PE,P-LPE,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPE,8605,PLA2G4C
+232,90,5537,90,O-LPC,O-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPA,5537,PLD1
+233,90,5338,90,O-LPC,O-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPA,5338,PLD2
+234,91,5338,91,O-LPE,O-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of O-LPA,5338,PLD2
+235,92,5537,92,P-LPC,P-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPA,5537,PLD1
+236,92,5338,92,P-LPC,P-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPA,5338,PLD2
+237,93,5338,93,P-LPE,P-LPA,Glycerolipids and Glycerophospholipids,Biosynthesis of P-LPA,5338,PLD2
+238,94,79888,94,O-LPC,O-PC,Glycerolipids and Glycerophospholipids,Biosynthesis of O-PC,79888,LPCAT1
+239,95,10715,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,10715,CERS1
+240,95,29956,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,29956,CERS2
+241,95,204219,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,204219,CERS3
+242,95,79603,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,79603,CERS4
+243,95,91012,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,91012,CERS5
+244,95,253782,95,dhSPB,dhCer,Sphingolipids,Biosynthesis of Dihydrosphingosine,253782,CERS6
+245,96,8877,96,dhSPB,dhSPBP,Sphingolipids,Biosynthesis of Dihydrosphingosine 1-phosphate,8877,SPHK1
+246,96,5684,96,dhSPB,dhSPBP,Sphingolipids,Biosynthesis of Dihydrosphingosine 1-phosphate,5684,SPHK2
+247,97,81537,97,dhSPBP,dhSPB,Sphingolipids,Biosynthesis of Dihydrosphingosine,81537,SGPP1
+248,97,130367,97,dhSPBP,dhSPB,Sphingolipids,Biosynthesis of Dihydrosphingosine,130367,SGPP2
