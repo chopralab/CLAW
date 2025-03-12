@@ -11,7 +11,7 @@ Summary: Clinical studies revealed that some aged-individuals accumulate a signi
 Filtered Summary:
 Title: PLA2G4E, a candidate gene for resilience in Alzheimer´s disease and a new target for dementia treatment.
 DOI: 10.1016/j.pneurobio.2020.101818
-Summary: This study identified PLA2G4E as a gene that might confer resistance to dementia in Alzheimer's disease (AD), with decreased levels of this gene evident in the brains of late-stage AD patients. Overexpression of PLA2G4E in hippocampal neurons in mice restored cognitive deficits, suggesting a potential therapeutic strategy for managing AD and other memory deficit disorders.
+Summary: This study identifies PLA2G4E as a gene that might confer resistance to dementia. The research found a significant decrease in PLA2G4E in the brain of late-stage Alzheimer's disease (AD) patients, but not in early-stage patients with AD neuropathological lesions but no signs of dementia. Overexpression of PLA2G4E in hippocampal neurons restored cognitive deficits in elderly APP/PS1 mice, without affecting the amyloid or tau pathology. The results suggest that a loss of PLA2G4E might play a key role in the onset of dementia in AD, and that PLA2G4E overexpression could be a potential therapeutic strategy to manage AD and other disorders with memory deficits.
 ----------------------------------------
 
 Query: decreased PLA2G4D in Alzheimer's Disease

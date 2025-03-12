@@ -78,7 +78,7 @@ def fetch_papers(query):
     return get_paper_details(paper_ids)
 
 # ================== LLM SETUP ==================
-llm = ChatOpenAI(temperature=0.7, model_name="gpt-4")
+llm = ChatOpenAI(temperature=0.0, model_name="gpt-4")
 
 # LLMChain for filtering PubMed paper details.
 filter_prompt = PromptTemplate(
