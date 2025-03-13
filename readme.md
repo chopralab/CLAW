@@ -1,4 +1,4 @@
-# CLAW-MRM - Comprehensive MRM Lipidome Automation Workflow
+# CLAW-MRM - Comprehensive MRM Lipidomics Automation Workflow
 
 CLAW-MRM (Comprehensive MRM Lipidome Automation Workflow) is a powerful lipidomics workflow designed to automate and standardize lipid data analysis. It provides a set of tools and scripts that streamline various tasks such as data parsing, matching, statistical analysis, and visualization. This workflow is particularly helpful for researchers in the field of lipidomics as it ensures consistency in data processing and enables efficient exploration and interpretation of lipid expression patterns.
 
@@ -23,7 +23,7 @@ To get started with CLAW-MRM, follow these steps:
 
 2. **Project Folder**: Organize your lipidomics project by creating a project folder. This directory will serve as the central location for all project-related files, including raw data, processed results, plots, and other data files.
 
-3. **Workflow**: Utilize the main components of CLAW, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
+3. **Workflow**: Utilize the main components of CLAW-MRM, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
 
 ## Repository Structure
 
@@ -69,7 +69,7 @@ Project_Folder/
 
 ## Lipid Data Analysis and Visualization
 
-CLAW combines Python and R code for analyzing and visualizing lipid data obtained from mass spectrometry experiments.
+CLAW-MRM combines Python and R code for analyzing and visualizing lipid data obtained from mass spectrometry experiments.
 
 ### Python Code (Lipid_MRM_parser.ipynb)
 
@@ -101,7 +101,7 @@ The `edgeR.R` file contains R scripts for lipid data analysis and visualization:
 
 ## Contributing
 
-If you wish to contribute to CLAW, feel free to submit issues, bug reports, or pull requests on the GitHub repository.
+If you wish to contribute to CLAW-MRM, feel free to submit issues, bug reports, or pull requests on the GitHub repository.
 
 ## Acknowledgments
 
