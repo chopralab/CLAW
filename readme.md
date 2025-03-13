@@ -76,8 +76,8 @@ CLAW/
 │   │   ├── isotope_correction/
 │   │   ├── notebooks/
 │   │   ├── other/
-│   │   │   └── Need_Scripts_for_functions_will_delete_later/
-│   │   │       └── Gene_Database/
+│   │   │   
+│   │   │      
 │   │   └── plotting/
 │   └── Variable_Storage/
 ├── requirements/
