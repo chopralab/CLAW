@@ -1,51 +1,93 @@
-# CLAW - Comprehensive Lipidome Automation Workflow
+# CLAW-MRM - Comprehensive MRM Lipidome Automation Workflow
 
-CLAW (Comprehensive Lipidome Automation Workflow) is a powerful lipidomics workflow designed to automate and standardize lipid data analysis. It provides a set of tools and scripts that streamline various tasks such as data parsing, matching, statistical analysis, and visualization. This workflow is particularly helpful for researchers in the field of lipidomics as it ensures consistency in data processing and enables efficient exploration and interpretation of lipid expression patterns.
+CLAW-MRM (Comprehensive MRM Lipidome Automation Workflow) is a powerful lipidomics workflow designed to automate and standardize lipid data analysis. It provides a set of tools and scripts that streamline various tasks such as data parsing, matching, statistical analysis, and visualization. This workflow is particularly helpful for researchers in the field of lipidomics as it ensures consistency in data processing and enables efficient exploration and interpretation of lipid expression patterns.
 
 ## Getting Started
 
-To get started with CLAW, follow these steps:
+To get started with CLAW-MRM, follow these steps:
 
-1. **Requirements**: Install the necessary Python libraries for `pymzml` by creating a virtual environment. Use the provided `pymzml.yml` file and run the following command:
+1. **Requirements**: Install the necessary Python libraries by creating a virtual environment. Use the provided requirements or install the following packages:
     ```
-    conda env create -f pymzml.yml
+    conda install pandas=1.5.2 
+    pip install pymzml==2.5.2
+    conda install matplotlib
+    conda install ipywidgets
+    pip install plotly
+    conda install ipykernel
+    pip install jupyterhub jupyterlab jupyter jsonschema jupyterlab-server
+    conda install openpyxl
+    pip install -U kaleido
+    pip install langchain==0.0.345
+    pip install openai==1.3.7
     ```
 
 2. **Project Folder**: Organize your lipidomics project by creating a project folder. This directory will serve as the central location for all project-related files, including raw data, processed results, plots, and other data files.
 
-3. **Workflow**: Utilize the main components of CLAW, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
+3. **Workflow**: Utilize the main components of CLAW-MRM, such as the Python notebook `Lipid_MRM_parser.ipynb` and the R script `edgeR.R`, to perform data analysis, visualization, and statistical tests on lipidomics datasets. The notebook and script are designed to work together cohesively to achieve comprehensive and reproducible results.
 
-# CLAW - Lipid Platform
-
-This repository hosts the CLAW lipid platform which consists of various tools, scripts, and data related to lipidomics.
-
-## Folder Structure
-
-The `lipid_platform` directory contains:
+## Repository Structure
 
 ```
-lipid_platform/
-    ├── Figures/ # Supporting figures
-    ├── Projects/ # Associated projects and related files
-    ├── Variable_Storage/ # Storage for variables, includes edgeR and labels  
-    ├── lipid_database/ # Database related to lipidomics
-    ├── tools/ # Various tools and utilities
-    ├── CLAW.py # Main Python script for the platform
-    ├── CLAW_MRM_OzESI.ipynb # Jupyter Notebook for MRM OzESI
-    ├── CLAW_MRM_OzESI_Canola_OzOFF.ipynb # Jupyter Notebook MRM OzESI Canola OzOFF
-    ├── CLAW_MRM_OzESI_Canola_OzON.ipynb # Jupyter Notebook MRM OzESI Canola OzON 
-    ├── CLAW_MRM_OzESI_Canola_OzON_CorrectRT.ipynb # Jupyter Notebook MRM OzESI Canola OzON CorrectRT
-    ├── Lipid_MRM_parser.ipynb # Jupyter Notebook for Lipid MRM parsing  
-    ├── NO_AVERAGE_SCRIPTS.py # Script related to averaging functionality
-    ├── create_directory.py # Script for directory creation  
-    ├── edgeR.r # R script for edgeR analysis
-    ├── edgeR_No_replicates.R # R script for edgeR without replicates
-    ├── myjob.sh # Shell script for job handling  
-    └── plot.py # Python script for plotting
+CLAW/
+├── demo/
+│   ├── demo_data/
+│   │   ├── JSON/
+│   │   ├── Labels/
+│   │   ├── mzml/
+│   │   ├── plots/
+│   │   ├── Plots/
+│   │   ├── Pre_EdgeR/
+│   │   ├── Processed Results/
+│   │   └── results/
+│   └── jsons/
+├── lipid_platform/
+│   ├── Figures/
+│   ├── lipid_database/
+│   ├── Projects/
+│   │   ├── BRAIN_5XFAD/
+│   │   │   ├── biopan/
+│   │   │   ├── combo_reactions/
+│   │   │   ├── csv_clean_normalized/
+│   │   │   ├── FA_output/
+│   │   │   ├── Labels/
+│   │   │   ├── matched_pairs/
+│   │   │   ├── matched_ttest/
+│   │   │   ├── matched_ttest_group/
+│   │   │   ├── MRM_results/
+│   │   │   ├── mzml/
+│   │   │   ├── plots/
+│   │   │   ├── Pre_EdgeR/
+│   │   │   ├── Processed Results/
+│   │   │   ├── Query_Results/
+│   │   │   ├── results/
+│   │   │   ├── sum/
+│   │   │   └── sum_combo/
+│   │   └── Lipid_Load/
+│   │       ├── biopan/
+│   │       ├── Labels/
+│   │       ├── mzml/
+│   │       ├── Pre_EdgeR/
+│   │       └── Processed Results/
+│   ├── tools/
+│   │   ├── biopan/
+│   │   ├── database/
+│   │   ├── edgeR/
+│   │   │   └── heatmap_test/
+│   │   ├── isotope_correction/
+│   │   ├── notebooks/
+│   │   ├── other/
+│   │   │   └── Need_Scripts_for_functions_will_delete_later/
+│   │   │       └── Gene_Database/
+│   │   └── plotting/
+│   └── Variable_Storage/
+├── requirements/
+└── worklist_generator/
+    └── worklists/
 ```
-## Folder Structure
 
-The project folder should have the following structure:
+## Project Folder Structure
+
+When creating a new lipidomics project, use the following folder structure:
 
 ```
 Project_Folder/
@@ -54,73 +96,47 @@ Project_Folder/
     ├── Plots/                 # Folder for storing generated plots
     ├── Labels/                # Folder for sample labels and metadata
     ├── Results/               # Folder for storing final analysis results
-    ├── Figures/               # Folder for supporting figures (if any)
     └── README.md              # Documentation and project overview
 ```
 
+## Lipid Data Analysis and Visualization
 
+CLAW-MRM combines Python and R code for analyzing and visualizing lipid data obtained from mass spectrometry experiments.
 
-# Lipid Data Analysis and Visualization
+### Python Code (Lipid_MRM_parser.ipynb)
 
-This repository contains R and Python code for analyzing and visualizing lipid data obtained from mass spectrometry experiments. The code is designed to process raw lipid data, perform statistical analysis using edgeR, and generate informative visualizations to gain insights into lipid expression patterns.
+The `Lipid_MRM_parser.ipynb` Jupyter Notebook presents a Python-based pipeline for processing and analyzing lipid data:
 
-## Python Code (Lipid_MRM_parser.ipynb)
+1. **Loading and filtering data**: Imports data from a lipid database and mzML files, then filters and organizes the data for further analysis.
 
-The `Lipid_MRM_parser.ipynb` Jupyter Notebook presents a Python-based pipeline for processing and analyzing lipid data. The notebook imports various libraries for data processing and visualization. The key steps in the notebook are as follows:
+2. **Parsing and matching**: Uses custom parser to match data with specific lipid classes and extract relevant information.
 
-1. Loading and filtering data: The code imports data from a lipid database and mzML files, and then filters and organizes the data for further analysis.
+3. **Data visualization**: Creates various visualizations such as pie charts, bar plots, and edge plots to analyze and compare lipid classes.
 
-2. Parsing and matching: The code uses a custom parser (`NO_AVERAGE_SCRIPTS`) to match data with specific lipid classes and extract relevant information.
+4. **Custom color scheme**: Allows specification of a custom color scheme for lipid classes in the visualizations.
 
-3. Data visualization: The code creates various visualizations such as pie charts, bar plots, and edge plots to analyze and compare lipid classes.
+### R Code (edgeR.R)
 
-4. Custom color scheme: The user can specify a custom color scheme for lipid classes in the visualizations.
+The `edgeR.R` file contains R scripts for lipid data analysis and visualization:
 
-## R Code (main_code.R)
+1. **Libraries and Initial Setup**: Loads required R libraries and sets up the working directory.
 
-The `edgeR.R` file contains R scripts for lipid data analysis and visualization. The code is organized into the following sections:
+2. **Loop through Preprocessed Data Files**: Processes preprocessed lipid data files using ridge plots, PCA plots, and heatmap plots.
 
-1. Libraries and Initial Setup: The code loads required R libraries and sets up the working directory.
+3. **Ridge Plot Generation**: Creates ridge plots to visualize the distribution of log-fold changes across different lipid classes.
 
-2. Loop through Preprocessed Data Files: The code processes preprocessed lipid data files using ridge plots, PCA plots, and heatmap plots.
+4. **PCA Plot Generation**: Performs PCA on the numeric columns of the data to create PCA plots.
 
-3. Ridge Plot Generation: Ridge plots are created to visualize the distribution of log-fold changes across different lipid classes.
+5. **Heatmap Plot Generation**: Generates heatmap plots to visualize the correlation between different lipid features.
 
-4. PCA Plot Generation: PCA is performed on the numeric columns of the data to create PCA plots.
-
-5. Heatmap Plot Generation: Heatmap plots are generated to visualize the correlation between different lipid features.
-
-6. Summary and Full Results: The code generates summary and full result files based on edgeR analysis.
-
-## Conclusion
-
-This repository provides a comprehensive set of tools and scripts for analyzing and visualizing lipid data. Researchers can use the Python notebook for data preprocessing and visualization, while the R scripts offer in-depth analysis using edgeR and additional visualization options. By combining these tools, users can gain valuable insights into lipid expression patterns and make meaningful interpretations from mass spectrometry data.
-
+6. **Summary and Full Results**: Generates summary and full result files based on edgeR analysis.
 
 ## Contributing
 
-If you wish to contribute to CLAW, feel free to submit issues, bug reports, or pull requests on the GitHub repository.
+If you wish to contribute to CLAW-MRM, feel free to submit issues, bug reports, or pull requests on the GitHub repository.
 
 ## Acknowledgments
 
 We acknowledge the developers of `pymzml`, `plotly`,`edgeR` and other open-source libraries used in this workflow, which greatly facilitate lipidomics data analysis.
 
-**Happy lipidomics research with CLAW!**
-
-###Packages needed to install if YML file fails
-conda install pandas=1.5.2 
-pip install pymzml==2.5.2
-conda install matplotlib
-conda install ipywidgets
-pip install plotly
-conda install ipykernel
-pip install jupyterhub jupyterlab jupyter jsonschema jupyterlab-server
-conda install openpyxl
-pip install -U kaleido
-pip install langchain==0.0.345
-pip install openai==1.3.7
-
-
-
-
-
+**Happy lipidomics research with CLAW-MRM!**
